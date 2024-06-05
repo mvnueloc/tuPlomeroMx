@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,37 +43,76 @@
     <div
       class="grid grid-cols-1 lg:grid-cols-2 gap-y-14 justify-center items-center h-screen-minus-16"
     >
-      <!-- figura y landing page -->
-      <div class="flex flex-col justify-center items-center space-y-16">
-        <h2 class="mb-6 text-2xl md:text-3xl font-bold text-white">
-          Bienvenido/a
-        </h2>
-        <img
-          class="w-80"
-          src="../assets/img/login.svg"
-          alt="persona sosteniendo un celular"
-        />
-      </div>
-
       <!-- login -->
       <div class="flex justify-center items-center">
-        <div class="bg-gray-200 p-12 rounded-xl mb-16 lg:mb-0">
-          <h2 class="mb-6 text-2xl md:text-3xl font-bold">Iniciar sesion</h2>
+        <div class="bg-gray-200 p-6 rounded-xl mb-16 lg:mb-0">
+          <h2 class="mb-6 text-2xl md:text-3xl font-bold">Crear una cuenta</h2>
 
-          <form class="space-y-4 md:space-y-6" action="#">
-            <div>
-              <label for="correo" class="mb-2 text-sm font-medium text-gray-900"
-                >Correo</label
-              >
-              <input
-                type="email"
-                name="correo"
-                id="correo"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                placeholder="nombre@ejemplo.com"
-                required=""
-              />
+          <form class="space-y-4 md:space-y-6" action="php/register_bd.php" method="POST">
+            <div class="grid grid-cols-2 gap-x-6">
+              <div>
+                <label
+                  for="nombre"
+                  class="mb-2 text-sm font-medium text-gray-900"
+                  >Nombres</label
+                >
+                <input
+                  type="text"
+                  name="nombres"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="Nombre"
+                  required=""
+                />
+              </div>
+
+              <div>
+                <label
+                  for="apellido"
+                  class="mb-2 text-sm font-medium text-gray-900"
+                  >Apellidos</label
+                >
+                <input
+                  type="text"
+                  name="apellidos"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="Apellido"
+                  required=""
+                />
+              </div>
             </div>
+
+            <div class="grid grid grid-cols-2 gap-x-6">
+              <div>
+                <label
+                  for="correo"
+                  class="mb-2 text-sm font-medium text-gray-900"
+                  >Correo</label
+                >
+                <input
+                  type="email"
+                  name="correo"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="nombre@ejemplo.com"
+                  required=""
+                />
+              </div>
+
+              <div>
+                <label
+                  for="telefono"
+                  class="mb-2 text-sm font-medium text-gray-900"
+                  >Telefono</label
+                >
+                <input
+                  type="tel"
+                  name="telefono"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="55 1234 5678"
+                  required=""
+                />
+              </div>
+            </div>
+
             <div>
               <label
                 for="contraseña"
@@ -79,8 +121,7 @@
               >
               <input
                 type="password"
-                name="contraseña"
-                id="contraseña"
+                name="contrasena"
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 required=""
@@ -94,7 +135,6 @@
                     aria-describedby="recordar"
                     type="checkbox"
                     class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                    required=""
                   />
                 </div>
                 <div class="ml-3 text-sm">
@@ -109,22 +149,33 @@
             </div>
             <div class="flex justify-center">
               <button
-                type="submit"
                 class="bg-secundary w-4/6 text-center text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
-                Iniciar sesion
+                Crear cuenta
               </button>
             </div>
             <div class="flex justify-center">
               <p class="text-sm font-light text-gray-500">
-                ¿No tienes una cuenta?
-                <a href="#" class="font-medium text-primary-600 hover:underline"
-                  >Crea una cuenta</a
+                ¿Ya tienes una cuenta?
+                <a href="./login.php" class="font-medium text-primary-600 hover:underline"
+                  >Inicia sesion</a
                 >
               </p>
             </div>
           </form>
         </div>
+      </div>
+
+      <!-- figura y landing page -->
+      <div class="flex flex-col justify-center items-center space-y-16">
+        <h2 class="mb-6 text-2xl md:text-3xl font-bold text-white">
+          Bienvenido/a
+        </h2>
+        <img
+          class="w-80"
+          src="../assets/img/login.svg"
+          alt="persona sosteniendo un celular"
+        />
       </div>
     </div>
   </body>
