@@ -23,7 +23,8 @@
 
     if (mysqli_num_rows($ejecutar) > 0) {
         $usuario = mysqli_fetch_assoc($ejecutar);
-        
+        echo $usuario['contrasena'];
+        echo $contrasena;
         if (password_verify($contrasena, $usuario['contrasena'])) {
             $_SESSION['usuario'] = $usuario['correo']; 
             $_SESSION['id'] = $usuario['id'];
@@ -32,6 +33,8 @@
             
             header("location: ../bienvenido.php");
             exit();
+        }else {
+            echo "La contraseña proporcionada no coincide con la almacenada en la base de datos.<br>";
         }
     }
 
