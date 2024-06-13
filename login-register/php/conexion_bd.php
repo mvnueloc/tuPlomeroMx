@@ -7,5 +7,4 @@
     // }else{
     //     echo 'Conectado a la base de datos';
     // }
-
 ?>

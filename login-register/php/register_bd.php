@@ -1,5 +1,4 @@
 <?php
-    
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -18,6 +17,7 @@
     // Verificacion de no repeticion de correo
 
     $query_select = "SELECT * FROM usuarios WHERE correo = '$correo'";
+
     $verificar_correo = mysqli_query($conexion,  $query_select);
     if (mysqli_num_rows($verificar_correo) > 0) {
         echo ' 

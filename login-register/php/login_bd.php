@@ -35,8 +35,6 @@
         }
     }
 
-    echo $usuario['contrasena'];
-
     // echo '
     // <script>
     //     alert("El usuario no se ha localizado.");
