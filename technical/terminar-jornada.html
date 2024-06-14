@@ -28,7 +28,6 @@
       };
     </script>
   </head>
-  
   <body class="bg-primary">
     <nav class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between">
       <div class="mx-12 hidden md:block">
@@ -50,48 +49,14 @@
         </div>
       </div>
     </nav>  
-    <main class="md:h-screen-minus-3.5 w-full bg-primary max-md:mt-8">
-        <div class="md:h-full w-full flex flex-col md:flex-row items-center md:justify-center md:gap-14 lg:gap-[14%]">
-            <!-- Orden de servicio -->
-            <section class="flex items-center pb-[12%]">
-              <article class="flex flex-col gap-10">
-                <h2 class="text-white text-3xl font-semibold">Detalles del servicio</h2>
-                <div>
-                  <h3 class="mb-4 text-white font-medium text-xl">Tipo de servicio.</h3>
-                  <p class="text-white ">Mantenimiento preventivo y lavado de tinacos.</p>
-                </div>
-                <div>
-                  <h3 class="mb-4 text-white text-xl font-medium">Domicilio.</h3>
-                  <p class="text-white">Detalles del domicilio</p>
-                </div>
-                <div>
-                  <h3 class="mb-4 text-white text-xl font-medium">Materiales.</h3>
-                  <ul>
-                    <li class="text-white">Material 1</li>
-                    <li class="text-white">Material 2</li>
-                  </ul>
-                </div>
-              </article>
-            </section>
-
-            <!-- Evidencia de trabajo -->
-            <section class="h-full flex flex-col items-center justify-center pb-[11%]">
-                <!-- Fotos de evidencia -->
-                <div class="bg-white w-[22rem] px-6 py-6 lg:px-12 lg:py-8 flex flex-col md:w-[20rem] lg:w-[28rem] items-center rounded-lg gap-5">
-                  <h2 class="mb-2 text-center text-xl font-bold">Evidencia</h2>
-                  <div class="bg-[#D9D9D9] w-full flex flex-col items-center rounded-lg py-7 gap-3" onclick="document.getElementById('file-upload').click();">
-                    <div class="flex  max-h-20">
-                      <img src="../assets/img/images-upload.svg"  class="opacity-65 max-h-14 md:max-h-24" alt="icono de subir imagen">
-                    </div>
-                    <label for="file-upload" class="font-bold text-sm text-[#616060] opacity-65">Haz click para subir una foto</label>
-                    <input type="file" id="file-upload" class="hidden">
-                  </div>
-                  <button class="bg-secundary py-3 px-8 rounded-lg font-semibold text-white">Finalizar</button>
-                </div>
-
-            </section>
+    <main class="h-screen-minus-3.5 w-full">
+        <div class="w-full h-full flex flex-col items-center justify-center gap-20">
+            <div class="text-white text-xl md:text-4xl font-light text-center px-6">
+                <p>Para revisar tus reportes es necesario que finalices tu jornada, ¿Estás seguro?</p>
+            </div>
+            <button class="py-2.5 px-14 bg-white text-secundary rounded-lg text-base font-medium">Finalizar Jornada</button>
         </div>
-      </main>
+    </main>
     <!-- footer -->
     <footer class="bg-white border-t-2 border-gray-100">
       <div class="relative mx-auto max-w-screen-xl px-4 py-14 sm:px-6 lg:px-8">
