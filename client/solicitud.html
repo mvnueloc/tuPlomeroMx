@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tuPlomeroMx</title>
+    <!-- <link rel="stylesheet" href="./css/style.css" /> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
       @layer utilities {
@@ -17,147 +18,155 @@
         theme: {
           extend: {
             colors: {
-              primary: "#0077C2",
-              secundary: "#00619A",
+              primary: "#13212A",
+              secundary: "#0077C2",
             },
             height: {
-              "screen-minus-16": "calc(100vh - 16rem)", // 2rem es aproximadamente igual a 32px
+              "screen-minus-3.5": "calc(100vh - 3.5rem)",
             },
           },
         },
       };
     </script>
   </head>
+
   <body class="bg-primary">
-    <div class="h-screen w-full flex flex-col">
-        <!-- Titulo -->
-        <section class="pt-4 flex justify-center ">
-            <h1 class="text-3xl font-bold text-white font-sans text-center">Solicitud</h1>
-        </section>
-
-        <!-- Solicitud de Servicio -->
-        <section class="flex-grow flex flex-col md:flex-row sm:items-center max-md:mt-8 max-md:justify-between max-md:gap-5">
-            <div class=" lg:w-6/12 md:w-7/12 px-12 pb-12 pt-8 md:ml-10 bg-gray-200 rounded-lg"> 
-                <h2 class="mb-2 text-lg font-bold text-center"> Información de solicitud</h2>
-                <form action="">
-                    <div class="mb-2 flex flex-col lg:flex-row justify-between lg:gap-4">
-                        <div class="flex-grow">
-                            <label for="correo" class="mb-2 text-sm font-medium text-gray-900">
-                                Nombre(s)
-                            </label>
-                            <input
-                                type="text"
-                                name="nombre"
-                                id="nombre"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="nombre(s)"
-                                pattern="[A-Za-z\s]*"
-                                title="Por favor ingrese solo letras"
-                            />
-                        </div>
-                        <div class="flex-grow">
-                            <label for="correo" class="mb-2 text-sm font-medium text-gray-900">
-                                Apellido(s)
-                            </label>
-                            <input
-                                type="text"
-                                name="apellido"
-                                id="apellido"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="apellido(s)"
-                                pattern="[A-Za-z\s]*"
-                                title="Por favor ingrese solo letras"
-                                required=""
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-2 flex flex-col md:flex-row justify-between gap-4">
-                        <div class="w-full">
-                            <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
-                            <input
-                                type="text"
-                                name="direccion"
-                                id="direccion"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Dirección"
-                            />
-                        </div>
-                        <div class="flex-grow">
-                            <label for="cp" class="block text-sm font-medium text-gray-700 lg:text-center">Código Postal</label>
-                            <input
-                                type="text"
-                                name="cp"
-                                id="cp"
-                                class="bg-gray-50 w-full border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5"
-                                placeholder="Código Postal"
-                                pattern="\d{5}"
-                                title="Por favor ingrese un código postal válido"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-2 flex flex-col sm:flex-row justify-between gap-4">
-                        <div class="w-full">
-                            <label for="tipo_servicio" class="block text-sm font-medium text-gray-700">Tipo de servicio</label>
-                            <select name="tipo_servicio" id="tipo_servicio" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                                <option value="" class="text-gray-700">Selecciona una opción</option>
-                                <option value="dog">Dog</option>
-                                <option value="cat">Cat</option>
-                                <option value="hamster">Hamster</option>
-                                <option value="parrot">Parrot</option>
-                                <option value="spider">Spider</option>
-                                <option value="goldfish">Goldfish</option>
-                            </select>
-                        </div>
-                        <div class="flex-grow">
-                            <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                            <input
-                                type="date"
-                                name="fecha"
-                                id="fecha"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            />
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class=" flex-grow flex flex-col items-center">
-                <img src="../assets/img/service-request.svg" class="hidden md:block md:w-56 lg:w-96 mb-2" alt="Persona presionando botón">
-                <button class="px-14 py-5 md:px-10 md:py-2.5 text-primary font-bold bg-gray-200 hover:bg-secundary hover:text-white rounded-lg text-md transition-colors duration-300">
-                    Solicitar Servicio
-                </button>
-            </div>
-        </section>
-    </div>
-    <footer class="bg-white border-t-2 border-gray-100">
-      <div class="relative mx-auto max-w-screen-xl px-4 py-14 sm:px-6 lg:px-8">
-        <div class="lg:flex lg:items-end lg:justify-between">
-          <div>
-            <div class="flex justify-center text-teal-600 lg:justify-start">
-              <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
-            </div>
-            <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
-              Soluciones eficientes y confiables para todas tus necesidades de plomería.
-            </p>
-          </div>
-
-          <ul class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12">
-            <li>
-              <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Nosotros </a>
-            </li>
-            <li>
-              <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Políticas de Privacidad </a>
-            </li>
-            <li>
-              <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Contacto </a>
-            </li>
-          </ul>
-        </div>
-
-        <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
-          © 2024 <a href="#" class="hover:underline">TuPlomeroMx™</a>. Todos los derechos reservados.
-        </p>
+    <nav
+      class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between"
+    >
+      <div class="mx-12 hidden md:block">
+        <a class="text-white" href="#">NOMBRE</a>
       </div>
-    </footer>
+
+      <div class="md:mx-12">
+        <div>
+          <a
+            class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-all duration-300 ease-in-out"
+            href="#"
+            >Home</a
+          >
+          <a
+            class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-all duration-300 ease-in-out"
+            href="#"
+            >Solicitud</a
+          >
+          <a
+            class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-all duration-300 ease-in-out"
+            href="#"
+            >Notificaciones</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <form action="#">
+      <div
+        class="lg:h-screen-minus-3.5 mt-12 lg:mt-0 flex justify-center items-center"
+      >
+        <div>
+          <div class="flex justify-center">
+            <!-- Cards -->
+            <div class="grid lg:grid-cols-3 gap-6">
+              <!-- card 1 -->
+              <div class="flex justify-center">
+                <div
+                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-100/30 p-3"
+                >
+                  <img
+                    class="h-52 w-full rounded-xl"
+                    src="../assets/img/servicio1.jpeg"
+                    alt="Persona lavando un tinaco"
+                  />
+                  <h2 class="font-semibold text-2xl mt-4 mx-4">Tinacos</h2>
+                  <p class="font-light mt-2 mx-4">
+                    Mantenimiento preventivo y lavado
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <p
+                      class="font-extrabold text-xl mt-6 mx-4 bg-green-600 px-2 py-1 rounded-md text-white"
+                    >
+                      $500
+                    </p>
+
+                    <div class="mt-6 mx-6 flex items-center">
+                      <label class="text-gray-500" for="input"
+                        >Seleccionar</label
+                      >
+                      <input class="ml-4 scale-[1.3]" type="checkbox" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- card 2 -->
+              <div class="flex justify-center">
+                <div
+                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-100/30 p-3"
+                >
+                  <img
+                    class="h-52 w-full rounded-xl"
+                    src="../assets/img/servicio2.jpeg"
+                    alt="Persona lavando un tinaco"
+                  />
+                  <h2 class="font-semibold text-2xl mt-4 mx-4">Fugas</h2>
+                  <p class="font-light mt-2 mx-4">Reparación de fuga de agua</p>
+                  <div class="flex items-center justify-between">
+                    <p
+                      class="font-extrabold text-xl mt-6 mx-4 bg-green-600 px-2 py-1 rounded-md text-white"
+                    >
+                      $500
+                    </p>
+
+                    <div class="mt-6 mx-6 flex items-center">
+                      <label class="text-gray-500" for="input"
+                        >Seleccionar</label
+                      >
+                      <input class="ml-4 scale-[1.3]" type="checkbox" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- card 3 -->
+              <div class="flex justify-center">
+                <div
+                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-100/30 p-3"
+                >
+                  <img
+                    class="h-52 w-full rounded-xl"
+                    src="../assets/img/servicio3.jpeg"
+                    alt="Persona lavando un tinaco"
+                  />
+                  <h2 class="font-semibold text-2xl mt-4 mx-4">Calentador</h2>
+                  <p class="font-light mt-2 mx-4">
+                    Instalación de calentador de agua
+                  </p>
+                  <div class="flex items-center justify-between">
+                    <p
+                      class="font-extrabold text-xl mt-6 mx-4 bg-green-600 px-2 py-1 rounded-md text-white"
+                    >
+                      $500
+                    </p>
+
+                    <div class="mt-6 mx-6 flex items-center">
+                      <label class="text-gray-500" for="input"
+                        >Seleccionar</label
+                      >
+                      <input class="ml-4 scale-[1.3]" type="checkbox" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- submit -->
+          <div class="flex justify-center my-12">
+            <button
+              class="bg-white text-secundary text-xl px-4 py-2 rounded-md hover:bg-secundary hover:text-white transition-all duration-300 ease-in-out"
+            >
+              Continuar
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
   </body>
 </html>
