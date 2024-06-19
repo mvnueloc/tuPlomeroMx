@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'user'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,10 +82,10 @@
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <a href="./landing.html">Home</a>
             </li>
-            <li class="text-secundary md:mr-12 hover:text-secundary">
+            <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <a href="./solicitud.html">Solicitud</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text-secundary md:mr-12 hover:text-secundary">
               <a href="./notificacion.html">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
@@ -98,47 +105,28 @@
       class="flex justify-center items-center h-screen-minus-64 md:h-screen-minus-68"
     >
       <div
-        class="w-80 h-auto md:w-96 md:h-auto bg-gray-100 p-12 rounded-xl shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
+        class="w-5/6 h-auto bg-gray-100 p-6 rounded-xl shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
       >
-        <div class="flex justify-center">
-          <div
-            class="w-24 h-24 bg-green-600 flex justify-center items-center rounded-full"
-          >
-            <svg
-              class="w-20 h-20 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 11.917 9.724 16.5 19 7.5"
-              />
-            </svg>
-          </div>
+        <h2 class="text-xl md:text-3xl font-semibold">Servicio Terminado</h2>
+        <p class="font-light mt-6">
+          Tu servicio de “Nombre del servicio” ubicado en “Direccion” ha sido
+          realizado con exito el dia “Dia”, por el tecnico “Nombre del tecnico”,
+          realiza el pago por la cantidad de “costo”.
+        </p>
+        <div class="flex justify-center lg:justify-start">
+          <img
+            class="w-5/6 lg:w-1/2 h-auto mt-6 rounded-xl"
+            src="../assets/img/servicio1.jpeg"
+            alt=""
+          />
         </div>
 
-        <h2 class="text-center mt-6 text-2xl font-semibold text-green-600">
-          Orden validada
-        </h2>
-
-        <p class="text-center text-lg font-light mt-6">
-          Gracias por realizar tu orden, en unos minutos tu tecnico llegara a tu
-          casa, este antento a las notificaciones.
-        </p>
-
-        <div class="flex justify-center mt-6">
+        <div class="flex justify-end mt-6">
           <a
-            href="./landing.html"
-            class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-all duration-300"
+            href="./pago.html"
+            class="bg-secundary text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-secundary transition-colors duration-300"
           >
-            Continuar
+            Pagar
           </a>
         </div>
       </div>

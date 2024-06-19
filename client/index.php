@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'user'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -84,8 +91,9 @@
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
                 class="rounded-md border-2 border-secundary px-6 py-1 font-medium text-secundary transition-colors hover:bg-secundary hover:text-white"
+                onclick="window.location.href='../php/logout.php'"
               >
-                Login
+                Cerrar sesión
               </button>
             </li>
           </ul>
@@ -108,7 +116,9 @@
             Servicios de plomería a domicilio en la Ciudad de México
           </h1>
           <button
-            class="rounded-md text-secundary bg-gray-100 px-6 py-1 font-medium text-secundary transition-colors hover:bg-secundary hover:text-white mt-6"
+            class="rounded-md text-secundary bg-gray-100 px-6 py-2 font-medium text-secundary transition-colors hover:bg-secundary hover:text-white mt-6"
+            onclick="window.location.href='solicitud.php'"
+              
           >
             Solicitar servicio
             <!-- logica con php si ya inicio sesion redirigirlo a solicitud.html, si no redirigirlo a login -->

@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'user'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

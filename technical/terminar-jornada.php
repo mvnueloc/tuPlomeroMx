@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,12 +18,6 @@
           content-visibility: auto;
         }
       }
-
-      .min-h-screen-minus-3-5 {
-        min-height: calc(
-          100vh - 3.5rem
-        ); /* Ajusta 3.5rem al valor que necesitas restar */
-      }
     </style>
     <script>
       tailwind.config = {
@@ -27,7 +28,8 @@
               secundary: "#0077C2",
             },
             height: {
-              "screen-minus-3.5": "calc(100vh - 3.5rem)",
+              "screen-minus-68": "calc(100vh - 68px)",
+              "screen-minus-64": "calc(100vh - 64px)",
             },
           },
         },
@@ -95,109 +97,22 @@
         </div>
       </div>
     </nav>
-    <main class="min-h-screen-minus-3-5 w-full">
+
+    <main class="h-screen-minus-64 md:h-screen-minus-68 w-full">
       <div
-        class="w-full py-10 flex flex-col items-center justify-center gap-10"
+        class="w-full h-full flex flex-col items-center justify-center gap-20"
       >
-        <div class="flex flex-row gap-3 w-full md:w-2/3">
-          <h2 class="max-md:px-6 text-2xl font-bold">Día: # de #, 2024.</h2>
+        <div class="text-xl md:text-4xl font-light text-center px-6">
+          <p>
+            Para revisar tus reportes es necesario que finalices tu jornada,
+            ¿Estás seguro?
+          </p>
         </div>
-        <div
-          class="w-full flex flex-col md:flex-row md:justify-center gap-14 lg:gap-[10%]"
+        <button
+          class="py-2.5 px-14 bg-secundary text-gray-100 hover:bg-gray-100 hover:text-secundary rounded-lg text-base font-medium transition-colors"
         >
-          <div class="flex flex-col max-lg:px-4 gap-6 justify-center">
-            <h3 class="text-2xl font-semibold">Servicios Realizados</h3>
-            <div
-              class="shadow-lg shadow-gray-300 border-solid border-2 border-gray-300 rounded-xl"
-            >
-              <table
-                class="md:max-w-96 table-fixed md:table-auto text-left shadow-lg"
-              >
-                <tbody class="bg-white">
-                  <tr>
-                    <td class="p-4 border-b border-gray-700 rounded-t-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        1. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 border-b border-gray-700">
-                      <p class="block text-sm leading-normal font-semibold">
-                        2. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 border-b border-gray-700">
-                      <p class="block text-sm leading-normal font-semibold">
-                        2. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 rounded-b-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        3. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="flex flex-col max-lg:px-4 gap-6 justify-center">
-            <h3 class="text-2xl font-semibold">Material Utilizado</h3>
-            <div
-              class="shadow-lg shadow-gray-300 border-solid border-2 border-gray-300 rounded-xl"
-            >
-              <table class="md:max-w-96 table-fixed md:table-auto text-left">
-                <tbody class="bg-white">
-                  <tr>
-                    <td class="p-4 border-b border-gray-700 rounded-t-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        1. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 border-b border-gray-700">
-                      <p class="block text-sm leading-normal font-semibold">
-                        2. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 rounded-b-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        3. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-row gap-[7%] w-full justify-center">
-          <a
-            href=""
-            class="w-48 text-center py-3 px-14 bg-white text-secundary rounded-lg text-base font-medium"
-            >Descargar comprobante</a
-          >
-          <a
-            href=""
-            class="w-48 text-center py-3 px-14 bg-secundary text-white text-secundary rounded-lg text-base font-medium"
-            >Descargar vale</a
-          >
-        </div>
+          Finalizar Jornada
+        </button>
       </div>
     </main>
     <!-- footer -->

@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -82,6 +89,7 @@
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
                 class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                onclick="window.location.href = '../php/logout.php'"
               >
                 Logout
               </button>

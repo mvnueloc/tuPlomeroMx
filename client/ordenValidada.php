@@ -1,9 +1,17 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'user'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tuPlomeroMx</title>
+    <!-- <link rel="stylesheet" href="./css/style.css" /> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
       @layer utilities {
@@ -29,6 +37,7 @@
       };
     </script>
   </head>
+
   <body class="bg-gray-100">
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
@@ -91,78 +100,55 @@
       </div>
     </nav>
 
-    <main class="h-screen-minus-64 md:h-screen-minus-68 w-full">
+    <!-- contenido -->
+    <div
+      class="flex justify-center items-center h-screen-minus-64 md:h-screen-minus-68"
+    >
       <div
-        class="w-full h-full flex flex-col items-center justify-center gap-20"
+        class="w-80 h-auto md:w-96 md:h-auto bg-gray-100 p-12 rounded-xl shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
       >
-        <div class="text-xl md:text-4xl font-light text-center px-6">
-          <p>
-            Para revisar tus reportes es necesario que finalices tu jornada,
-            ¿Estás seguro?
-          </p>
-        </div>
-        <button
-          class="py-2.5 px-14 bg-secundary text-gray-100 hover:bg-gray-100 hover:text-secundary rounded-lg text-base font-medium transition-colors"
-        >
-          Finalizar Jornada
-        </button>
-      </div>
-    </main>
-    <!-- footer -->
-    <footer class="bg-white border-t-2 border-gray-100">
-      <div class="relative mx-auto max-w-screen-xl px-4 py-14 sm:px-6 lg:px-8">
-        <div class="lg:flex lg:items-end lg:justify-between">
-          <div>
-            <div class="flex justify-center text-teal-600 lg:justify-start">
-              <img
-                src="../assets/img/footer-logo.svg"
-                alt="Logo de tuPlomeroMx"
-                class="h-8"
-              />
-            </div>
-            <p
-              class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left"
-            >
-              Soluciones eficientes y confiables para todas tus necesidades de
-              plomería.
-            </p>
-          </div>
-
-          <ul
-            class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
+        <div class="flex justify-center">
+          <div
+            class="w-24 h-24 bg-green-600 flex justify-center items-center rounded-full"
           >
-            <li>
-              <a
-                class="text-gray-700 transition hover:text-gray-700/75"
-                href="#"
-              >
-                Nosotros
-              </a>
-            </li>
-            <li>
-              <a
-                class="text-gray-700 transition hover:text-gray-700/75"
-                href="#"
-              >
-                Políticas de Privacidad
-              </a>
-            </li>
-            <li>
-              <a
-                class="text-gray-700 transition hover:text-gray-700/75"
-                href="#"
-              >
-                Contacto
-              </a>
-            </li>
-          </ul>
+            <svg
+              class="w-20 h-20 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 11.917 9.724 16.5 19 7.5"
+              />
+            </svg>
+          </div>
         </div>
 
-        <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
-          © 2024 <a href="#" class="hover:underline">TuPlomeroMx™</a>. Todos los
-          derechos reservados.
+        <h2 class="text-center mt-6 text-2xl font-semibold text-green-600">
+          Orden validada
+        </h2>
+
+        <p class="text-center text-lg font-light mt-6">
+          Gracias por realizar tu orden, en unos minutos tu tecnico llegara a tu
+          casa, este antento a las notificaciones.
         </p>
+
+        <div class="flex justify-center mt-6">
+          <a
+            href="./landing.html"
+            class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-all duration-300"
+          >
+            Continuar
+          </a>
+        </div>
       </div>
-    </footer>
+    </div>
   </body>
 </html>

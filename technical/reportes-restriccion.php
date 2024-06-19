@@ -1,10 +1,16 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+    header('Location: ../');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tuPlomeroMx</title>
-    <!-- <link rel="stylesheet" href="./css/style.css" /> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
       @layer utilities {
@@ -30,9 +36,7 @@
       };
     </script>
   </head>
-
   <body class="bg-gray-100">
-    <!-- Navbar -->
     <nav class="shadow bg-gray-100">
       <div
         class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
@@ -75,10 +79,10 @@
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <a href="./landing.html">Home</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text-secundary md:mr-12 hover:text-secundary">
               <a href="./solicitud.html">Solicitud</a>
             </li>
-            <li class="text-secundary md:mr-12 hover:text-secundary">
+            <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <a href="./notificacion.html">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
@@ -93,36 +97,78 @@
       </div>
     </nav>
 
-    <!-- contenido -->
-    <div
-      class="flex justify-center items-center h-screen-minus-64 md:h-screen-minus-68"
-    >
+    <main class="h-screen-minus-64 md:h-screen-minus-68 w-full">
       <div
-        class="w-5/6 h-auto bg-gray-100 p-6 rounded-xl shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
+        class="w-full h-full flex flex-col items-center justify-center gap-20"
       >
-        <h2 class="text-xl md:text-3xl font-semibold">Servicio Terminado</h2>
-        <p class="font-light mt-6">
-          Tu servicio de “Nombre del servicio” ubicado en “Direccion” ha sido
-          realizado con exito el dia “Dia”, por el tecnico “Nombre del tecnico”,
-          realiza el pago por la cantidad de “costo”.
-        </p>
-        <div class="flex justify-center lg:justify-start">
-          <img
-            class="w-5/6 lg:w-1/2 h-auto mt-6 rounded-xl"
-            src="../assets/img/servicio1.jpeg"
-            alt=""
-          />
+        <div class="text-xl md:text-4xl px-6 font-light text-center">
+          <p>
+            No puedes revisar tus reportes si estás realizando un servicio,
+            intentalo más tarde
+          </p>
+        </div>
+        <a
+          href="./inicio.html"
+          class="py-2.5 px-14 bg-secundary text-gray-100 transition-colors hover:bg-gray-100 hover:text-secundary rounded-lg text-base font-medium"
+          >Ir al servicio</a
+        >
+      </div>
+    </main>
+    <!-- footer -->
+    <footer class="bg-white border-t-2 border-gray-100">
+      <div class="relative mx-auto max-w-screen-xl px-4 py-14 sm:px-6 lg:px-8">
+        <div class="lg:flex lg:items-end lg:justify-between">
+          <div>
+            <div class="flex justify-center text-teal-600 lg:justify-start">
+              <img
+                src="../assets/img/footer-logo.svg"
+                alt="Logo de tuPlomeroMx"
+                class="h-8"
+              />
+            </div>
+            <p
+              class="mx-auto mt-6 max-w-md text-center leading-relaxed lg:text-left"
+            >
+              Soluciones eficientes y confiables para todas tus necesidades de
+              plomería.
+            </p>
+          </div>
+
+          <ul
+            class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
+          >
+            <li>
+              <a
+                class="text-gray-700 transition hover:text-gray-700/75"
+                href="#"
+              >
+                Nosotros
+              </a>
+            </li>
+            <li>
+              <a
+                class="text-gray-700 transition hover:text-gray-700/75"
+                href="#"
+              >
+                Políticas de Privacidad
+              </a>
+            </li>
+            <li>
+              <a
+                class="text-gray-700 transition hover:text-gray-700/75"
+                href="#"
+              >
+                Contacto
+              </a>
+            </li>
+          </ul>
         </div>
 
-        <div class="flex justify-end mt-6">
-          <a
-            href="./pago.html"
-            class="bg-secundary text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-secundary transition-colors duration-300"
-          >
-            Pagar
-          </a>
-        </div>
+        <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
+          © 2024 <a href="#" class="hover:underline">TuPlomeroMx™</a>. Todos los
+          derechos reservados.
+        </p>
       </div>
-    </div>
+    </footer>
   </body>
 </html>
