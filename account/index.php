@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  
+  if(isset($_SESSION['usuario'])){
+    header('Location: ../');
+    exit;
+  }
+
+  session_destroy();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -57,7 +67,7 @@
         <div class="bg-gray-200 p-12 rounded-xl mb-16 lg:mb-0">
           <h2 class="mb-6 text-2xl md:text-3xl font-bold">Iniciar sesion</h2>
 
-          <form class="space-y-4 md:space-y-6" action="php/login_bd.php" method="POST">
+          <form class="space-y-4 md:space-y-6" action="../php/login.php" method="POST">
             <div>
               <label for="correo" class="mb-2 text-sm font-medium text-gray-900"
                 >Correo</label

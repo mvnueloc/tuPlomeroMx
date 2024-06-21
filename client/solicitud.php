@@ -22,7 +22,8 @@
               secundary: "#0077C2",
             },
             height: {
-              "screen-minus-3.5": "calc(100vh - 3.5rem)",
+              "screen-minus-68": "calc(100vh - 68px)",
+              "screen-minus-64": "calc(100vh - 64px)",
             },
           },
         },
@@ -30,38 +31,71 @@
     </script>
   </head>
 
-  <body class="bg-primary">
-    <nav
-      class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between"
-    >
-      <div class="mx-12 hidden md:block">
-        <a class="text-white" href="#">NOMBRE</a>
-      </div>
-
-      <div class="md:mx-12">
-        <div>
-          <a
-            class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-all duration-300 ease-in-out"
-            href="#"
-            >Home</a
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="shadow bg-gray-100">
+      <div
+        class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
+      >
+        <a
+          href="#"
+          class="flex items-center whitespace-nowrap text-2xl font-black"
+        >
+          Nombre
+        </a>
+        <input type="checkbox" class="peer hidden" id="navbar-open" />
+        <label
+          class="absolute top-5 right-7 cursor-pointer md:hidden"
+          for="navbar-open"
+        >
+          <svg
+            class="w-6 h-6"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
           >
-          <a
-            class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-all duration-300 ease-in-out"
-            href="#"
-            >Solicitud</a
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="M5 7h14M5 12h14M5 17h14"
+            />
+          </svg>
+        </label>
+        <div
+          aria-label="Header Navigation"
+          class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start"
+        >
+          <ul
+            class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
-          <a
-            class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-all duration-300 ease-in-out"
-            href="#"
-            >Notificaciones</a
-          >
+            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+              <a href="./landing.html">Home</a>
+            </li>
+            <li class="text-secundary md:mr-12 hover:text-secundary">
+              <a href="./solicitud.html">Solicitud</a>
+            </li>
+            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+              <a href="./notificacion.html">Notificaciones</a>
+            </li>
+            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+              <button
+                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
 
-    <form action="#">
+    <form action="./datosDomicilio.html">
       <div
-        class="lg:h-screen-minus-3.5 mt-12 lg:mt-0 flex justify-center items-center"
+        class="lg:h-screen-minus-68 mt-12 lg:mt-0 flex justify-center items-center"
       >
         <div>
           <div class="flex justify-center">
@@ -70,7 +104,7 @@
               <!-- card 1 -->
               <div class="flex justify-center">
                 <div
-                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-100/30 p-3"
+                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-300 p-3 border-solid border-2 border-gray-300"
                 >
                   <img
                     class="h-52 w-full rounded-xl"
@@ -100,7 +134,7 @@
               <!-- card 2 -->
               <div class="flex justify-center">
                 <div
-                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-100/30 p-3"
+                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-300 p-3 border-solid border-2 border-gray-300"
                 >
                   <img
                     class="h-52 w-full rounded-xl"
@@ -128,7 +162,7 @@
               <!-- card 3 -->
               <div class="flex justify-center">
                 <div
-                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-100/30 p-3"
+                  class="bg-gray-100 h-auto w-5/6 rounded-xl shadow-lg shadow-gray-300 p-3 border-solid border-2 border-gray-300"
                 >
                   <img
                     class="h-52 w-full rounded-xl"
@@ -160,7 +194,7 @@
           <!-- submit -->
           <div class="flex justify-center my-12">
             <button
-              class="bg-white text-secundary text-xl px-4 py-2 rounded-md hover:bg-secundary hover:text-white transition-all duration-300 ease-in-out"
+              class="bg-secundary text-gray-100 px-4 py-2 rounded-md hover:bg-gray-100 hover:text-secundary transition-all duration-300 ease-in-out"
             >
               Continuar
             </button>
