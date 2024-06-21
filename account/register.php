@@ -1,6 +1,11 @@
+<?php
+  session_start();
+  if(isset($_SESSION['usuario'])){
 
-
-
+    header('Location: ../');
+    exit;
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -48,7 +53,7 @@
         <div class="bg-gray-200 p-6 rounded-xl mb-16 lg:mb-0">
           <h2 class="mb-6 text-2xl md:text-3xl font-bold">Crear una cuenta</h2>
 
-          <form class="space-y-4 md:space-y-6" action="php/register_bd.php" method="POST">
+          <form class="space-y-4 md:space-y-6" action="../php/register.php" method="POST">
             <div class="grid grid-cols-2 gap-x-6">
               <div>
                 <label
@@ -127,26 +132,7 @@
                 required=""
               />
             </div>
-            <div class="flex items-center justify-between space-x-8">
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="recordar"
-                    aria-describedby="recordar"
-                    type="checkbox"
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                  />
-                </div>
-                <div class="ml-3 text-sm">
-                  <label for="remember" class="text-gray-500">Recordar</label>
-                </div>
-              </div>
-              <a
-                href="#"
-                class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >¿Olvidaste tu contraseña?</a
-              >
-            </div>
+            
             <div class="flex justify-center">
               <button
                 class="bg-secundary w-4/6 text-center text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -157,7 +143,7 @@
             <div class="flex justify-center">
               <p class="text-sm font-light text-gray-500">
                 ¿Ya tienes una cuenta?
-                <a href="./login.php" class="font-medium text-primary-600 hover:underline"
+                <a href="./" class="font-medium text-primary-600 hover:underline"
                   >Inicia sesion</a
                 >
               </p>
