@@ -1,8 +1,44 @@
+<?php
+include '../php/conexion_bd.php';
+
+$sql = "SELECT 
+            u.id_usuario, 
+            u.nombre, 
+            u.apellido, 
+            u.correo, 
+            u.telefono,  
+            u.zona, 
+            u.fecha_alta,
+            IF(j.id_jornada IS NULL, 'inactivo', 'activo') AS estado_jornada
+        FROM 
+            usuarios u
+        LEFT JOIN 
+            jornadas_trabajo j 
+        ON 
+            u.id_usuario = j.id_usuario 
+        AND 
+            j.fecha = CURDATE()
+        WHERE 
+            u.tipo_cuenta = 'work'";
+
+$result = mysqli_query($conexion, $sql);
+
+$plomeros = [];
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+        $plomeros[] = $row;
+    }
+} else {
+    echo "0 resultados";
+}
+mysqli_close($conexion);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>tuPlomeroMx</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style type="text/tailwindcss">
@@ -38,9 +74,9 @@
 
         <div class="md:mx-12">
             <div>
-                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="#">Empleados</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="#">Almacen</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="#">Reportes</a>
+                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./registro_plomeros.php">Empleados</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./almacen.html">Almacen</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./reportes.html">Reportes</a>
             </div>
         </div>
     </nav>
@@ -107,87 +143,77 @@
                                     <tr>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">ID</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
+                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Apellidos</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Correo Electrónico</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Teléfono</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Dirección</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Zona</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Fecha de Alta</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Estado</th>
+                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Estado Jornada</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Editar</th>
                                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php
-                                    $plomeros = [
-                                        ['id' => 1, 'nombre' => 'Juan Pérez', 'correo' => 'juan@example.com', 'telefono' => '123456789', 'direccion' => 'Calle Falsa 123', 'zona' => 'Norte', 'fecha_alta' => '2023-01-01', 'estado' => 'Activo'],
-                                        ['id' => 2, 'nombre' => 'María López', 'correo' => 'maria@example.com', 'telefono' => '987654321', 'direccion' => 'Avenida Siempre Viva 456', 'zona' => 'Sur', 'fecha_alta' => '2023-02-15', 'estado' => 'Inactivo'],
-                                        ['id' => 3, 'nombre' => 'Carlos García', 'correo' => 'carlos@example.com', 'telefono' => '555555555', 'direccion' => 'Boulevard de los Sueños Rotos 789', 'zona' => 'Este', 'fecha_alta' => '2023-03-10', 'estado' => 'Activo'],
-                                    ];
-                                    ?>
-
-                                    <?php foreach ($plomeros as $plomero): ?>
-                                        <tr>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['id']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['nombre']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['correo']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['telefono']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['direccion']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['zona']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo $plomero['fecha_alta']; ?></td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                                <span class='inline-flex items-center gap-1 rounded-full
-                                                            <?php echo ($plomero['estado'] == 'Activo') ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'; ?>
-                                                            px-2 py-1 text-xs font-semibold'>
-                                                    <span class='h-1.5 w-1.5 rounded-full
-                                                                <?php echo ($plomero['estado'] == 'Activo') ? 'bg-green-600' : 'bg-orange-600'; ?>'>
-                                                    </span>
-                                                    <?php echo $plomero['estado']; ?>
+                                <?php foreach ($plomeros as $plomero): ?>
+                                    <tr>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['id_usuario']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['nombre']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['apellido']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['correo']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['telefono']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['zona']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['fecha_alta']); ?></td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
+                                            <span class='inline-flex items-center gap-1 rounded-full
+                                                        <?php echo ($plomero['estado_jornada'] == 'activo') ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'; ?>
+                                                        px-2 py-1 text-xs font-semibold'>
+                                                <span class='h-1.5 w-1.5 rounded-full
+                                                            <?php echo ($plomero['estado_jornada'] == 'activo') ? 'bg-green-600' : 'bg-orange-600'; ?>'>
                                                 </span>
-                                            </td>
+                                                <?php echo htmlspecialchars($plomero['estado_jornada']); ?>
+                                            </span>
+                                        </td>
 
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                                <button class='hover:text-blue-300  text-blue-900'>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="1.5"
-                                                    stroke="currentColor"
-                                                    class="h-6 w-6"
-                                                    x-tooltip="tooltip"
-                                                >
-                                                    <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                                                    />
-                                                </svg>
-                                                </button>
-                                            </td>
-                                            <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                                <button class='hover:text-red-300  text-red-900'>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke-width="1.5"
-                                                    stroke="currentColor"
-                                                    class="h-6 w-6"
-                                                    x-tooltip="tooltip"
-                                                >
-                                                    <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                                                    />
-                                                </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-
-
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
+                                            <button class='hover:text-blue-300  text-blue-900'>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                                class="h-6 w-6"
+                                                x-tooltip="tooltip"
+                                            >
+                                                <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                                                />
+                                            </svg>
+                                            </button>
+                                        </td>
+                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
+                                            <button class='hover:text-red-300  text-red-900'>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                                class="h-6 w-6"
+                                                x-tooltip="tooltip"
+                                            >
+                                                <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                                />
+                                            </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -197,44 +223,39 @@
         </div>
     </section>
 
-
-     <!-- Modal -->
-     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
             <h2 class="text-2xl mb-4">Añadir Nuevo Empleado</h2>
             <!-- Formulario dentro del modal -->
-            <form id="addEmployeeForm" class="p-5 grid grid-cols-4 gap-4 items-center">
+            <form id="addEmployeeForm" class="p-5 grid grid-cols-4 gap-4 items-center" method="POST" action="nuevo_plomero.php">
                 <div class="col-start-1 col-span-2 mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombre" type="text" placeholder="Valeria" required>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombre" name="nombre" type="text" placeholder="Valeria" required>
                 </div>
                 <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Apellidos</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apellidos" type="text" placeholder="Sanchez Jaramillo" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="apellidos">Apellidos</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apellidos" name="apellidos" type="text" placeholder="Sanchez Jaramillo" required>
                 </div>
                 <div class="col-start-1 col-span-4 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Correo</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="correo" type="email" placeholder="example@gmail.com" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="correo" name="correo" type="email" placeholder="example@gmail.com" required>
                 </div>
                 <div class="col-start-1 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Contraseña</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Contraseña</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="******" required>
                 </div>
                 <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Confirmar Contraseña</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confpassword" type="password" placeholder="******" required>
-                </div>
-                <div class="col-start-1 col-span-4 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Direccion</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="direccion" type="text" placeholder="1° callejon de froylan jimenez" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confpassword">Confirmar Contraseña</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confpassword" name="confpassword" type="password" placeholder="******" required>
                 </div>
                 <div class="col-start-1 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Codigo postal</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" type="number" minlength="5" maxlength="5" placeholder="00000" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">Código Postal</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" name="cp" type="number" minlength="5" maxlength="5" placeholder="00000" required>
                 </div>
                 <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Telefono</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" type="number" minlength="10" maxlength="10" placeholder="##########" required>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">Teléfono</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" name="telefono" type="number" minlength="10" maxlength="10" placeholder="##########" required>
                 </div>
                 <div class="col-span-4 flex items-center justify-between">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
@@ -250,28 +271,20 @@
 
 
     <script>
-        const addButton = document.getElementById('add_plomer');
-        const modal = document.getElementById('modal');
-        const closeModalButton = document.getElementById('closeModalButton');
+    const addButton = document.getElementById('add_plomer');
+    const modal = document.getElementById('modal');
+    const closeModalButton = document.getElementById('closeModalButton');
 
-        addButton.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden'); // Disable scroll
-        });
+    addButton.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden'); // Disable scroll
+    });
 
-        closeModalButton.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden'); // Enable scroll
-        });
-
-        // Optional: Prevent form submission and close modal
-        document.getElementById('addEmployeeForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Perform form submission tasks
-            modal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden'); // Enable scroll
-        });
-    </script>
+    closeModalButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden'); // Enable scroll
+    });
+</script>
 
 </body>
 </html>
