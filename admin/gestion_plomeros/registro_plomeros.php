@@ -1,5 +1,5 @@
 <?php
-include '../php/conexion_bd.php';
+include '../../php/conexion_bd.php';
 
 $sql = "SELECT 
             u.id_usuario, 
@@ -105,7 +105,7 @@ mysqli_close($conexion);
                                                     <path d="M237.927,0C106.555,0,0.035,106.52,0.035,237.893c0,131.373,106.52,237.893,237.893,237.893 c50.518,0,97.368-15.757,135.879-42.597l0.028-0.028l176.432,176.433c3.274,3.274,8.48,3.358,11.839,0l47.551-47.551 c3.274-3.274,3.106-8.703-0.028-11.838L433.223,373.8c26.84-38.539,42.597-85.39,42.597-135.907C475.82,106.52,369.3,0,237.927,0z M237.927,419.811c-100.475,0-181.918-81.443-181.918-181.918S137.453,55.975,237.927,55.975s181.918,81.443,181.918,181.918 S338.402,419.811,237.927,419.811z"/>
                                                 </svg>
                                             </span>
-                                            <input required id="calle" type="text" name="street" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
+                                            <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
                                         </div>
                                     </div>
                                     <!-- Botones de filtro y orden -->
@@ -223,57 +223,59 @@ mysqli_close($conexion);
         </div>
     </section>
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 class="text-2xl mb-4">Añadir Nuevo Empleado</h2>
-            <!-- Formulario dentro del modal -->
-            <form id="addEmployeeForm" class="p-5 grid grid-cols-4 gap-4 items-center" method="POST" action="nuevo_plomero.php">
-                <div class="col-start-1 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombre" name="nombre" type="text" placeholder="Valeria" required>
-                </div>
-                <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="apellidos">Apellidos</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apellidos" name="apellidos" type="text" placeholder="Sanchez Jaramillo" required>
-                </div>
-                <div class="col-start-1 col-span-4 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="correo" name="correo" type="email" placeholder="example@gmail.com" required>
-                </div>
-                <div class="col-start-1 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Contraseña</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="******" required>
-                </div>
-                <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confpassword">Confirmar Contraseña</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confpassword" name="confpassword" type="password" placeholder="******" required>
-                </div>
-                <div class="col-start-1 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">Código Postal</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" name="cp" type="number" minlength="5" maxlength="5" placeholder="00000" required>
-                </div>
-                <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">Teléfono</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" name="telefono" type="number" minlength="10" maxlength="10" placeholder="##########" required>
-                </div>
-                <div class="col-span-4 flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
-                        Añadir
-                    </button>
-                    <button id="closeModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
-                        Cancelar
-                    </button>
-                </div>
-            </form>
-        </div>
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl mb-4">Añadir Nuevo Empleado</h2>
+        <!-- Formulario dentro del modal -->
+        <form id="addEmployeeForm" class="p-5 grid grid-cols-4 gap-4 items-center" method="POST" action="nuevo_plomero.php">
+            <div class="col-start-1 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombre" name="nombre" type="text" placeholder="Valeria" required pattern="[A-Za-z\s]{1,50}">
+            </div>
+            <div class="col-start-3 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="apellidos">Apellidos</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apellidos" name="apellidos" type="text" placeholder="Sanchez Jaramillo" required pattern="[A-Za-z\s]{1,50}">
+            </div>
+            <div class="col-start-1 col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="correo" name="correo" type="email" placeholder="example@gmail.com" required>
+            </div>
+            <div class="col-start-1 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Contraseña</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="******" required minlength="6">
+            </div>
+            <div class="col-start-3 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="confpassword">Confirmar Contraseña</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confpassword" name="confpassword" type="password" placeholder="******" required minlength="6">
+            </div>
+            <div class="col-start-1 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">Código Postal</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" name="cp" type="number" placeholder="00000" required minlength="5" maxlength="5">
+            </div>
+            <div class="col-start-3 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">Teléfono</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" name="telefono" type="number" placeholder="##########" required minlength="10" maxlength="10">
+            </div>
+            <div class="col-span-4 flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Añadir
+                </button>
+                <button id="closeModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
 
-    <script>
+<!-- creacion de plomero -->
+<script>
     const addButton = document.getElementById('add_plomer');
     const modal = document.getElementById('modal');
     const closeModalButton = document.getElementById('closeModalButton');
+    const addEmployeeForm = document.getElementById('addEmployeeForm');
 
     addButton.addEventListener('click', () => {
         modal.classList.remove('hidden');
@@ -284,7 +286,55 @@ mysqli_close($conexion);
         modal.classList.add('hidden');
         document.body.classList.remove('overflow-hidden'); // Enable scroll
     });
+
+    addEmployeeForm.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent the form from submitting the traditional way
+
+        const formData = new FormData(addEmployeeForm);
+
+        fetch('nuevo_plomero.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data); // You can show this message in a modal or alert for feedback
+            if (data.includes('Usuario registrado exitosamente')) {
+                alert("Usuario registrado exitosamente");
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden'); // Enable scroll
+                window.location = "./registro_plomeros.php";
+            } else {
+                alert(data);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
 </script>
+
+
+<!-- barra de busqueda -->
+<script>
+    document.getElementById('search').addEventListener('keyup', function() {
+        let query = this.value;
+        if (query.length > 0) {
+            fetchResults(query);
+        } else {
+            document.getElementById('results').innerHTML = '';
+        }
+    });
+
+    function fetchResults(query) {
+        fetch('buscar_usuario.php?query=' + query)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('results').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
 
 </body>
 </html>

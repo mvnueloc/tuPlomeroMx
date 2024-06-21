@@ -111,7 +111,7 @@
           </p>
         </div>
         <a
-          href="./jornada.html"
+          href="/technical/jornada.php"
           class="py-2.5 px-14 bg-secundary text-white hover:bg-gray-100 hover:text-secundary transition-colors rounded-lg text-base font-medium"
           >Iniciar</a
         >
