@@ -3,12 +3,16 @@ include '../../php/conexion_bd.php';
 
 if (isset($_GET['query'])) {
     $search = mysqli_real_escape_string($conexion, $_GET['query']);
-    $sql = "SELECT id_usuario, nombre, apellido, correo, telefono, zona, fecha_alta, 
-                   IF(j.id_jornada IS NULL, 'inactivo', 'activo') AS estado_jornada
-            FROM usuarios u
-            LEFT JOIN jornadas_trabajo j ON u.id_usuario = j.id_usuario AND j.fecha = CURDATE()
-            WHERE (u.nombre LIKE '%$search%' OR u.apellido LIKE '%$search%' OR u.correo LIKE '%$search%' OR u.telefono LIKE '%$search%')
-            AND u.tipo_cuenta = 'work'";
+    $sql = "SELECT u.id_usuario, u.nombre, u.apellido, u.correo, u.telefono, u.zona, u.fecha_alta, 
+    IF(j.id_jornada IS NULL, 'inactivo', 'activo') AS estado_jornada
+        FROM usuarios u
+        LEFT JOIN jornadas_trabajo j ON u.id_usuario = j.id_usuario AND j.fecha = CURDATE()
+        WHERE (u.nombre LIKE '%$search%' 
+            OR u.apellido LIKE '%$search%' 
+            OR u.correo LIKE '%$search%' 
+            OR u.telefono LIKE '%$search%' 
+            OR CONCAT(u.nombre, ' ', u.apellido) LIKE '%$search%')
+        AND u.tipo_cuenta = 'work'";
 
     $result = mysqli_query($conexion, $sql);
 
@@ -18,6 +22,7 @@ if (isset($_GET['query'])) {
                     <tr>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">ID</th>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Apellidos</th>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Correo Electrónico</th>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Teléfono</th>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Zona</th>
@@ -33,6 +38,7 @@ if (isset($_GET['query'])) {
             echo '<tr>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">'.htmlspecialchars($row['id_usuario']).'</td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">'.htmlspecialchars($row['nombre']).'</td>
+                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">'.htmlspecialchars($row['apellido']).'</td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">'.htmlspecialchars($row['correo']).'</td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">'.htmlspecialchars($row['telefono']).'</td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">'.htmlspecialchars($row['zona']).'</td>

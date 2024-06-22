@@ -57,7 +57,7 @@ mysqli_close($conexion);
             secundary: "#0077C2",
           },
           height: {
-            "screen-minus-16": "calc(100vh - 16rem)", // 2rem es aproximadamente igual a 32px
+            "screen-minus-16": "calc(100vh - 16rem)",
           },
         },
       },
@@ -92,7 +92,7 @@ mysqli_close($conexion);
                     <div class="relative flex flex-col min-w-0 break-words w-full">
                         <div class="rounded-t mb-0 px-4 py-3 border-0">
                             <div class="flex flex-wrap items-center">
-                                <div x-data="{ dropdownOpen: true }" class="w-full px-4 max-w-full flex flex-wrap sm:flex-row justify-between">
+                                <div class="w-full px-4 max-w-full flex flex-wrap sm:flex-row justify-between">
                                     <!-- Título -->
                                     <div class="flex items-center text-left sm:text-center sm:mb-10 md:mb-0 mb-0">
                                         <h3 class="font-semibold text-base">Lista de Plomeros</h3>
@@ -138,84 +138,62 @@ mysqli_close($conexion);
                         </div>
                         
                         <div class="block w-full overflow-x-auto">
-                            <table class="items-center bg-transparent w-full border-collapse">
-                                <thead>
-                                    <tr>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">ID</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Apellidos</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Correo Electrónico</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Teléfono</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Zona</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Fecha de Alta</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Estado Jornada</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Editar</th>
-                                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Eliminar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php foreach ($plomeros as $plomero): ?>
-                                    <tr>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['id_usuario']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['nombre']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['apellido']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['correo']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['telefono']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['zona']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['fecha_alta']); ?></td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                            <span class='inline-flex items-center gap-1 rounded-full
-                                                        <?php echo ($plomero['estado_jornada'] == 'activo') ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'; ?>
-                                                        px-2 py-1 text-xs font-semibold'>
-                                                <span class='h-1.5 w-1.5 rounded-full
-                                                            <?php echo ($plomero['estado_jornada'] == 'activo') ? 'bg-green-600' : 'bg-orange-600'; ?>'>
-                                                </span>
-                                                <?php echo htmlspecialchars($plomero['estado_jornada']); ?>
-                                            </span>
-                                        </td>
-
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                            <button class='hover:text-blue-300  text-blue-900'>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="h-6 w-6"
-                                                x-tooltip="tooltip"
-                                            >
-                                                <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                                                />
-                                            </svg>
-                                            </button>
-                                        </td>
-                                        <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                            <button class='hover:text-red-300  text-red-900'>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="h-6 w-6"
-                                                x-tooltip="tooltip"
-                                            >
-                                                <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                                                />
-                                            </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                            <div id="results">
+                                <!-- Aquí se insertará la tabla actualizada -->
+                                <table class="items-center bg-transparent w-full border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">ID</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Apellidos</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Correo Electrónico</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Teléfono</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Zona</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Fecha de Alta</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Estado Jornada</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Editar</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                        <?php foreach ($plomeros as $plomero): ?>
+                                            <tr>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['id_usuario']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['nombre']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['apellido']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['correo']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['telefono']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['zona']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['fecha_alta']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
+                                                    <span class='inline-flex items-center gap-1 rounded-full
+                                                                <?php echo ($plomero['estado_jornada'] == 'activo') ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'; ?>
+                                                                px-2 py-1 text-xs font-semibold'>
+                                                        <span class='h-1.5 w-1.5 rounded-full
+                                                                    <?php echo ($plomero['estado_jornada'] == 'activo') ? 'bg-green-600' : 'bg-orange-600'; ?>'>
+                                                        </span>
+                                                        <?php echo htmlspecialchars($plomero['estado_jornada']); ?>
+                                                    </span>
+                                                </td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
+                                                    <button class='hover:text-blue-300 text-blue-900'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/>
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
+                                                    <button class='hover:text-red-300 text-red-900'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -269,7 +247,6 @@ mysqli_close($conexion);
     </div>
 </div>
 
-
 <!-- creacion de plomero -->
 <script>
     const addButton = document.getElementById('add_plomer');
@@ -279,16 +256,16 @@ mysqli_close($conexion);
 
     addButton.addEventListener('click', () => {
         modal.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden'); // Disable scroll
+        document.body.classList.add('overflow-hidden');
     });
 
     closeModalButton.addEventListener('click', () => {
         modal.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden'); // Enable scroll
+        document.body.classList.remove('overflow-hidden');
     });
 
     addEmployeeForm.addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent the form from submitting the traditional way
+        e.preventDefault();
 
         const formData = new FormData(addEmployeeForm);
 
@@ -298,12 +275,12 @@ mysqli_close($conexion);
         })
         .then(response => response.text())
         .then(data => {
-            console.log(data); // You can show this message in a modal or alert for feedback
+            console.log(data);
             if (data.includes('Usuario registrado exitosamente')) {
                 alert("Usuario registrado exitosamente");
                 modal.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden'); // Enable scroll
-                window.location = "./registro_plomeros.php";
+                document.body.classList.remove('overflow-hidden');
+                window.location.reload(); // Reload to update the table
             } else {
                 alert(data);
             }
@@ -312,7 +289,6 @@ mysqli_close($conexion);
     });
 </script>
 
-
 <!-- barra de busqueda -->
 <script>
     document.getElementById('search').addEventListener('keyup', function() {
@@ -320,12 +296,12 @@ mysqli_close($conexion);
         if (query.length > 0) {
             fetchResults(query);
         } else {
-            document.getElementById('results').innerHTML = '';
+            fetchResults(''); // Fetch all results if the search is empty
         }
     });
 
     function fetchResults(query) {
-        fetch('buscar_usuario.php?query=' + query)
+        fetch('buscar.php?query=' + query)
             .then(response => response.text())
             .then(data => {
                 document.getElementById('results').innerHTML = data;
@@ -333,8 +309,6 @@ mysqli_close($conexion);
             .catch(error => console.error('Error:', error));
     }
 </script>
-
-
 
 </body>
 </html>
