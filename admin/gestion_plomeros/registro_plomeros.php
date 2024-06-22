@@ -1,6 +1,12 @@
 <?php
 include '../../php/conexion_bd.php';
 
+// Número de registros por página
+$limit = 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit; // Calcula el offset basado en la página actual
+
+// Consulta para obtener los registros con paginación
 $sql = "SELECT 
             u.id_usuario, 
             u.nombre, 
@@ -19,18 +25,26 @@ $sql = "SELECT
         AND 
             j.fecha = CURDATE()
         WHERE 
-            u.tipo_cuenta = 'work'";
+            u.tipo_cuenta = 'work'
+        LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($conexion, $sql);
 
+// Arreglo para almacenar los plomeros
 $plomeros = [];
 if (mysqli_num_rows($result) > 0) {
-    while($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
         $plomeros[] = $row;
     }
-} else {
-    echo "0 resultados";
 }
+
+// Consulta para obtener el número total de registros
+$total_sql = "SELECT COUNT(*) as total FROM usuarios u WHERE u.tipo_cuenta = 'work'";
+$total_result = mysqli_query($conexion, $total_sql);
+$total_row = mysqli_fetch_assoc($total_result);
+$total_records = $total_row['total'];
+$total_pages = ceil($total_records / $limit); // Calcula el número total de páginas
+
 mysqli_close($conexion);
 ?>
 
@@ -55,6 +69,7 @@ mysqli_close($conexion);
           colors: {
             primary: "#13212A",
             secundary: "#0077C2",
+            third: "#243f50",
           },
           height: {
             "screen-minus-16": "calc(100vh - 16rem)",
@@ -109,23 +124,23 @@ mysqli_close($conexion);
                                         </div>
                                     </div>
                                     <!-- Botones de filtro y orden -->
-                                    <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                                    <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
                                         <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
                                             <option value="filtrar">Filtrar</option>
                                             <option value="opcion1">Zona</option>
                                             <option value="opcion2">Estado</option>
                                             <option value="opcion3">Fecha de Alta</option>
                                         </select>
-                                    </div>
+                                    </div> -->
                                     <!-- Orden -->
-                                    <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                                    <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
                                         <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
                                             <option value="filtrar">Ordenar</option>
                                             <option value="opcion1">ID</option>
                                             <option value="opcion2">Nombre</option>
                                             <option value="opcion3">Estado</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <button id="add_plomer" class="mt-4 sm:mt-0 flex items-center justify-end relative">
                                         <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
@@ -193,6 +208,15 @@ mysqli_close($conexion);
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
+                                
+                                <!-- Paginación -->
+                                <div class="flex justify-center mt-4">
+                                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                        <button class="mx-1 px-3 py-1 border rounded-md <?php echo $i == $page ? 'bg-primary text-white' : 'bg-white text-primary hover:bg-third hover:text-white'; ?>" onclick="fetchResults('<?php echo isset($_GET['query']) ? $_GET['query'] : ''; ?>', <?php echo $i; ?>)">
+                                            <?php echo $i; ?>
+                                        </button>
+                                    <?php endfor; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -290,7 +314,7 @@ mysqli_close($conexion);
 </script>
 
 <!-- barra de busqueda -->
-<script>
+<!-- <script>
     document.getElementById('search').addEventListener('keyup', function() {
         let query = this.value;
         if (query.length > 0) {
@@ -308,7 +332,24 @@ mysqli_close($conexion);
             })
             .catch(error => console.error('Error:', error));
     }
+</script> -->
+
+<script>
+    document.getElementById('search').addEventListener('keyup', function() {
+        let query = this.value;
+        fetchResults(query, 1); // Start from page 1 when searching
+    });
+
+    function fetchResults(query, page) {
+        fetch('buscar.php?query=' + query + '&page=' + page)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('results').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
 </script>
+
 
 </body>
 </html>
