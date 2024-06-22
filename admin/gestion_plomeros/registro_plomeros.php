@@ -25,7 +25,7 @@ $sql = "SELECT
         AND 
             j.fecha = CURDATE()
         WHERE 
-            u.tipo_cuenta = 'work'
+            u.tipo_cuenta = 'work' AND u.estado = 'alta'
         LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($conexion, $sql);
@@ -123,31 +123,11 @@ mysqli_close($conexion);
                                             <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
                                         </div>
                                     </div>
-                                    <!-- Botones de filtro y orden -->
-                                    <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                                        <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
-                                            <option value="filtrar">Filtrar</option>
-                                            <option value="opcion1">Zona</option>
-                                            <option value="opcion2">Estado</option>
-                                            <option value="opcion3">Fecha de Alta</option>
-                                        </select>
-                                    </div> -->
-                                    <!-- Orden -->
-                                    <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                                        <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
-                                            <option value="filtrar">Ordenar</option>
-                                            <option value="opcion1">ID</option>
-                                            <option value="opcion2">Nombre</option>
-                                            <option value="opcion3">Estado</option>
-                                        </select>
-                                    </div> -->
-
                                     <button id="add_plomer" class="mt-4 sm:mt-0 flex items-center justify-end relative">
                                         <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
                                             + Añadir
                                         </p>
                                     </button>
-
                                 </div>
                             </div>
                         </div>
@@ -191,14 +171,14 @@ mysqli_close($conexion);
                                                     </span>
                                                 </td>
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                                    <button class='hover:text-blue-300 text-blue-900'>
+                                                    <button class='hover:text-blue-300 text-blue-900' onclick="openEditModal(<?php echo $plomero['id_usuario']; ?>)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/>
                                                         </svg>
                                                     </button>
                                                 </td>
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
-                                                    <button class='hover:text-red-300 text-red-900'>
+                                                    <button class='hover:text-red-300 text-red-900' onclick="openDeleteModal(<?php echo $plomero['id_usuario']; ?>)">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
                                                         </svg>
@@ -225,7 +205,7 @@ mysqli_close($conexion);
         </div>
     </section>
 
-<!-- Modal -->
+<!-- Modal Añadir -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
         <h2 class="text-2xl mb-4">Añadir Nuevo Empleado</h2>
@@ -271,12 +251,88 @@ mysqli_close($conexion);
     </div>
 </div>
 
-<!-- creacion de plomero -->
+<!-- Modal Editar -->
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl mb-4">Editar Empleado</h2>
+        <!-- Formulario dentro del modal -->
+        <form id="editEmployeeForm" class="p-5 grid grid-cols-4 gap-4 items-center" method="POST" action="editar_plomero.php">
+            <input type="hidden" id="edit_id_usuario" name="id_usuario">
+            <div class="col-start-1 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_nombre">Nombre</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_nombre" name="nombre" type="text" required pattern="[A-Za-z\s]{1,50}">
+            </div>
+            <div class="col-start-3 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_apellidos">Apellidos</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_apellidos" name="apellidos" type="text" required pattern="[A-Za-z\s]{1,50}">
+            </div>
+            <div class="col-start-1 col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_correo">Correo</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_correo" name="correo" type="email" required>
+            </div>
+            <div class="col-start-1 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_telefono">Teléfono</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_telefono" name="telefono" type="number" required minlength="10" maxlength="10">
+            </div>
+            <div class="col-start-3 col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_zona">Zona</label>
+                <input disabled class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_zona" name="zona" type="text">
+            </div>
+            <div class="col-start-1 col-span-4 mb-4">
+                <div class="flex">
+                    <input type="checkbox" id="edit_zone_checkbox" class="mr-3" name="modificar_zona" value="si"/>
+                    <p>¿Quieres modificar la zona?</p>
+                </div>
+            </div>
+            <div id="edit_cp_container" class="col-start-1 col-span-4 mb-4 hidden">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_cp">Código Postal</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_cp" name="cp" type="number" placeholder="00000" minlength="5" maxlength="5">
+            </div>
+            <div class="col-span-4 flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Guardar
+                </button>
+                <button id="closeEditModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Eliminar -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl mb-4">Eliminar Empleado</h2>
+        <p>¿Está seguro que quiere eliminar este empleado?</p>
+        <form id="deleteEmployeeForm" method="POST" action="eliminar_plomero.php">
+            <input type="hidden" id="delete_id_usuario" name="id_usuario">
+            <div class="flex items-center justify-between mt-4">
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Eliminar
+                </button>
+                <button id="closeDeleteModalButton" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     const addButton = document.getElementById('add_plomer');
     const modal = document.getElementById('modal');
     const closeModalButton = document.getElementById('closeModalButton');
     const addEmployeeForm = document.getElementById('addEmployeeForm');
+
+    const editModal = document.getElementById('editModal');
+    const closeEditModalButton = document.getElementById('closeEditModalButton');
+    const editEmployeeForm = document.getElementById('editEmployeeForm');
+
+    const deleteModal = document.getElementById('deleteModal');
+    const closeDeleteModalButton = document.getElementById('closeDeleteModalButton');
+    const deleteEmployeeForm = document.getElementById('deleteEmployeeForm');
 
     addButton.addEventListener('click', () => {
         modal.classList.remove('hidden');
@@ -286,6 +342,25 @@ mysqli_close($conexion);
     closeModalButton.addEventListener('click', () => {
         modal.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
+    });
+
+    closeEditModalButton.addEventListener('click', () => {
+        editModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    closeDeleteModalButton.addEventListener('click', () => {
+        deleteModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    document.getElementById('edit_zone_checkbox').addEventListener('change', function() {
+        const cpContainer = document.getElementById('edit_cp_container');
+        if (this.checked) {
+            cpContainer.classList.remove('hidden');
+        } else {
+            cpContainer.classList.add('hidden');
+        }
     });
 
     addEmployeeForm.addEventListener('submit', function (e) {
@@ -311,43 +386,110 @@ mysqli_close($conexion);
         })
         .catch(error => console.error('Error:', error));
     });
-</script>
 
-<!-- barra de busqueda -->
-<!-- <script>
-    document.getElementById('search').addEventListener('keyup', function() {
-        let query = this.value;
-        if (query.length > 0) {
-            fetchResults(query);
-        } else {
-            fetchResults(''); // Fetch all results if the search is empty
-        }
+    editEmployeeForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(editEmployeeForm);
+
+        fetch('editar_plomero.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            if (data.includes('Usuario actualizado exitosamente')) {
+                alert("Usuario actualizado exitosamente");
+                editModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                window.location.reload(); // Reload to update the table
+            } else {
+                alert(data);
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
 
-    function fetchResults(query) {
-        fetch('buscar.php?query=' + query)
-            .then(response => response.text())
+    deleteEmployeeForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(deleteEmployeeForm);
+
+        fetch('eliminar_plomero.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            if (data.includes('Usuario eliminado exitosamente')) {
+                alert("Usuario eliminado exitosamente");
+                deleteModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                window.location.reload(); // Reload to update the table
+            } else {
+                alert(data);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function openEditModal(id) {
+        fetch(`get_plomero.php?id=${id}`)
+            .then(response => response.json())
             .then(data => {
-                document.getElementById('results').innerHTML = data;
+                document.getElementById('edit_id_usuario').value = data.id_usuario;
+                document.getElementById('edit_nombre').value = data.nombre;
+                document.getElementById('edit_apellidos').value = data.apellido;
+                document.getElementById('edit_correo').value = data.correo;
+                document.getElementById('edit_zona').value = data.zona;
+                document.getElementById('edit_telefono').value = data.telefono;
+
+                // Resetear el estado del checkbox y el div del código postal
+                document.getElementById('edit_zone_checkbox').checked = false;
+                document.getElementById('edit_cp_container').classList.add('hidden');
+
+                editModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
             })
             .catch(error => console.error('Error:', error));
     }
-</script> -->
 
-<script>
+    function openDeleteModal(id) {
+        document.getElementById('delete_id_usuario').value = id;
+        deleteModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+
     document.getElementById('search').addEventListener('keyup', function() {
         let query = this.value;
         fetchResults(query, 1); // Start from page 1 when searching
     });
 
     function fetchResults(query, page) {
-        fetch('buscar.php?query=' + query + '&page=' + page)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('results').innerHTML = data;
-            })
-            .catch(error => console.error('Error:', error));
-    }
+    fetch('buscar.php?query=' + query + '&page=' + page)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('results').innerHTML = data;
+
+            // Re-attach event listeners for edit and delete buttons
+            document.querySelectorAll('[onclick^="openEditModal"]').forEach(button => {
+                button.addEventListener('click', function () {
+                    const id = this.getAttribute('onclick').match(/\d+/)[0];
+                    openEditModal(id);
+                });
+            });
+
+            document.querySelectorAll('[onclick^="openDeleteModal"]').forEach(button => {
+                button.addEventListener('click', function () {
+                    const id = this.getAttribute('onclick').match(/\d+/)[0];
+                    openDeleteModal(id);
+                });
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
 </script>
 
 

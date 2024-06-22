@@ -30,7 +30,7 @@ $regiones = [
 function obtenerZona($codigo_postal) {
     global $regiones;
     foreach ($regiones as $zona => $municipios) {
-        foreach ($municipios as $municipio => $cp_range) {
+        foreach ($municipios as $cp_range) {
             if (in_array($codigo_postal, $cp_range)) {
                 return $zona;
             }
