@@ -90,8 +90,8 @@ mysqli_close($conexion);
         <div class="md:mx-12">
             <div>
                 <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./registro_plomeros.php">Empleados</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./almacen.html">Almacen</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./reportes.html">Reportes</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/almacen.php">Almacen</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/reportes.php">Reportes</a>
             </div>
         </div>
     </nav>

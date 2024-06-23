@@ -258,9 +258,9 @@
 
     <div class="md:mx-12">
         <div>
-            <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./registro_plomeros.php">Empleados</a>
-            <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./almacen.html">Almacen</a>
-            <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="./reportes.html">Reportes</a>
+            <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/registro_plomeros.php">Empleados</a>
+            <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/almacen.php">Almacen</a>
+            <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/reportes.php">Reportes</a>
         </div>
     </div>
   </nav>
@@ -311,7 +311,7 @@
                   </div>
                   <!-- orden -->
                   <!-- Botones de filtro y orden -->
-                  <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                  <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
                     <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
                       <option value="filtrar">Ordenar</option>
                       <option value="opcion1">popular</option>
@@ -319,7 +319,20 @@
                       <option value="opcion3">Alfabetico</option>
                       <option value="opcion3">Stock</option>
                     </select>
-                  </div>
+                  </div> -->
+
+                  <!-- botones    -->
+                  <button id="add_plomer" class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                    <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
+                        + Reponer Stock
+                    </p>
+                  </button>
+
+                  <button id="add_plomer" class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                    <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
+                        - Asignar Recursos
+                    </p>
+                  </button>
 
                 </div>
               </div>
