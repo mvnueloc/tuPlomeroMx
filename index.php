@@ -116,7 +116,7 @@
             onclick=
             <?php 
 
-              if(isset($_SESSION['usuario'])){
+              if(isset($_SESSION['usuario'])){  
                 echo "window.location.href='./client/solicitud.php'";
               }else{
                 echo "window.location.href='./account'";

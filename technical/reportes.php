@@ -4,6 +4,16 @@
     header('Location: ../');
     exit();
   }
+
+  if(!isset($_SESSION['jornada'])){
+    header('Location: ./');
+    exit(); 
+  }
+
+  if($_SESSION['jornada'] == "iniciada"){
+    header('Location: ./terminar-jornada.php');
+    exit();
+  } 
 ?>
 <!DOCTYPE html>
 <html lang="en">
