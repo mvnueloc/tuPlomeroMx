@@ -1,10 +1,34 @@
 <?php
+  include 'actions/informacionServicios.php';
+  
   session_start();
+  
   if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'user'){
     header('Location: ../');
     exit();
   }
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['servicio'])) {
+        $servicioSeleccionado = $_POST['servicio'];
+        // echo "Servicio seleccionado: " . $servicioSeleccionado;
+    } else {
+        echo '<script>
+                alert("Selecciona un servicio.");
+                window.location = "solicitud.php";
+              </script>';
+    }
+  }
+  else
+  {
+    echo '<script>
+            alert("Selecciona un servicio.");
+            window.location = "solicitud.php";
+          </script>';
+  }
+
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -80,13 +104,13 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+              <a href="./index.php">Home</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./solicitud.php">Solicitud</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
@@ -114,7 +138,19 @@
         <div class="mt-6 mb-3">
           <div class="flex space-x-16">
             <h3 class="text-xl font-light">Servicio</h3>
-            <p class="text-xl font-semibold">$500</p>
+            <p class="text-xl font-semibold">
+              <?php
+                if ($servicioSeleccionado == '1') {
+                    $costo = $precioTinaco['costo_base'];
+                } elseif ($servicioSeleccionado == '2') {
+                    $costo = $precioFuga['costo_base'];
+                } elseif ($servicioSeleccionado == '3') {
+                    $costo = $precioCalentador['costo_base'];
+                }
+
+                echo '$' . $costo;
+              ?>            
+            </p>
           </div>
         </div>
         <!-- Impuestos -->
@@ -135,7 +171,12 @@
         <div class="">
           <div class="flex space-x-16">
             <h3 class="text-xl font-semibold">Total</h3>
-            <p class="text-xl font-semibold">$800</p>
+            <p class="text-xl font-semibold">
+              <?php
+              $costoTotal = $costo + 200 + 100;
+                echo '$' .  $costoTotal;
+              ?>
+            </p>
           </div>
         </div>
       </div>
@@ -148,41 +189,10 @@
 
           <form
             class="space-y-2 md:space-y-4"
-            action="./ordenValidada.html"
+            action="./actions/completarSolicitud.php"
             method="POST"
           >
-            <div class="grid grid-cols-2 gap-x-2 md:gap-x-6">
-              <!-- Nombre -->
-              <div>
-                <label
-                  for="nombre"
-                  class="mb-2 text-sm font-medium text-gray-900"
-                  >Nombres</label
-                >
-                <input
-                  type="text"
-                  name="nombres"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                  placeholder="Nombre"
-                  required=""
-                />
-              </div>
-              <!-- Apellidos -->
-              <div>
-                <label
-                  for="apellido"
-                  class="mb-2 text-sm font-medium text-gray-900"
-                  >Apellidos</label
-                >
-                <input
-                  type="text"
-                  name="apellidos"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                  placeholder="Apellido"
-                  required=""
-                />
-              </div>
-            </div>
+            
             <!-- Docmicilio -->
             <div>
               <label
@@ -245,6 +255,12 @@
                 />
               </div>
             </div>
+
+            <!-- Servicio -->
+            <input type="hidden" name="servicio" value="<?php echo $servicioSeleccionado; ?>" />
+
+            <!-- Costo total -->
+            <input type="hidden" name="costoTotal" value="<?php echo $costoTotal; ?>" />
 
             <div class="flex justify-center">
               <button

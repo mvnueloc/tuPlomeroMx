@@ -4,6 +4,8 @@
     header('Location: ../');
     exit();
   }
+
+  include 'actions/pagosPendientes.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,13 +82,13 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+              <a href="./index.php">Home</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./solicitud.php">Solicitud</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
@@ -101,7 +103,10 @@
     </nav>
 
     <!-- contenido -->
-    <div
+    <?php
+      if ($porPagar) {
+        ?>
+        <div
       class="flex justify-center items-center h-screen-minus-64 md:h-screen-minus-68"
     >
       <div
@@ -109,9 +114,9 @@
       >
         <h2 class="text-xl md:text-3xl font-semibold">Servicio Terminado</h2>
         <p class="font-light mt-6">
-          Tu servicio de “Nombre del servicio” ubicado en “Direccion” ha sido
-          realizado con exito el dia “Dia”, por el tecnico “Nombre del tecnico”,
-          realiza el pago por la cantidad de “costo”.
+          Tu servicio de <?php echo $servicio; ?> ubicado en <?php echo $direccion;?> ha sido
+          realizado con exito el dia <?php echo $dia; ?>, por el tecnico “Nombre del tecnico”,
+          realiza el pago por la cantidad de <?php echo $costo; ?>.
         </p>
         <div class="flex justify-center lg:justify-start">
           <img
@@ -123,7 +128,7 @@
 
         <div class="flex justify-end mt-6">
           <a
-            href="./pago.html"
+            href="./pago.php"
             class="bg-secundary text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-secundary transition-colors duration-300"
           >
             Pagar
@@ -131,5 +136,19 @@
         </div>
       </div>
     </div>
+    
+    <?php
+      }
+      else {
+        ?>
+        <div class="flex justify-center items-center h-screen-minus-64 md:h-screen-minus-68">
+          <h2 class="text-2xl md:text-4xl font-semibold text-gray-400">Sin notificaciones.</h2>
+        </div>
+
+        <?php
+      }
+    ?>
+
+
   </body>
 </html>

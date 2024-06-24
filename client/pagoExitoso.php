@@ -1,3 +1,8 @@
+<?php
+  include 'actions/realizarPago.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,6 +34,28 @@
         },
       };
     </script>
+
+    <style>
+      .rating {
+        direction: rtl; /* Invierte el orden para que funcione correctamente el selector ~ */
+      }
+
+      .rating > input {
+        display: none; /* Oculta los inputs */
+      }
+
+      .rating > label {
+        color: #ccc; /* Color de estrella no seleccionada */
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .rating > input:checked ~ label,
+      .rating > input:checked + label {
+        color: #fcba03; /* Color de estrella seleccionada */
+      }
+    </style>
+
   </head>
 
   <body class="bg-gray-100">
@@ -73,13 +100,13 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+              <a href="./index.php">Home</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./solicitud.php">Solicitud</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
@@ -136,83 +163,36 @@
         <h3 class="text-center font-semibold mt-6">
           ¿Que te parecio el servicio?
         </h3>
-        <!-- estrellas -->
-        <div class="flex justify-center mt-6">
-          <div class="flex items-center mb-5">
-            <svg
-              class="w-4 h-4 ms-1 text-yellow-300"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 22 20"
-            >
-              <path
-                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-              />
-            </svg>
-            <svg
-              class="w-4 h-4 ms-1 text-yellow-300"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 22 20"
-            >
-              <path
-                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-              />
-            </svg>
-            <svg
-              class="w-4 h-4 ms-1 text-yellow-300"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 22 20"
-            >
-              <path
-                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-              />
-            </svg>
-            <svg
-              class="w-4 h-4 ms-1 text-yellow-300"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 22 20"
-            >
-              <path
-                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-              />
-            </svg>
-            <svg
-              class="w-4 h-4 ms-1 text-gray-300 dark:text-gray-500"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 22 20"
-            >
-              <path
-                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-              />
-            </svg>
+
+        <form 
+          action="./index.php"
+          class=""
+        >
+
+        <div class="flex justify-center items-center ">
+          <div class="rating">
+            <input required type="radio" id="star4" name="calificacion" value="4"><label for="star4">★</label>
+            <input required type="radio" id="star3" name="calificacion" value="3"><label for="star3">★</label>
+            <input required type="radio" id="star2" name="calificacion" value="2"><label for="star2">★</label>
+            <input required type="radio" id="star5" name="calificacion" value="5"><label for="star5">★</label>
+            <input required type="radio" id="star1" name="calificacion" value="1"><label for="star1">★</label>
           </div>
         </div>
-
-        <form action="#">
           <div class="">
             <label for="comentario" class="block">Comentario</label>
             <textarea
+              required=""
               name="comentario"
               id="comentario"
               class="w-full h-24 bg-gray-200 rounded-md p-2"
             ></textarea>
           </div>
           <div class="flex justify-center mt-6">
-            <a
-              href="./landing.html"
+            <button
               class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-green-600 hover:border-1 border-gray-900 transition-colors duration-300 ease-in-out"
             >
               Continuar
-            </a>
+            </button>
           </div>
         </form>
       </div>

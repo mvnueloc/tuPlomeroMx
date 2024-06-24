@@ -1,3 +1,8 @@
+<?php
+  include 'actions/validacionServicio.php';
+  include 'actions/informacionServicios.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -73,19 +78,20 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+              <a href="./index.php">Home</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./solicitud.php">Solicitud</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                onclick="window.location.href='../php/logout.php'"
+                class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
               >
-                Logout
+                Cerrar sesión
               </button>
             </li>
           </ul>
@@ -93,7 +99,7 @@
       </div>
     </nav>
 
-    <form action="./datosDomicilio.html">
+    <form action="./datosDomicilio.php" method="POST">
       <div
         class="lg:h-screen-minus-68 mt-12 lg:mt-0 flex justify-center items-center"
       >
@@ -119,14 +125,14 @@
                     <p
                       class="font-extrabold text-xl mt-6 mx-4 bg-green-600 px-2 py-1 rounded-md text-white"
                     >
-                      $500
+                    <?php echo  '$' . $precioTinaco['costo_base']; ?>
                     </p>
 
                     <div class="mt-6 mx-6 flex items-center">
                       <label class="text-gray-500" for="input"
                         >Seleccionar</label
                       >
-                      <input class="ml-4 scale-[1.3]" type="checkbox" />
+                      <input class="ml-4 scale-[1.8]" type="radio" value = "1" name = "servicio" />
                     </div>
                   </div>
                 </div>
@@ -147,14 +153,14 @@
                     <p
                       class="font-extrabold text-xl mt-6 mx-4 bg-green-600 px-2 py-1 rounded-md text-white"
                     >
-                      $500
+                      <?php echo  '$' . $precioFuga['costo_base']; ?>
                     </p>
 
                     <div class="mt-6 mx-6 flex items-center">
                       <label class="text-gray-500" for="input"
                         >Seleccionar</label
                       >
-                      <input class="ml-4 scale-[1.3]" type="checkbox" />
+                      <input class="ml-4 scale-[1.8]" type="radio" value = "2" name = "servicio" />
                     </div>
                   </div>
                 </div>
@@ -177,14 +183,14 @@
                     <p
                       class="font-extrabold text-xl mt-6 mx-4 bg-green-600 px-2 py-1 rounded-md text-white"
                     >
-                      $500
+                    <?php echo  '$' . $precioCalentador['costo_base']; ?>
                     </p>
 
                     <div class="mt-6 mx-6 flex items-center">
                       <label class="text-gray-500" for="input"
                         >Seleccionar</label
                       >
-                      <input class="ml-4 scale-[1.3]" type="checkbox" />
+                      <input class="ml-4 scale-[1.8]" type="radio" value = "3" name = "servicio" />
                     </div>
                   </div>
                 </div>

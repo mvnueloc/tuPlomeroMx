@@ -4,6 +4,9 @@
     header('Location: ../');
     exit();
   }
+
+  include 'actions/informacionServicios.php';
+  include 'actions/pagosPendientes.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +42,7 @@
   </head>
 
   <body class="bg-gray-100">
+    <!-- Navbar -->
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
       <div
@@ -80,15 +84,15 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+              <a href="./index.php">Home</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./solicitud.php">Solicitud</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text- md:mr-12 hover:text-secundary">
               <button
                 class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
               >
@@ -102,7 +106,7 @@
 
     <!-- contenido -->
     <div
-      class="bg-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-y-14 justify-center items-center h-screen-minus-64 md:h-screen-minus-68"
+      class="my-12 lg:my-0 flex flex-col space-y-32 lg:space-y-0 lg:flex-row lg:space-x-80 items-center justify-center  lg:h-screen-minus-68"
     >
       <!-- Resumen -->
       <div class="flex flex-col justify-start items-center h-auto mt-6 md:mt-0">
@@ -112,7 +116,19 @@
         <div class="mt-6 mb-3">
           <div class="flex space-x-16">
             <h3 class="text-xl font-light">Servicio</h3>
-            <p class="text-xl font-semibold">$500</p>
+            <p class="text-xl font-semibold">
+              <?php
+                if ($servicio == '1') {
+                    $costo = $precioTinaco['costo_base'];
+                } elseif ($servicio == '2') {
+                    $costo = $precioFuga['costo_base'];
+                } elseif ($servicio == '3') {
+                    $costo = $precioCalentador['costo_base'];
+                }
+
+                echo '$' . $costo;
+              ?>   
+            </p>
           </div>
         </div>
         <!-- Impuestos -->
@@ -133,20 +149,26 @@
         <div class="">
           <div class="flex space-x-16">
             <h3 class="text-xl font-semibold">Total</h3>
-            <p class="text-xl font-semibold">$800</p>
+            <p class="text-xl font-semibold">
+              <?php
+                $costoTotal = $costo + 200 + 100;
+                echo '$' .  $costoTotal;
+              ?>
+            </p>
           </div>
         </div>
       </div>
       <!-- Datos -->
-      <div class="flex justify-center mb-6 md:mb-0">
+      <div class="">
         <div
-          class="w-5/6 md:w-4/6 p-3 bg-gray-100 flex flex-col items-center rounded-lg shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
+          class="w-screen md:w-auto p-3 bg-gray-100 flex flex-col items-center rounded-lg shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
         >
           <h3 class="mb-2 text-lg font-bold my-5">Realiza tu pago</h3>
           <div
             class="mt-2 flex flex-col sm:flex-row w-full px-10 justify-between"
           >
-            <button
+            <a
+              href="./pagoExitoso.php"
               class="px-5 py-2 mb-5 sm:mb-0 rounded-lg bg-[#F5F5F5] flex items-center justify-center font-bold text-md transition-colors duration-300 hover:bg-secundary hover:text-white"
             >
               <svg
@@ -163,8 +185,9 @@
                 ></path>
               </svg>
               <p>Pay</p>
-            </button>
-            <button
+              </a>
+            <a
+              href="./pagoExitoso.php"
               class="px-5 py-2 mb-5 sm:mb-0 rounded-lg bg-[#F5F5F5] flex items-center justify-center font-bold rounded-lg text-md transition-colors duration-300 hover:bg-secundary hover:text-white"
             >
               <svg
@@ -181,8 +204,9 @@
                 ></path>
               </svg>
               <p>Pay</p>
-            </button>
-            <button
+              </a>
+            <a
+              href="./pagoExitoso.php"
               class="px-5 py-2 mb-5 sm:mb-0 rounded-lg bg-[#F5F5F5] flex items-center justify-center font-bold rounded-lg text-md transition-colors duration-300 hover:bg-secundary hover:text-white"
             >
               <svg
@@ -199,7 +223,7 @@
                 ></path>
               </svg>
               <p>Pay</p>
-            </button>
+              </a>
           </div>
           <!-- divicion -->
           <div class="flex justify-center items-center gap-4 w-full my-3 px-10">
@@ -208,77 +232,82 @@
             <hr class="px-10 border-solid border-1 border-gray-400 w-full" />
           </div>
           <!-- datos de pago -->
-          <article class="flex flex-col gap-4 w-4/5">
+          <form 
+            class="flex flex-col gap-4 w-4/5"
+            action="./actions/pagoExitoso.php"
+          >
             <div class="">
               <label
-                htmlFor="calle"
+                htmlFor="nombreTitular"
                 class="flex mb-2 text-sm text-start text-gray-900"
                 >Nombre del titular</label
               >
               <input
-                required
-                id="calle"
+                required=""
+                id="nombreTitular"
                 type="text"
-                name="street"
-                class="bg-[#D9D9D9] w-full px-5 py-[0.7rem] text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 text-gray-900 rounded-2xl"
+                name="nombreTitular"
+                placeholder="Nombre"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
               />
             </div>
             <div class="">
               <label
-                htmlFor="calle"
+                htmlFor="numTarjeta"
                 class="flex mb-2 text-sm text-start text-gray-900"
                 >Numero de tarjeta</label
               >
               <input
-                required
-                id="calle"
+                required=""
+                id="numTarjeta"
                 type="text"
-                name="street"
-                class="bg-[#D9D9D9] w-full px-5 py-[0.7rem] text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 text-gray-900 rounded-2xl"
+                name="numTarjeta"
+                placeholder="Numero de tarjeta"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
               />
             </div>
-            <div class="flex flex-row justify-between gap-3">
-              <div class="">
+            <div class="flex flex-row justify-between gap-1 w-full">
+              <div class="w-auto">
                 <label
                   htmlFor="fecha_vencimiento"
                   class="flex mb-2 text-sm text-start text-gray-900"
                   >Fecha</label
                 >
                 <input
-                  required
+                  required="
                   id="fecha_vencimiento"
                   type="text"
                   name="fecha_vencimiento"
-                  placeholder="MM/YY"
-                  maxlength="5"
-                  class="bg-[#D9D9D9] w-full px-5 py-[0.7rem] text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 text-gray-900 rounded-2xl"
+                  min="2024-10-06"
+                  max="2030-12-31"
+                  placeholder="Fecha vencimiento"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 />
               </div>
-              <div class="">
+              <div class="w-auto">
                 <label
                   htmlFor="contrasena"
                   class="flex mb-2 text-sm text-start text-gray-900"
                   >CVV</label
                 >
                 <input
-                  required
-                  id="contrasena"
                   type="text"
-                  name="contrasena"
-                  maxlength="3"
-                  class="bg-[#D9D9D9] w-full px-5 py-[0.7rem] text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 text-gray-900 rounded-2xl"
+                  name="cvv"
+                  required=""
+                  placeholder="CVV"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 />
               </div>
             </div>
             <div class="py-[1rem] flex justify-center">
-              <a
-                href="./pagoExitoso.html"
+              <button
+                href="./pagoExitoso.php"
                 class="text-center px-2.5 py-2.5 w-full max-md:mr-5 self-end text-white font-bold bg-secundary hover:bg-gray-100 hover:text-secundary rounded-xl text-md transition-colors duration-300"
               >
                 Pagar
-              </a>
+              </button>
             </div>
-          </article>
+          </form>
         </div>
       </div>
     </div>
