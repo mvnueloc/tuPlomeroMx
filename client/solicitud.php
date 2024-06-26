@@ -1,6 +1,8 @@
 <?php
-  include 'actions/validacionServicio.php';
-  include 'actions/informacionServicios.php';
+  include 'actions/noDeudas.php';
+  include 'actions/preciosServicios.php';
+  include 'actions/solicitudesPendientes.php';
+  include 'actions/trabajosPendientes.php';
 ?>
 
 <!DOCTYPE html>

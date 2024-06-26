@@ -9,7 +9,14 @@
     
     $id_client = $_SESSION['id'];
 
-    $query_check = "SELECT * FROM solicitudes WHERE id_cliente = $id_client AND terminado = 0";
+    $query_check = "SELECT p.id_pago, p.fecha_pago, p.hora_pago, p.monto, p.status
+                    FROM Usuarios u
+                    JOIN solicitudes s ON u.id_usuario = s.id_cliente
+                    JOIN trabajo t ON s.id_solicitud = t.id_solicitud
+                    JOIN pagos p ON t.id_trabajo = p.id_trabajo
+                    WHERE u.id_usuario = $id_client
+                    AND p.status = 0;
+                    ";
 
     $result_check = mysqli_query($conexion, $query_check);
 
@@ -21,5 +28,4 @@
             </script>
         ';    
     }
-
 ?>
