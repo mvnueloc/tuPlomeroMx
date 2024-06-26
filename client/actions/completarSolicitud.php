@@ -34,10 +34,9 @@
     $costoTotal = $_POST['costoTotal'];
     // echo  $costoTotal . '<br>' ;
 
-    $query = "INSERT INTO solicitudes (id_cliente, nombre, apellido, 
-            codigo_postal, direccion, fecha, hora, terminado, id_servicio, costo_total)
-        VALUES ( '$id_cliente', '$nombre' , '$apellido', '$codigo_postal', '$domilicio' , '$fecha', '$hora',
-            0,  '$servicio' , '$costoTotal' ); ";
+    $query = "INSERT INTO solicitudes (id_solicitud, id_cliente, codigo_postal, direccion, 
+                            fecha_solicitud, hora_solicitud, id_servicio, status)
+                VALUES (NULL, $id_cliente, $codigo_postal, '$domilicio', '$fecha', '$hora', $servicio, 0)";
 
 if (mysqli_query($conexion, $query)) {
     echo ' 

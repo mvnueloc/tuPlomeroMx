@@ -36,5 +36,4 @@
     $query_update = "UPDATE solicitudes SET terminado = 1 WHERE id_cliente = $id_cliente AND terminado = 0";
 
     $ejecutar = mysqli_query($conexion, $query_update);
-
 ?>
