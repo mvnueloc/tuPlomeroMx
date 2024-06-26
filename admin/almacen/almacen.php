@@ -1,3 +1,63 @@
+<?php
+include '../../php/conexion_bd.php';
+
+// Número de registros por página
+$limit = 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit; // Calcula el offset basado en la página actual
+
+// Consulta para obtener los materiales con paginación
+$sql = "SELECT material_id, nombre, descripcion,cantidad_disponible, costo_unitario, unidad_de_medida, dimensiones  FROM materiales LIMIT $limit OFFSET $offset";
+$result = mysqli_query($conexion, $sql);
+
+// Arreglo para almacenar los materiales
+$materiales = [];
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $materiales[] = $row;
+    }
+}
+
+// Consulta para obtener el número total de registros
+$total_sql = "SELECT COUNT(*) as total FROM materiales";
+$total_result = mysqli_query($conexion, $total_sql);
+$total_row = mysqli_fetch_assoc($total_result);
+$total_records = $total_row['total'];
+$total_pages = ceil($total_records / $limit); // Calcula el número total de páginas
+
+mysqli_close($conexion);
+?>
+
+<?php
+include '../../php/conexion_bd.php';
+
+// Número de registros por página
+$limit = 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit; // Calcula el offset basado en la página actual
+
+// Consulta para obtener los materiales con paginación
+$sql = "SELECT material_id, nombre, descripcion,cantidad_disponible, costo_unitario, unidad_de_medida, dimensiones  FROM materiales LIMIT $limit OFFSET $offset";
+$result = mysqli_query($conexion, $sql);
+
+// Arreglo para almacenar los materiales
+$materiales = [];
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $materiales[] = $row;
+    }
+}
+
+// Consulta para obtener el número total de registros
+$total_sql = "SELECT COUNT(*) as total FROM materiales";
+$total_result = mysqli_query($conexion, $total_sql);
+$total_row = mysqli_fetch_assoc($total_result);
+$total_records = $total_row['total'];
+$total_pages = ceil($total_records / $limit); // Calcula el número total de páginas
+
+mysqli_close($conexion);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,393 +79,458 @@
           colors: {
             primary: "#13212A",
             secundary: "#0077C2",
-            third:"#F5F5F5",
+            third: "#243f50",
           },
           height: {
-            "screen-minus-16": "calc(100vh - 16rem)", // 2rem es aproximadamente igual a 32px
+            "screen-minus-16": "calc(100vh - 16rem)",
           },
         },
       },
     };
   </script>
-  <script>
-    // Datos de ejemplo
-    const productos = [
-  {
-    "id": "001",
-    "nombre": "Llave de paso",
-    "modelo": "LP-100",
-    "marca": "Plomex",
-    "medicionesProducto": "Diámetro: 5 cm",
-    "stock": "25"
-  },
-  {
-    "id": "002",
-    "nombre": "Tubería de PVC",
-    "modelo": "PVC-200",
-    "marca": "AquaPipe",
-    "medicionesProducto": "Longitud: 2 metros",
-    "stock": "50"
-  },
-  {
-    "id": "003",
-    "nombre": "Fregadero de Acero Inoxidable",
-    "modelo": "FS-300",
-    "marca": "Stainless",
-    "medicionesProducto": "Ancho: 60 cm, Alto: 40 cm, Profundo: 20 cm",
-    "stock": "10"
-  },
-  {
-    "id": "004",
-    "nombre": "Válvula de Retención",
-    "modelo": "VR-150",
-    "marca": "FlowMaster",
-    "medicionesProducto": "Diámetro: 8 cm",
-    "stock": "30"
-  },
-  {
-    "id": "005",
-    "nombre": "Codo de PVC",
-    "modelo": "PVC-90",
-    "marca": "AquaPipe",
-    "medicionesProducto": "Diámetro: 10 cm, Ángulo: 90°",
-    "stock": "20"
-  },
-  {
-    "id": "006",
-    "nombre": "Grifo de Baño",
-    "modelo": "GB-500",
-    "marca": "HydroFix",
-    "medicionesProducto": "Largo: 20 cm",
-    "stock": "15"
-  },
-  {
-    "id": "007",
-    "nombre": "Tuerca Hexagonal",
-    "modelo": "TH-10",
-    "marca": "BoltPro",
-    "medicionesProducto": "Diámetro: 6 cm",
-    "stock": "40"
-  },
-  {
-    "id": "008",
-    "nombre": "Abrazadera de Metal",
-    "modelo": "AM-25",
-    "marca": "ClampTech",
-    "medicionesProducto": "Ancho: 5 cm, Largo: 10 cm",
-    "stock": "12"
-  },
-  {
-    "id": "009",
-    "nombre": "Cinta de Teflón",
-    "modelo": "CT-5",
-    "marca": "SealTape",
-    "medicionesProducto": "Longitud: 10 metros",
-    "stock": "100"
-  },
-  {
-    "id": "010",
-    "nombre": "Lámina de Cobre",
-    "modelo": "LC-20",
-    "marca": "CopperCo",
-    "medicionesProducto": "Ancho: 30 cm, Largo: 50 cm",
-    "stock": "8"
-  },
-  {
-    "id": "011",
-    "nombre": "Regadera de Baño",
-    "modelo": "RB-300",
-    "marca": "RainMaker",
-    "medicionesProducto": "Capacidad: 10 litros",
-    "stock": "5"
-  },
-  {
-    "id": "012",
-    "nombre": "Codo de Hierro Galvanizado",
-    "modelo": "HG-45",
-    "marca": "IronCraft",
-    "medicionesProducto": "Diámetro: 15 cm, Ángulo: 45°",
-    "stock": "18"
-  },
-  {
-    "id": "013",
-    "nombre": "Adhesivo para PVC",
-    "modelo": "AP-10",
-    "marca": "BondPVC",
-    "medicionesProducto": "Volumen: 100 ml",
-    "stock": "200"
-  },
-  {
-    "id": "014",
-    "nombre": "Juego de Llaves Allen",
-    "modelo": "JA-15",
-    "marca": "HexSet",
-    "medicionesProducto": "Cantidad: 15 piezas",
-    "stock": "35"
-  },
-  {
-    "id": "015",
-    "nombre": "Tubo de Acero Galvanizado",
-    "modelo": "TAG-40",
-    "marca": "SteelPipe",
-    "medicionesProducto": "Diámetro: 20 cm, Longitud: 1 metro",
-    "stock": "22"
-  },
-  {
-    "id": "016",
-    "nombre": "Tapa para Registro",
-    "modelo": "TR-200",
-    "marca": "CoverTech",
-    "medicionesProducto": "Diámetro: 30 cm",
-    "stock": "7"
-  },
-  {
-    "id": "017",
-    "nombre": "Brida de Acero Inoxidable",
-    "modelo": "BAI-25",
-    "marca": "Stainless",
-    "medicionesProducto": "Diámetro: 25 cm",
-    "stock": "28"
-  },
-  {
-    "id": "018",
-    "nombre": "Resorte de Compresión",
-    "modelo": "RC-30",
-    "marca": "SpringTech",
-    "medicionesProducto": "Longitud: 15 cm, Diámetro: 5 cm",
-    "stock": "50"
-  },
-  {
-    "id": "019",
-    "nombre": "Destornillador Phillips",
-    "modelo": "DP-3",
-    "marca": "ScrewPro",
-    "medicionesProducto": "Longitud: 20 cm",
-    "stock": "40"
-  },
-  ];
-
-
-    // Constantes para la paginación
-    const productosPorPagina = 20;
-    let paginaActual = 1;
-
-    // Función para generar filas de la tabla
-    function generarFilasProductos(productos) {
-      const inicio = (paginaActual - 1) * productosPorPagina;
-      const fin = inicio + productosPorPagina;
-      const productosPagina = productos.slice(inicio, fin);
-
-      return productosPagina.map(producto => `
-        <tr>
-          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
-            ${producto.id}
-          </td>
-          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-            <button class="hover:text-primary">
-            ${producto.nombre}
-            </button>
-          </td>
-          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-            ${producto.modelo}
-          </td>
-          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-            ${producto.marca}
-          </td>
-          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-            ${producto.unidadDeMedida}
-          </td>
-          <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-            ${producto.stock}
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // Función para actualizar la tabla con los productos de la página actual
-    function actualizarTabla() {
-      // Obtén el elemento tbody de la tabla
-      const tbody = document.querySelector('tbody');
-      
-      // Genera las filas de la tabla y agrégalas al tbody
-      tbody.innerHTML = generarFilasProductos(productos);
-    }
-
-    // Cargar las filas de la tabla cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', function () {
-      actualizarTabla();
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const sidebar = document.getElementById('sidebar');
-      const sidebarToggle = document.getElementById('sidebar-toggle');
-
-      sidebarToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('hidden');
-      });
-    });
-  </script>
-
 </head>
 <body class="bg-primary">
-
-   <!-- Navbar -->
-   <nav class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between">
-    <div class="mx-12 hidden md:block">
-        <a class="text-white" href="#">NOMBRE</a>
-    </div>
-
-    <div class="md:mx-12">
-        <div>
-            <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/registro_plomeros.php">Empleados</a>
-            <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/almacen.php">Almacen</a>
-            <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/reportes.php">Reportes</a>
+    <!-- Navbar -->
+    <nav class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between">
+        <div class="mx-12 hidden md:block">
+            <a class="text-white" href="#">NOMBRE</a>
         </div>
-    </div>
-  </nav>
-
-
-  <section class="w-full">
-    <div class="w-full md:flex-row justify-between">
-      <section class="py-1 bg-blueGray-50 w-full sm:p-10 ">
-        <div class="flex justify-center item-center mb-7">
-          <h2 class=" font-bold text-4xl text-white">Almacen</h2>
+        <div class="md:mx-12">
+            <div>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/registro_plomeros.php">Empleados</a>
+                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/almacen.php">Almacen</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/reportes.php">Reportes</a>
+            </div>
         </div>
-        <div class="w-full pb-6 pt-2 bg-white xl:mb-0 sm:px-4 mx-auto rounded-lg">
-          <div class="relative flex flex-col min-w-0 break-words  w-full ">
-            
-            <div class="rounded-t mb-0 px-4 py-3 border-0">
-              <div class="flex flex-wrap items-center">
-                <div x-data="{ dropdownOpen: true }" class="w-full px-4 max-w-full flex flex-wrap sm:flex-row justify-between">
-                  <!-- Título -->
-                  <div class="flex items-center text-left sm:text-center">
-                    <h3 class="font-semibold text-base">Productos de Refacciones</h3>
-                  </div>
-                  <!-- Barra de búsqueda -->
-                  <div class="w-full sm:w-auto mt-4 sm:mt-0 flex items-center justify-center">
-                    <div class="relative">
-                      <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                          width="15px" height="15px" viewBox="0 0 612.08 612.08" style="enable-background:new 0 0 612.08 612.08;"
-                          xml:space="preserve">
-                          <path d="M237.927,0C106.555,0,0.035,106.52,0.035,237.893c0,131.373,106.52,237.893,237.893,237.893
-                            c50.518,0,97.368-15.757,135.879-42.597l0.028-0.028l176.432,176.433c3.274,3.274,8.48,3.358,11.839,0l47.551-47.551
-                            c3.274-3.274,3.106-8.703-0.028-11.838L433.223,373.8c26.84-38.539,42.597-85.39,42.597-135.907C475.82,106.52,369.3,0,237.927,0z
-                            M237.927,419.811c-100.475,0-181.918-81.443-181.918-181.918S137.453,55.975,237.927,55.975s181.918,81.443,181.918,181.918
-                            S338.402,419.811,237.927,419.811z"/>
-                        </svg>
-                      </span>
-                      <input required id="calle" type="text" name="street" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
-                    </div>
-                  </div>
-                  <!-- Botones de filtro y orden -->
-                  <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                    <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
-                      <option value="filtrar">Filtrar</option>
-                      <option value="opcion1">Servicio</option>
-                      <option value="opcion2">Marcas</option>
-                      <option value="opcion3">Provedor</option>
-                      <option value="opcion3">Categorias</option>
-                    </select>
-                  </div>
-                  <!-- orden -->
-                  <!-- Botones de filtro y orden -->
-                  <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                    <select class="border-2 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900 rounded-2xl">
-                      <option value="filtrar">Ordenar</option>
-                      <option value="opcion1">popular</option>
-                      <option value="opcion2">ID</option>
-                      <option value="opcion3">Alfabetico</option>
-                      <option value="opcion3">Stock</option>
-                    </select>
-                  </div> -->
+    </nav>
 
-                  <!-- botones    -->
-                  <button id="add_plomer" class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                    <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
-                        + Reponer Stock
-                    </p>
-                  </button>
-
-                  <button id="add_plomer" class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                    <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
-                        - Asignar Recursos
-                    </p>
-                  </button>
-
+    <!-- Contenido -->
+    <section class="w-full">
+        <div class="w-full md:flex-row justify-between">
+            <section class="py-1 bg-blueGray-50 w-full sm:p-10">
+                <div class="flex justify-center item-center mb-7">
+                    <h2 class="font-bold text-4xl text-white">Almacen</h2>
                 </div>
-              </div>
-            </div>
-            
-            
+                <div class="w-full pb-6 pt-2 bg-white xl:mb-0 sm:px-4 mx-auto rounded-lg">
+                    <div class="relative flex flex-col min-w-0 break-words w-full">
+                        <div class="rounded-t mb-0 px-4 py-3 border-0">
+                            <div class="flex flex-wrap items-center">
+                                <div class="w-full px-4 max-w-full flex flex-wrap sm:flex-row justify-between">
+                                    <!-- Título -->
+                                    <div class="flex items-center text-left sm:text-center sm:mb-10 md:mb-0 mb-0">
+                                        <h3 class="font-semibold text-base">Lista de Materiales</h3>
+                                    </div>
+                                    <!-- Barra de búsqueda -->
+                                    <div class="w-full sm:w-auto mt-4 sm:mt-0 flex items-center justify-center sm:mb-10 md:mb-0 mb-0">
+                                        <div class="relative">
+                                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 612.08 612.08" style="enable-background:new 0 0 612.08 612.08;" xml:space="preserve">
+                                                    <path d="M237.927,0C106.555,0,0.035,106.52,0.035,237.893c0,131.373,106.52,237.893,237.893,237.893 c50.518,0,97.368-15.757,135.879-42.597l0.028-0.028l176.432,176.433c3.274,3.274,8.48,3.358,11.839,0l47.551-47.551 c3.274-3.274,3.106-8.703-0.028-11.838L433.223,373.8c26.84-38.539,42.597-85.39,42.597-135.907C475.82,106.52,369.3,0,237.927,0z M237.927,419.811c-100.475,0-181.918-81.443-181.918-181.918S137.453,55.975,237.927,55.975s181.918,81.443,181.918,181.918 S338.402,419.811,237.927,419.811z"/>
+                                                </svg>
+                                            </span>
+                                            <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
+                                        </div>
+                                    </div>
+                                    <!-- Botones de filtro y orden -->
+                                    <div class="mt-4 sm:mt-0 flex items-center justify-end relative rounded-2xl border-2 p-2">
+                                      <p class="mr-2 text-gray-400" >Orden: </p>
+                                      <select class=" text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900">
+                                        <option selected value="filtrar">Por Defecto</option>
+                                        <option value="opcion1">ID</option>
+                                        <option value="opcion2">Marcas</option>
+                                        <option value="opcion3">más stock</option>
+                                        <option value="opcion3">menos stock</option>
+                                      </select>
+                                    </div>
+                                    <!-- Botones de filtro y orden -->
+                                    <button id="add_Product" class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                                        <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
+                                            Añadir Producto
+                                        </p>
+                                    </button>
+                                    <button id="add_Stock" class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                                        <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
+                                            + Reponer Stock
+                                        </p>
+                                    </button>
+                                    <button id="remove_stock" class="mt-4 sm:mt-0 flex items-center justify-end relative">
+                                        <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
+                                            - Asignar Recursos
+                                        </p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="block w-full overflow-x-auto">
+                            <div id="results">
+                                <!-- Aquí se insertará la tabla actualizada -->
+                                <table class="items-center bg-transparent w-full border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">ID</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Nombre</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Descripcion</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Dimensiones</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Unidad de medida</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Costo unitario</th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Stock</th>
 
-
-            <div class="block w-full overflow-x-auto">
-              <table class="items-center bg-transparent w-full border-collapse ">
-                <thead>
-                  <tr>
-                    <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      ID
-                    </th>
-                    <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Nombre
-                    </th>
-                    <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Modelo
-                    </th>
-                    <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Marca
-                    </th>
-                    <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Unidad de Medida
-                    </th>
-                    <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Stock
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Las filas de la tabla se generan aquí mediante JavaScript -->
-                </tbody>
-              </table>
-            </div>
-          </div>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                        <?php foreach ($materiales as $material): ?>
+                                            <tr>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['material_id']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['nombre']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['descripcion']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['dimensiones']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['unidad_de_medida']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['costo_unitario']); ?></td>
+                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($material['cantidad_disponible']); ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                                
+                                <!-- Paginación -->
+                                <div class="flex justify-center mt-4">
+                                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                        <button class="mx-1 px-3 py-1 border rounded-md <?php echo $i == $page ? 'bg-primary text-white' : 'bg-white text-primary hover:bg-third hover:text-white'; ?>" onclick="fetchResults('<?php echo isset($_GET['query']) ? $_GET['query'] : ''; ?>', <?php echo $i; ?>)">
+                                            <?php echo $i; ?>
+                                        </button>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-  </section>
+    </section>
 
-  <!-- footer -->
-  <footer class="bg-white border-t-2 border-gray-100">
-    <div class="relative mx-auto max-w-screen-xl px-4 py-14 sm:px-6 lg:px-8">
-      <div class="lg:flex lg:items-end lg:justify-between">
-        <div>
-          <div class="flex justify-center text-teal-600 lg:justify-start">
-            <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
-          </div>
-          <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
-            Soluciones eficientes y confiables para todas tus necesidades de plomería.
-          </p>
+<!-- Modal Añadir Producto -->
+<div id="modalProduct" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl mb-4">Añadir Producto</h2>
+        <form id="addProductForm" class="grid grid-cols-4 gap-4" method="POST" action="anadir_producto.php">
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombre" name="nombre" type="text" required>
+            </div>
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="descripcion">Descripción</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="descripcion" name="descripcion" type="text" required>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="dimensiones">Dimensiones</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="dimensiones" name="dimensiones" type="text" required>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="unidad_de_medida">Unidad de Medida</label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="unidad_de_medida" name="unidad_de_medida" required>
+                    <option value="cm">Centímetros</option>
+                    <option value="m">Metros</option>
+                    <option value="l">Litros</option>
+                    <option value="kg">Kilogramos</option>
+                </select>
+            </div>
+            <div class="col-span-4 flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Añadir
+                </button>
+                <button id="closeProductModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Reponer Stock -->
+<div id="modalAdd" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-1/2 max-h-screen overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl">Reponer Stock</h2>
+          <button id="add_Proveedor" class="text-white bg-primary p-2 rounded-xl">
+              Añadir Proveedor
+          </button>
+        </div>
+        <form id="addStockForm" class="grid grid-cols-4 gap-4" method="POST" action="reponer_stock.php">
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="material">Material</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" id="material" name="material[]" type="text" required list="material-list">
+                <datalist id="material-list"></datalist>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="cantidad">Cantidad</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cantidad" name="cantidad[]" type="number" required>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="costo_unitario">Costo Unitario</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="costo_unitario" name="costo_unitario[]" type="number" step="0.01" min="0" max="1000" required>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="proveedor">Proveedor</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" id="proveedor" name="proveedor[]" type="text" required list="proveedor-list">
+                <datalist class="w-full bg-white text-gray-500" id="proveedor-list"></datalist>
+            </div>
+            <div id="additionalProductsContainer" class="col-span-4"></div>
+            <div class="col-span-4 flex items-center justify-between">
+                <button type="button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" onclick="addProductFields()">
+                    Añadir Otro Producto
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Reponer
+                </button>
+                <button id="closeAddModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Asignar Recursos -->
+<div id="modalRemove" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl mb-4">Asignar Recursos</h2>
+        <form id="removeStockForm" class="grid grid-cols-4 gap-4" method="POST" action="asignar_recursos.php">
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="material">Material</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" id="material_remove" name="material" type="text" required list="material-remove-list">
+                <datalist id="material-remove-list"></datalist>
+            </div>
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="cantidad">Cantidad</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cantidad_remove" name="cantidad" type="number" required>
+            </div>
+            <div class="col-span-4 flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Asignar
+                </button>
+                <button id="closeRemoveModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Añadir Proveedor -->
+<div id="modalProveedor" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl mb-4">Añadir Proveedor</h2>
+        <form id="addProveedorForm" class="grid grid-cols-4 gap-4" method="POST" action="anadir_proveedor.php">
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombreProveedor" name="nombre" type="text" required>
+            </div>
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="correo" name="correo" type="email" required>
+            </div>
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">Teléfono</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" name="telefono" type="text" pattern="[0-9]{10}" title="Debe ser un número de teléfono válido de 10 dígitos" required>
+            </div>
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="direccion" name="direccion" type="text" required>
+            </div>
+            <div class="col-span-4 flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
+                    Añadir
+                </button>
+                <button id="closeProveedorModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const addProductButton = document.getElementById('add_Product');
+    const addStockButton = document.getElementById('add_Stock');
+    const addProveedorButton = document.getElementById('add_Proveedor');
+    const removeStockButton = document.getElementById('remove_stock');
+    const modalProduct = document.getElementById('modalProduct');
+    const modalAdd = document.getElementById('modalAdd');
+    const modalRemove = document.getElementById('modalRemove');
+    const modalProveedor = document.getElementById('modalProveedor');
+    const closeProductModalButton = document.getElementById('closeProductModalButton');
+    const closeAddModalButton = document.getElementById('closeAddModalButton');
+    const closeRemoveModalButton = document.getElementById('closeRemoveModalButton');
+    const closeProveedorModalButton = document.getElementById('closeProveedorModalButton');
+    const addProductForm = document.getElementById('addProductForm');
+    const addStockForm = document.getElementById('addStockForm');
+    const addProveedorForm = document.getElementById('addProveedorForm');
+
+    addProductButton.addEventListener('click', () => {
+        modalProduct.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    });
+
+    closeProductModalButton.addEventListener('click', () => {
+        modalProduct.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    addStockButton.addEventListener('click', () => {
+        modalAdd.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    });
+
+    closeAddModalButton.addEventListener('click', () => {
+        modalAdd.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        resetAddStockForm();
+    });
+
+    addProveedorButton.addEventListener('click', () => {
+        modalProveedor.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    });
+
+    closeProveedorModalButton.addEventListener('click', () => {
+        modalProveedor.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    removeStockButton.addEventListener('click', () => {
+        modalRemove.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    });
+
+    closeRemoveModalButton.addEventListener('click', () => {
+        modalRemove.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    });
+
+    function addProductFields() {
+    const container = document.getElementById('additionalProductsContainer');
+    const productFields = document.createElement('div');
+    productFields.className = 'product-fields mb-4';
+
+    productFields.innerHTML = `
+        <div class="my-6 flex items-center justify-center">
+            <div class="border-t border-gray-300 flex-grow"></div>
+            <span class="mx-4 text-gray-500">otro producto</span>
+            <div class="border-t border-gray-300 flex-grow"></div>
         </div>
 
-        <ul class="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12">
-          <li>
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Nosotros </a>
-          </li>
-          <li>
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Políticas de Privacidad </a>
-          </li>
-          <li>
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Contacto </a>
-          </li>
-        </ul>
-      </div>
+        <div class="flex justify-end">
+            <button class='hover:text-red-300 text-red-900 remove-product'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                </svg>
+            </button>
+        </div>
 
-      <p class="mt-12 text-center text-sm text-gray-500 lg:text-right">
-        © 2024 <a href="#" class="hover:underline">TuPlomeroMx™</a>. Todos los derechos reservados.
-      </p>
-    </div>
-  </footer>
+        <div class="grid grid-cols-4 gap-4">
+            <div class="col-span-4 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="material">Material</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" name="material[]" type="text" required list="material-list">
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="cantidad">Cantidad</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="cantidad[]" type="number" required>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="costo_unitario">Costo Unitario</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="costo_unitario[]" type="number" required>
+            </div>
+            <div class="col-span-2 mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="proveedor">Proveedor</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" name="proveedor[]" type="text" required list="proveedor-list">
+            </div>
+        </div>
+    `;
+
+    container.appendChild(productFields);
+
+    const removeButton = productFields.querySelector('.remove-product');
+    removeButton.addEventListener('click', function() {
+        productFields.remove();
+    });
+
+    const materialInputs = productFields.querySelectorAll('.autocomplete[name="material[]"]');
+    const proveedorInputs = productFields.querySelectorAll('.autocomplete[name="proveedor[]"]');
+    
+    materialInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            fetchAutocompleteResults('buscar_anadir.php', this);
+        });
+    });
+
+    proveedorInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            fetchAutocompleteResults('buscar_proveedor.php', this);
+        });
+    });
+}
+
+
+
+    function resetAddStockForm() {
+        const container = document.getElementById('additionalProductsContainer');
+        container.innerHTML = '';
+        addStockForm.reset();
+    }
+
+    function fetchAutocompleteResults(url, input) {
+        const query = input.value;
+        fetch(`${url}?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                let listId = input.getAttribute('list');
+                let datalist = document.getElementById(listId);
+
+                if (!datalist) {
+                    datalist = document.createElement('datalist');
+                    listId = `${input.name}-list`;
+                    datalist.id = listId;
+                    input.setAttribute('list', listId);
+                    document.body.appendChild(datalist);
+                }
+
+                datalist.innerHTML = '';
+
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.nombre || item.material;
+                    datalist.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    function fetchResults(query, page) {
+        fetch('buscar_material.php?query=' + query + '&page=' + page)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('results').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const materialInputs = document.querySelectorAll('.autocomplete[name="material[]"]');
+        const proveedorInputs = document.querySelectorAll('.autocomplete[name="proveedor[]"]');
+
+        materialInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                fetchAutocompleteResults('buscar_anadir.php', this);
+            });
+        });
+
+        proveedorInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                fetchAutocompleteResults('buscar_proveedor.php', this);
+            });
+        });
+    });
+</script>
 </body>
 </html>
