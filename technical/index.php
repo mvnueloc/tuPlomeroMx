@@ -1,6 +1,10 @@
 <?php
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+  if(!isset($_SESSION['usuario'])){
+    session_destroy();
+    header('Location: ../');
+    exit();
+  }else if($_SESSION['tipo_cuenta'] != 'work'){
     header('Location: ../');
     exit();
   }

@@ -1,6 +1,10 @@
 <?php
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+  if(!isset($_SESSION['usuario'])){
+    session_destroy();
+    header('Location: ../');
+    exit();
+  }else if($_SESSION['tipo_cuenta'] != 'work'){
     header('Location: ../');
     exit();
   }
@@ -10,10 +14,13 @@
     exit(); 
   }
 
-  if($_SESSION['jornada'] == "iniciada"){
+  if($_SESSION['servicio'] == "onService"){
+    header('Location: ./reportes-restriccion.php');
+    exit();
+  }else if($_SESSION['jornada'] == "iniciada"){
     header('Location: ./terminar-jornada.php');
     exit();
-  } 
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">

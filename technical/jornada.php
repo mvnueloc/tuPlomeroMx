@@ -1,14 +1,41 @@
 <?php
+  
+
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+  if(!isset($_SESSION['usuario'])){
+    session_destroy();
+    header('Location: ../');
+    exit();
+  }else if($_SESSION['tipo_cuenta'] != 'work'){
     header('Location: ../');
     exit();
   }
 
   if(!isset($_SESSION['jornada'])){
-    $_SESSION['jornada'] = "iniciada";
-    $_SESSION['servicio'] = "none";
+
+      ini_set('display_errors', 1);
+      ini_set('display_startup_errors', 1);
+      error_reporting(E_ALL);
+    
+      include(dirname(__DIR__).'../php/conexion_bd.php');
+
+      $_SESSION['jornada'] = "iniciada";
+      
+      $query_on_service = "SELECT * FROM trabajo WHERE id_trabajador = ".$_SESSION['id']." AND status = 0";
+      if(mysqli_num_rows(mysqli_query($conexion, $query_on_service)) != 0){
+        $_SESSION['servicio'] = "onService";
+      }else{
+        $_SESSION['servicio'] = "none";
+      }
+
   }
+  
+  if($_SESSION['servicio'] != "none"){
+    header('Location: ./servicio.php');
+    exit();
+  }
+
+  
 
   include '../php/conexion_bd.php';
 ?>
@@ -138,7 +165,7 @@
         >
           <table class="w-full table-auto text-left">
             <?php 
-              $getAvailableRequest = "SELECT * FROM solicitudes WHERE status = 'pendiente' ORDER BY fecha_hora ASC";
+              $getAvailableRequest = "SELECT * FROM solicitudes WHERE status = 0 ORDER BY hora_solicitud ASC";
               $getElements = mysqli_query($conexion, $getAvailableRequest);
 
               if(mysqli_num_rows($getElements) != 0 && $_SESSION['jornada'] == "iniciada"){
@@ -173,16 +200,9 @@
 
                 while($request = mysqli_fetch_assoc($getElements)){
                   $getRequestServices = "SELECT 
-                  s.nombre_servicio,
-                  s.costo_base
-                  FROM 
-                      servicios_solicitudes ss
-                  JOIN 
-                      servicios s ON ss.id_servicio = s.id_servicio
-                  JOIN 
-                      solicitudes sol ON ss.id_solicitud = sol.id_solicitud
+                  * FROM servicios
                   WHERE 
-                      sol.id_solicitud = ".$request['id_solicitud']."";
+                      id_servicio = ".$request['id_servicio']."";
                   
                   $getServices = mysqli_query($conexion, $getRequestServices);
                   
@@ -219,7 +239,7 @@
                     <td class="p-4 border border-gray-700">
                       <div class="flex flex-row items-center justify-center gap-3">
                         <a
-                          href="../php/aceptar_solicitud.php?id='.$request['id_solicitud'].'"
+                          href="./actions/asignar-solicitud.php?id='.$request['id_solicitud'].'"
                           class="bg-green-600 text-white max-md:text-sm px-3 md:px-6 py-2 rounded-lg"
                         >
                           Aceptar
