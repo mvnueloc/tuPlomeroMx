@@ -7,7 +7,7 @@
 
     $id_client = $_SESSION['id'];
 
-    $query_check = "SELECT * FROM solicitudes WHERE id_cliente = $id_client AND terminado = 0";
+    $query_check = "SELECT * FROM solicitudes WHERE id_cliente = $id_client AND status = 1";
 
     $result_check = mysqli_query($conexion, $query_check);
 
@@ -25,7 +25,7 @@
 
         $direccion = $servicioPorPagar['direccion'];
         // echo $direccion . '<br>';
-        $dia = $servicioPorPagar['fecha'];
+        $dia = $servicioPorPagar['fecha_solicitud'];
         // echo $dia . '<br>';
         $costo = $servicioPorPagar['costo_total'];
         // echo $costo . '<br>';

@@ -71,13 +71,17 @@
         ';
 
         $_SESSION['servicio'] = "onService";
+
+        // Redirigir a la página para subir evidencias
+        header('Location: ../servicio.php?id_solicitud='.$id_solicitud);
+        exit();
     }else{
         echo '
             <script>
                 alert("Error al asignar la solicitud");
             </script>
         ';
+        header('Location: ../');
+        exit();
     }
-
-    header('Location: ../');
 ?>

@@ -1,30 +1,64 @@
 <?php
-  session_start();
-  if(!isset($_SESSION['usuario'])){
+session_start();
+if (!isset($_SESSION['usuario'])) {
     session_destroy();
     header('Location: ../');
     exit();
-  }else if($_SESSION['tipo_cuenta'] != 'work'){
+} else if ($_SESSION['tipo_cuenta'] != 'work') {
     header('Location: ../');
     exit();
-  }
+}
 
-  if(!isset($_SESSION['jornada'])){
-    header('Location: ./');
-    exit(); 
-  }
+include(dirname(__DIR__) . '../php/conexion_bd.php');
+include './actions/get_materiales.php';
 
-  if($_SESSION['servicio'] == "onService"){
-    header('Location: ./reportes-restriccion.php');
+
+$id_usuario = $_SESSION['id'];
+
+// Obtener el ID de la jornada activa
+$query_jornada = "SELECT id_jornada FROM jornadas_trabajo WHERE id_usuario = $id_usuario AND hora_fin IS NULL";
+$result_jornada = mysqli_query($conexion, $query_jornada);
+if ($result_jornada && mysqli_num_rows($result_jornada) > 0) {
+    echo '
+      <script>
+        alert("Tienes una jornada activa. No puedes acceder a esta vista.");
+        window.location = "./";
+      </script>
+    ';
     exit();
-  }else if($_SESSION['jornada'] == "iniciada"){
-    header('Location: ./terminar-jornada.php');
-    exit();
-  }
+} else {
+    // Obtener los servicios realizados y los materiales utilizados
+    $query_servicios = "
+        SELECT 
+            s.nombre_servicio, 
+            t.id_trabajo, 
+            sol.direccion, 
+            sol.codigo_postal,
+            s.id_servicio
+        FROM 
+            trabajo t
+        JOIN 
+            solicitudes sol ON t.id_solicitud = sol.id_solicitud
+        JOIN
+            servicios s ON sol.id_servicio = s.id_servicio
+        WHERE 
+            t.id_trabajador = $id_usuario AND t.status = 1";
+    $result_servicios = mysqli_query($conexion, $query_servicios);
+
+    $servicios = [];
+    if ($result_servicios && mysqli_num_rows($result_servicios) > 0) {
+        while ($row = mysqli_fetch_assoc($result_servicios)) {
+            $servicios[] = $row;
+        }
+    }
+
+  $materiales = obtenerMaterialesPorServicio($detalle['id_servicio']);
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tuPlomeroMx</title>
@@ -57,8 +91,8 @@
         },
       };
     </script>
-  </head>
-  <body class="bg-gray-100">
+</head>
+<body class="bg-gray-100">
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
       <div
@@ -111,6 +145,7 @@
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
                 class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                onclick="window.location.href = '../php/logout.php'"
               >
                 Logout
               </button>
@@ -124,7 +159,20 @@
         class="w-full py-10 flex flex-col items-center justify-center gap-10"
       >
         <div class="flex flex-row gap-3 w-full md:w-2/3">
-          <h2 class="max-md:px-6 text-2xl font-bold">Día: # de #, 2024.</h2>
+          <h2 class="max-md:px-6 text-2xl font-bold">Día:
+          <?php
+              // Configuración de la fecha actual en español
+              $formatter = new IntlDateFormatter(
+                  'es_ES',
+                  IntlDateFormatter::LONG,
+                  IntlDateFormatter::NONE,
+                  'Europe/Madrid',
+                  IntlDateFormatter::GREGORIAN
+              );
+
+              echo $formatter->format(time());
+            ?>
+            </h2>
         </div>
         <div
           class="w-full flex flex-col md:flex-row md:justify-center gap-14 lg:gap-[10%]"
@@ -138,38 +186,15 @@
                 class="md:max-w-96 table-fixed md:table-auto text-left shadow-lg"
               >
                 <tbody class="bg-white">
-                  <tr>
-                    <td class="p-4 border-b border-gray-700 rounded-t-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        1. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 border-b border-gray-700">
-                      <p class="block text-sm leading-normal font-semibold">
-                        2. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 border-b border-gray-700">
-                      <p class="block text-sm leading-normal font-semibold">
-                        2. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 rounded-b-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        3. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
+                  <?php foreach ($servicios as $servicio): ?>
+                    <tr>
+                      <td class="p-4 border-b border-gray-700 rounded-t-lg">
+                        <p class="block text-sm leading-normal font-semibold">
+                          <?php echo $servicio['nombre_servicio']; ?> - <?php echo $servicio['direccion']; ?>, Código Postal: <?php echo $servicio['codigo_postal']; ?>
+                        </p>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -181,30 +206,22 @@
             >
               <table class="md:max-w-96 table-fixed md:table-auto text-left">
                 <tbody class="bg-white">
-                  <tr>
-                    <td class="p-4 border-b border-gray-700 rounded-t-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        1. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 border-b border-gray-700">
-                      <p class="block text-sm leading-normal font-semibold">
-                        2. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="p-4 rounded-b-lg">
-                      <p class="block text-sm leading-normal font-semibold">
-                        3. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.
-                      </p>
-                    </td>
-                  </tr>
+                  <?php foreach ($servicios as $servicio): 
+                    $materiales = obtenerMaterialesPorServicio($servicio['id_servicio'], $conexion);
+                  ?>
+                    <tr>
+                      <td class="p-4 border-b border-gray-700 rounded-t-lg">
+                        <p class="block text-sm leading-normal font-semibold">
+                          Materiales para <?php echo $servicio['nombre_servicio']; ?>:
+                        </p>
+                        <ul>
+                          <?php foreach ($materiales as $material): ?>
+                            <li><?php echo $material['cantidad'] . ' ' . $material['nombre']; ?></li>
+                          <?php endforeach; ?>
+                        </ul>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -280,5 +297,5 @@
         </p>
       </div>
     </footer>
-  </body>
+</body>
 </html>

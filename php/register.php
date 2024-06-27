@@ -12,6 +12,7 @@
     $telefono = $_POST['telefono'];
     $contrasena = $_POST['contrasena'];
     $tipo_cuenta = 'user';
+    $estado = 'alta';
     
     // Encriptacion de la contraseña
     $contrasena = password_hash($contrasena, PASSWORD_BCRYPT);
@@ -30,8 +31,8 @@
         exit();
     }
 
-    $query_insert = "INSERT INTO usuarios (nombre, apellido, correo, telefono, contrasena, tipo_cuenta) 
-    VALUES ('$nombre', '$apellido', '$correo', '$telefono', '$contrasena', '$tipo_cuenta')";
+    $query_insert = "INSERT INTO usuarios (nombre, apellido, correo, telefono, contrasena, tipo_cuenta, estado) 
+    VALUES ('$nombre', '$apellido', '$correo', '$telefono', '$contrasena', '$tipo_cuenta','$estado')";
 
     
 

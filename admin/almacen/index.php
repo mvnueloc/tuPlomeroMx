@@ -1,6 +1,13 @@
 <?php
 include '../../php/conexion_bd.php';
 
+// if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'admin'){
+//     session_destroy();
+//     header('Location: ../');
+    
+//     exit();
+//   }
+
 // Número de registros por página
 $limit = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -97,9 +104,15 @@ mysqli_close($conexion);
         </div>
         <div class="md:mx-12">
             <div>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/registro_plomeros.php">Empleados</a>
-                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/almacen.php">Almacen</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/reportes.php">Reportes</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/">Empleados</a>
+                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/">Almacen</a>
+                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/">Reportes</a>
+                <button
+                class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                onclick="window.location.href='../../php/logout.php'"
+              >
+                Cerrar sesión
+              </button>
             </div>
         </div>
     </nav>

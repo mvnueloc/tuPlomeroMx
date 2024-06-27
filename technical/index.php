@@ -114,15 +114,23 @@
               echo $_SESSION['usuario'] . " " . $_SESSION['apellido'];
             ?>,
             hoy es
-            <!-- <?php
-              setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
-              echo strftime("%d de %B de %Y");
-            ?> -->
+            <?php
+              // Configuración de la fecha actual en español
+              $formatter = new IntlDateFormatter(
+                  'es_ES',
+                  IntlDateFormatter::LONG,
+                  IntlDateFormatter::NONE,
+                  'Europe/Madrid',
+                  IntlDateFormatter::GREGORIAN
+              );
+
+              echo $formatter->format(time());
+            ?>
             , ¿Estás listo para empezar tu jornada?
           </p>
         </div>
         <a
-          href="/technical/jornada.php"
+          href="./actions/iniciar_jornada.php"
           class="py-2.5 px-14 bg-primary text-white hover:bg-gray-800 hover:text-white transition-colors rounded-lg text-base font-medium"
           >Iniciar</a
         >

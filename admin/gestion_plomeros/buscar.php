@@ -15,15 +15,15 @@ $sql = "SELECT
             u.telefono,  
             u.zona, 
             u.fecha_alta,
-            IF(j.id_jornada IS NULL, 'inactivo', 'activo') AS estado_jornada
+            CASE 
+                WHEN EXISTS (SELECT 1 FROM jornadas_trabajo j 
+                             WHERE j.id_usuario = u.id_usuario 
+                             AND j.fecha = CURDATE() 
+                             AND j.hora_fin IS NULL) THEN 'activo'
+                ELSE 'inactivo'
+            END AS estado_jornada
         FROM 
             usuarios u
-        LEFT JOIN 
-            jornadas_trabajo j 
-        ON 
-            u.id_usuario = j.id_usuario 
-        AND 
-            j.fecha = CURDATE()
         WHERE 
             u.tipo_cuenta = 'work' 
         AND 
@@ -33,6 +33,7 @@ $sql = "SELECT
             OR u.apellido LIKE '%$query%' 
             OR u.correo LIKE '%$query%' 
             OR u.telefono LIKE '%$query%')
+        GROUP BY u.id_usuario
         LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($conexion, $sql);
@@ -137,7 +138,7 @@ mysqli_close($conexion);
 
     document.querySelectorAll('[onclick^="openDeleteModal"]').forEach(button => {
         button.addEventListener('click', function () {
-            const id = this.getAttribute('onclick').match(/\d+/)[0];
+            const id = this.getAttribute('onclick').match(/\d+/')[0];
             openDeleteModal(id);
         });
     });

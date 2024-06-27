@@ -1,43 +1,41 @@
 <?php
-  
 
-  session_start();
-  if(!isset($_SESSION['usuario'])){
+session_start();
+if (!isset($_SESSION['usuario'])) {
     session_destroy();
     header('Location: ../');
     exit();
-  }else if($_SESSION['tipo_cuenta'] != 'work'){
+} else if ($_SESSION['tipo_cuenta'] != 'work') {
     header('Location: ../');
     exit();
-  }
+}
 
-  if(!isset($_SESSION['jornada'])){
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-      ini_set('display_errors', 1);
-      ini_set('display_startup_errors', 1);
-      error_reporting(E_ALL);
-    
-      include(dirname(__DIR__).'../php/conexion_bd.php');
+include(dirname(__DIR__) . '../php/conexion_bd.php');
 
-      $_SESSION['jornada'] = "iniciada";
-      
-      $query_on_service = "SELECT * FROM trabajo WHERE id_trabajador = ".$_SESSION['id']." AND status = 0";
-      if(mysqli_num_rows(mysqli_query($conexion, $query_on_service)) != 0){
+// Obtener la zona del usuario logueado
+$usuario_id = $_SESSION['id'];
+$query_usuario_zona = "SELECT zona FROM usuarios WHERE id_usuario = $usuario_id";
+$result_usuario_zona = mysqli_query($conexion, $query_usuario_zona);
+$usuario_zona = mysqli_fetch_assoc($result_usuario_zona)['zona'];
+
+if (!isset($_SESSION['jornada'])) {
+    $_SESSION['jornada'] = "iniciada";
+
+    $query_on_service = "SELECT * FROM trabajo WHERE id_trabajador = " . $_SESSION['id'] . " AND status = 0";
+    $result = mysqli_query($conexion, $query_on_service);
+
+    if (mysqli_num_rows($result) != 0) {
         $_SESSION['servicio'] = "onService";
-      }else{
+    } else {
         $_SESSION['servicio'] = "none";
-      }
+    }
+}
 
-  }
-  
-  if($_SESSION['servicio'] != "none"){
-    header('Location: ./servicio.php');
-    exit();
-  }
-
-  
-
-  include '../php/conexion_bd.php';
+include '../php/conexion_bd.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -156,7 +154,7 @@
             />
           </svg>
           <h2 class="text-lg md:text-2xl font-bold">
-            Ubicación: Sur de la CDMX
+            Ubicación: <?php echo htmlspecialchars($usuario_zona); ?>
           </h2>
         </div>
         <!-- component -->
@@ -165,7 +163,8 @@
         >
           <table class="w-full table-auto text-left">
             <?php 
-              $getAvailableRequest = "SELECT * FROM solicitudes WHERE status = 0 ORDER BY hora_solicitud ASC";
+              // Obtener solo las solicitudes de la misma zona que el usuario
+              $getAvailableRequest = "SELECT * FROM solicitudes WHERE status = 0 AND zona = '$usuario_zona' ORDER BY hora_solicitud ASC";
               $getElements = mysqli_query($conexion, $getAvailableRequest);
 
               if(mysqli_num_rows($getElements) != 0 && $_SESSION['jornada'] == "iniciada"){
@@ -429,7 +428,7 @@
           if($_SESSION['jornada'] == "iniciada"){
             echo '
               <a
-                href="./actions/terminar-jornada.php"
+                href="./actions/finalizar_jornada.php"
                 class="py-3 px-14 bg-primary text-gray-100 hover:bg-gray-100 hover:text-primary hover:border-2 hover:border-primary transition-colors rounded-lg text-base font-medium"
                 >Finalizar jornada</a
               >

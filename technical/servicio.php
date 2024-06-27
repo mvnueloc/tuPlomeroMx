@@ -4,24 +4,25 @@
   error_reporting(E_ALL);
 
   include(dirname(__DIR__).'../php/conexion_bd.php');
+  include './actions/get_materiales.php';
 
   session_start();
 
-  if(!isset($_SESSION['usuario'])){
+  if (!isset($_SESSION['usuario'])) {
     session_destroy();
     header('Location: ../');
     exit();
-  }else if($_SESSION['tipo_cuenta'] != 'work'){
+  } else if ($_SESSION['tipo_cuenta'] != 'work') {
     header('Location: ../');
     exit();
   }
 
-  if(!isset($_SESSION['jornada'])){
+  if (!isset($_SESSION['jornada'])) {
     header('Location: ./');
     exit(); 
   }
 
-  if($_SESSION['servicio'] != "onService"){
+  if ($_SESSION['servicio'] != "onService") {
     header('Location: ./');
     exit();
   }
@@ -30,11 +31,21 @@
   FROM trabajo 
   INNER JOIN solicitudes ON trabajo.id_solicitud = solicitudes.id_solicitud 
   INNER JOIN servicios ON solicitudes.id_servicio = servicios.id_servicio 
-  WHERE trabajo.id_trabajador = ".$_SESSION['id']." AND trabajo.status = 0";
+  WHERE trabajo.id_trabajador = " . $_SESSION['id'] . " AND trabajo.status = 0";
 
   $result = mysqli_query($conexion, $query);
-  $detalle = mysqli_fetch_array($result);
-  
+
+  if (!$result) {
+    die("Query failed: " . mysqli_error($conexion));
+  }
+
+  if (mysqli_num_rows($result) > 0) {
+    $detalle = mysqli_fetch_array($result);
+    $materiales = obtenerMaterialesPorServicio($detalle['id_servicio']);
+  } else {
+    echo "No hay resultados.";
+    exit();
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +121,7 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="">Solicitud</a>
+              <a href="./jornada">Solicitud</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <a href="./reportes.php">Reportes</a>
@@ -150,8 +161,11 @@
             <div>
               <h3 class="mb-4 text-xl font-medium">Materiales.</h3>
               <ul>
-                <li class="">Material 1</li>
-                <li class="">Material 2</li>
+                <?php
+                foreach ($materiales as $material) {
+                    echo "<li class=''>{$material['cantidad']} {$material['nombre']}</li>";
+                }
+                ?>
               </ul>
             </div>
           </article>

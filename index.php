@@ -7,6 +7,9 @@
   }else if(isset($_SESSION['usuario']) && $_SESSION['tipo_cuenta'] == 'user'){
     header('Location: ./client');
     exit;
+  }else if(isset($_SESSION['usuario']) && $_SESSION['tipo_cuenta'] == 'admin'){
+    header('Location: ./admin/almacen');
+    exit;
   }
     
 ?>
