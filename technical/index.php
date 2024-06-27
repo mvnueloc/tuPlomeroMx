@@ -1,9 +1,20 @@
 <?php
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+  if(!isset($_SESSION['usuario'])){
+    session_destroy();
+    header('Location: ../');
+    exit();
+  }else if($_SESSION['tipo_cuenta'] != 'work'){
     header('Location: ../');
     exit();
   }
+
+  if(isset($_SESSION['jornada'])){
+    header('Location: ./jornada.php');
+    exit(); 
+  }
+
+  setlocale(LC_TIME, 'es_ES.UTF-8');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,21 +88,12 @@
           <ul
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
-            <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="#">Home</a>
-            </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
-            </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
-            </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
                 onclick="window.location.href = '../php/logout.php'"
               >
-                Logout
+                Cerrar Sesión
               </button>
             </li>
           </ul>
@@ -107,12 +109,21 @@
         </h2>
         <div class="text-xl md:text-4xl font-light text-center max-md:px-5">
           <p>
-            Hola "Nombre" hoy es "Día", ¿Estás listo para empezar tu jornada?
+            Hola 
+            <?php
+              echo $_SESSION['usuario'] . " " . $_SESSION['apellido'];
+            ?>,
+            hoy es
+            <!-- <?php
+              setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
+              echo strftime("%d de %B de %Y");
+            ?> -->
+            , ¿Estás listo para empezar tu jornada?
           </p>
         </div>
         <a
           href="/technical/jornada.php"
-          class="py-2.5 px-14 bg-secundary text-white hover:bg-gray-100 hover:text-secundary transition-colors rounded-lg text-base font-medium"
+          class="py-2.5 px-14 bg-primary text-white hover:bg-gray-800 hover:text-white transition-colors rounded-lg text-base font-medium"
           >Iniciar</a
         >
       </div>

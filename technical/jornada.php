@@ -1,9 +1,43 @@
 <?php
+  
+
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+  if(!isset($_SESSION['usuario'])){
+    session_destroy();
+    header('Location: ../');
+    exit();
+  }else if($_SESSION['tipo_cuenta'] != 'work'){
     header('Location: ../');
     exit();
   }
+
+  if(!isset($_SESSION['jornada'])){
+
+      ini_set('display_errors', 1);
+      ini_set('display_startup_errors', 1);
+      error_reporting(E_ALL);
+    
+      include(dirname(__DIR__).'../php/conexion_bd.php');
+
+      $_SESSION['jornada'] = "iniciada";
+      
+      $query_on_service = "SELECT * FROM trabajo WHERE id_trabajador = ".$_SESSION['id']." AND status = 0";
+      if(mysqli_num_rows(mysqli_query($conexion, $query_on_service)) != 0){
+        $_SESSION['servicio'] = "onService";
+      }else{
+        $_SESSION['servicio'] = "none";
+      }
+
+  }
+  
+  if($_SESSION['servicio'] != "none"){
+    header('Location: ./servicio.php');
+    exit();
+  }
+
+  
+
+  include '../php/conexion_bd.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,20 +117,18 @@
           <ul
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
-            </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="">Solicitud</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./reportes.php">Reportes</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
+                onclick="window.location.href = '../php/logout.php'"
               >
-                Logout
+                Cerrar Sesión
               </button>
             </li>
           </ul>
@@ -129,10 +161,111 @@
         </div>
         <!-- component -->
         <div
-          class="w-full md:w-2/3 shadow-lg shadow-gray-300 border-solid border-2 border-gray-300 rounded-lg"
+          class="w-full md:w-4/5 shadow-lg shadow-gray-300 border-solid border-2 border-gray-300 rounded-lg"
         >
-          <table class="w-full table-fixed md:table-auto text-left">
-            <thead class="bg-gray-900 text-white rounded-t-lg">
+          <table class="w-full table-auto text-left">
+            <?php 
+              $getAvailableRequest = "SELECT * FROM solicitudes WHERE status = 0 ORDER BY hora_solicitud ASC";
+              $getElements = mysqli_query($conexion, $getAvailableRequest);
+
+              if(mysqli_num_rows($getElements) != 0 && $_SESSION['jornada'] == "iniciada"){
+                
+                echo'
+                <thead class="bg-gray-900 text-white rounded-t-lg">
+                  <tr>
+                    <th
+                      class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal rounded-tl-lg"
+                    >
+                      Servicio
+                    </th>
+                    <th
+                      class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal"
+                    >
+                      Domicilio
+                    </th>
+                    <th
+                      class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal"
+                    >
+                      Costo
+                    </th>
+                    <th
+                      class="py-2 md:py-3 px-3 md:px-6 text-left border-gray-300 text-base md:text-xl font-normal rounded-tr-lg"
+                    >
+                      Acción
+                    </th>
+                  </tr>
+                </thead>
+                ';                
+                echo '<tbody class="bg-white">';
+
+                while($request = mysqli_fetch_assoc($getElements)){
+                  $getRequestServices = "SELECT 
+                  * FROM servicios
+                  WHERE 
+                      id_servicio = ".$request['id_servicio']."";
+                  
+                  $getServices = mysqli_query($conexion, $getRequestServices);
+                  
+                  $title = "";
+                  $cost = 0;
+                  while($service = mysqli_fetch_assoc($getServices)){
+                    $title .= $service['nombre_servicio'].", ";
+                    $cost += $service['costo_base'];
+                  }
+
+                  echo'<tr>';
+                  echo'
+                    <td class="p-4 border border-gray-700">
+                      <p
+                        class="block text-xs md:text-sm leading-normal"
+                      >
+                        '.substr($title, 0, -2).'. 
+                      </p>
+                    </td>
+                    <td class="p-4 border border-gray-700">
+                      <p
+                        class="block text-xs md:text-sm leading-normal "
+                      >
+                        '.$request['direccion'].'
+                      </p>
+                    </td>
+                    <td class="p-4 border border-gray-700">
+                      <p
+                        class="block text-xs md:text-sm leading-normal"
+                      >
+                        $'.$cost.'.00 mxn
+                      </p>
+                    </td>
+                    <td class="p-4 border border-gray-700">
+                      <div class="flex flex-row items-center justify-center gap-3">
+                        <a
+                          href="./actions/asignar-solicitud.php?id='.$request['id_solicitud'].'"
+                          class="bg-green-600 text-white max-md:text-sm px-3 md:px-6 py-2 rounded-lg"
+                        >
+                          Aceptar
+                        </a>
+                      </div>
+                    </td>
+                  ';
+                  echo'</tr>';
+                }
+
+                echo '</tbody>';
+              }else if($_SESSION['jornada'] == "iniciada"){
+                echo '
+                  <div class="bg-gray-100 text-gray-700 text-center py-10 rounded-lg">
+                    No hay solicitudes disponibles
+                  </div>
+                ';
+              }else{
+                echo '
+                  <div class="bg-gray-100 text-gray-700 text-center py-10 rounded-lg">
+                    Jornada finalizada
+                  </div>
+                ';
+              }
+            ?>
+            <!-- <thead class="bg-gray-900 text-white rounded-t-lg">
               <tr>
                 <th
                   class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal rounded-tl-lg"
@@ -289,14 +422,28 @@
                   </div>
                 </td>
               </tr>
-            </tbody>
+            </tbody> -->
           </table>
         </div>
-        <a
-          href="./resumen-jornada.html"
-          class="py-3 px-14 bg-secundary text-gray-100 hover:bg-gray-100 hover:text-secundary transition-colors rounded-lg text-base font-medium"
-          >Finalizar jornada</a
-        >
+        <?php
+          if($_SESSION['jornada'] == "iniciada"){
+            echo '
+              <a
+                href="./actions/terminar-jornada.php"
+                class="py-3 px-14 bg-primary text-gray-100 hover:bg-gray-100 hover:text-primary hover:border-2 hover:border-primary transition-colors rounded-lg text-base font-medium"
+                >Finalizar jornada</a
+              >
+            ';
+          }else{
+            echo'
+              <a
+                href="./reportes.php"
+                class="py-3 px-14 bg-primary text-gray-100 hover:bg-gray-100 hover:text-primary hover:border-2 hover:border-primary transition-colors rounded-lg text-base font-medium"
+                >Ver reporte</a
+              >
+            ';
+          }
+        ?>
       </div>
     </main>
     <!-- footer -->

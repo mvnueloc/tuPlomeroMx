@@ -34,7 +34,7 @@
               secundary: "#0077C2",
             },
             height: {
-              "screen-minus-68": "calc(100vh - 68px)",
+              "screen-minus-68": "calc(100vh - 67px)",
               "screen-minus-64": "calc(100vh - 64px)",
             },
           },
@@ -53,7 +53,7 @@
           href="#"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
-          Nombre
+          tuPlomeroMx
         </a>
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
@@ -116,7 +116,7 @@
             onclick=
             <?php 
 
-              if(isset($_SESSION['usuario'])){
+              if(isset($_SESSION['usuario'])){  
                 echo "window.location.href='./client/solicitud.php'";
               }else{
                 echo "window.location.href='./account'";

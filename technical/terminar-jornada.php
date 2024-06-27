@@ -1,9 +1,22 @@
 <?php
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+  if(!isset($_SESSION['usuario'])){
+    session_destroy();
+    header('Location: ../');
+    exit();
+  }else if($_SESSION['tipo_cuenta'] != 'work'){
     header('Location: ../');
     exit();
   }
+
+  if(!isset($_SESSION['jornada'])){
+    header('Location: ./');
+    exit(); 
+  }else if($_SESSION['jornada'] == 'terminada'){
+    header('Location: ./reportes.php');
+    exit();
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,20 +90,18 @@
           <ul
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+            <li class="text-gray-500 md:mr-12 hover:text-secundary">
+              <a href="./jornada.php">Solicitud</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
-            </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="">Reportes</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
+                onclick="window.location.href = '../php/logout.php'"
               >
-                Logout
+                Cerrar Sesión
               </button>
             </li>
           </ul>
@@ -109,7 +120,8 @@
           </p>
         </div>
         <button
-          class="py-2.5 px-14 bg-secundary text-gray-100 hover:bg-gray-100 hover:text-secundary rounded-lg text-base font-medium transition-colors"
+          class="py-2.5 px-14 bg-primary text-gray-100 hover:bg-gray-100 hover:text-primary hover:border hover:border-primary rounded-lg text-base font-medium transition-colors"
+          onclick="window.location.href = './actions/terminar-jornada-second.php'"
         >
           Finalizar Jornada
         </button>
