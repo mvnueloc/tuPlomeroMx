@@ -27,29 +27,15 @@ $regiones = [
     ]
 ];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $codigo_postal = intval($_POST['codigo_postal']);
-    $zona_encontrada = '';
-
-    // Buscar en qué zona se encuentra el código postal ingresado
+function obtenerZona($codigo_postal) {
+    global $regiones;
     foreach ($regiones as $zona => $municipios) {
-        foreach ($municipios as $municipio => $cp_range) {
+        foreach ($municipios as $cp_range) {
             if (in_array($codigo_postal, $cp_range)) {
-                $zona_encontrada = $zona;
-                break 2; // Romper ambos bucles
+                return $zona;
             }
         }
     }
-
-    // Mostrar resultado
-    if (!empty($zona_encontrada)) {
-        echo '<div class="result">';
-        echo "El código postal $codigo_postal pertenece a la $zona_encontrada.";
-        echo '</div>';
-    } else {
-        echo '<div class="result">';
-        echo "El código postal $codigo_postal no se encuentra en ninguna zona definida.";
-        echo '</div>';
-    }
+    return null; // Si no se encuentra la zona
 }
 ?>

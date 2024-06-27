@@ -29,7 +29,7 @@
               secundary: "#0077C2",
             },
             height: {
-              "screen-minus-68": "calc(100vh - 68px)",
+              "screen-minus-68": "calc(100vh - 67px)",
               "screen-minus-64": "calc(100vh - 64px)",
             },
           },
@@ -48,7 +48,7 @@
           href="#"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
-          Nombre
+          tuPlomeroMX
         </a>
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
@@ -83,14 +83,14 @@
               <a href="#">Home</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./solicitud.php">Solicitud</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-secundary px-6 py-1 font-medium text-secundary transition-colors hover:bg-secundary hover:text-white"
+                class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
                 onclick="window.location.href='../php/logout.php'"
               >
                 Cerrar sesión

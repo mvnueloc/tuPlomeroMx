@@ -1,7 +1,49 @@
 <?php
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+
+  include(dirname(__DIR__).'../php/conexion_bd.php');
+  include './actions/get_materiales.php';
+
   session_start();
-  if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'work'){
+
+  if (!isset($_SESSION['usuario'])) {
+    session_destroy();
     header('Location: ../');
+    exit();
+  } else if ($_SESSION['tipo_cuenta'] != 'work') {
+    header('Location: ../');
+    exit();
+  }
+
+  if (!isset($_SESSION['jornada'])) {
+    header('Location: ./');
+    exit(); 
+  }
+
+  if ($_SESSION['servicio'] != "onService") {
+    header('Location: ./');
+    exit();
+  }
+
+  $query = "SELECT trabajo.*, solicitudes.*, servicios.* 
+  FROM trabajo 
+  INNER JOIN solicitudes ON trabajo.id_solicitud = solicitudes.id_solicitud 
+  INNER JOIN servicios ON solicitudes.id_servicio = servicios.id_servicio 
+  WHERE trabajo.id_trabajador = " . $_SESSION['id'] . " AND trabajo.status = 0";
+
+  $result = mysqli_query($conexion, $query);
+
+  if (!$result) {
+    die("Query failed: " . mysqli_error($conexion));
+  }
+
+  if (mysqli_num_rows($result) > 0) {
+    $detalle = mysqli_fetch_array($result);
+    $materiales = obtenerMaterialesPorServicio($detalle['id_servicio']);
+  } else {
+    echo "No hay resultados.";
     exit();
   }
 ?>
@@ -78,20 +120,18 @@
           <ul
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
-            </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="./jornada">Solicitud</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+              <a href="./reportes.php">Reportes</a>
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
+                onclick="window.location.href = '../php/logout.php'"
               >
-                Logout
+                Cerrar Sesión
               </button>
             </li>
           </ul>
@@ -108,17 +148,24 @@
             <h2 class="text-3xl font-semibold">Detalles del servicio</h2>
             <div>
               <h3 class="mb-4 font-medium text-xl">Tipo de servicio.</h3>
-              <p class="">Mantenimiento preventivo y lavado de tinacos.</p>
+              <p class="">
+                <?php echo $detalle['nombre_servicio']; ?>
+              </p>
             </div>
             <div>
               <h3 class="mb-4 text-xl font-medium">Domicilio.</h3>
-              <p class="">Detalles del domicilio</p>
+              <p class="max-w-md break-words">
+                <?php echo $detalle['direccion'].", Código Postal: ".$detalle['codigo_postal'] ?>
+              </p>
             </div>
             <div>
               <h3 class="mb-4 text-xl font-medium">Materiales.</h3>
               <ul>
-                <li class="">Material 1</li>
-                <li class="">Material 2</li>
+                <?php
+                foreach ($materiales as $material) {
+                    echo "<li class=''>{$material['cantidad']} {$material['nombre']}</li>";
+                }
+                ?>
               </ul>
             </div>
           </article>
@@ -129,34 +176,38 @@
           class="h-full flex flex-col items-center justify-center pb-[11%]"
         >
           <!-- Fotos de evidencia -->
-          <div
+          <form
             class="bg-gray-100 w-[22rem] px-6 py-6 lg:px-12 lg:py-8 flex flex-col md:w-[20rem] lg:w-[28rem] items-center rounded-lg gap-5 shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
+            action = "./actions/finalizar-trabajo.php?id_trabajo=<?php echo $detalle['id_trabajo']; ?>&monto=<?php echo $detalle['costo_base']; ?>"
+            method = "POST"
+            enctype= "multipart/form-data"
           >
             <h2 class="mb-2 text-center text-xl font-bold">Evidencia</h2>
-            <div
-              class="bg-[#D9D9D9] w-full flex flex-col items-center rounded-lg py-7 gap-3"
-              onclick="document.getElementById('file-upload').click();"
-            >
-              <div class="flex max-h-20">
-                <img
-                  src="../assets/img/images-upload.svg"
-                  class="opacity-65 max-h-14 md:max-h-24"
-                  alt="icono de subir imagen"
-                />
+            <div class="bg-[#D9D9D9] w-full flex flex-col items-center rounded-lg py-7 gap-3" onclick="document.getElementById('file-upload').click();">
+              <div class="flex max-h-20" id="upload-icon">
+                <img src="../assets/img/images-upload.svg" class="opacity-65 max-h-14 md:max-h-24" alt="icono de subir imagen" />
               </div>
-              <label
-                for="file-upload"
-                class="font-bold text-sm text-[#616060] opacity-65"
-                >Haz click para subir una foto</label
-              >
-              <input type="file" id="file-upload" class="hidden" />
+              <label for="file-upload" class="font-bold text-sm text-[#616060] opacity-65" id="upload-label">Haz click para subir una foto</label>
+              <label for="file-upload" class="hidden font-bold text-sm text-[#616060] opacity-65" id="upload-label-second">Imagen lista para subir</label>
+              <input 
+              type="file" 
+              id="file-upload" 
+              name="file-upload" class="hidden" 
+              accept= "image/png, image/jpeg"
+              required/>
             </div>
-            <button
-              class="bg-secundary py-3 px-8 rounded-lg font-semibold text-white hover:bg-gray-100 hover:text-secundary transition-colors"
-            >
-              Finalizar
-            </button>
-          </div>
+            <button class="py-2.5 px-14 bg-primary text-gray-100 hover:bg-gray-100 hover:text-primary hover:border hover:border-primary rounded-lg text-base font-medium transition-colors">Finalizar</button>
+
+            <script>
+              document.getElementById('file-upload').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                  document.getElementById('upload-icon').innerHTML = '<img src="../assets/img/checked-icon.svg" class="max-h-14 md:max-h-24" alt="icono de archivo seleccionado" />'; 
+                  document.getElementById('upload-label').style.display = 'none'; 
+                  document.getElementById('upload-label-second').style.display = 'block';
+                }
+              });
+            </script>
+          </form>
         </section>
       </div>
     </main>

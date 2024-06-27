@@ -1,5 +1,4 @@
 <?php
-
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -26,17 +25,19 @@
     }
 
     $usuario = mysqli_fetch_assoc($ejecutar);
-    
-    if(!password_verify($contrasena, $usuario['contrasena'])) {
+
+    // Verifica la contraseña
+    if (!password_verify($contrasena, $usuario['contrasena'])) {
         echo '
             <script>
                 alert("Contraseña incorrecta");
                 window.location = "../account/";
             </script>
-        ';    
+        ';
+        exit;
     }
-    
-    
+
+    // Si la contraseña es correcta, inicia sesión
     $_SESSION['usuario'] = $usuario['nombre']; 
     $_SESSION['id'] = $usuario['id_usuario'];
     $_SESSION['nombre'] = $usuario['nombre'];
@@ -47,5 +48,4 @@
 
     header("location: ../");
     exit;   
-    
 ?>

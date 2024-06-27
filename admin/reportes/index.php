@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +18,8 @@
       theme: {
         extend: {
           colors: {
-            primary: "#0077C2",
-            secundary: "#00619A",
+            primary: "#13212A",
+            secundary: "#0077C2",
             third:"#F5F5F5",
           },
           height: {
@@ -29,13 +30,35 @@
     };
   </script>
 </head>
-<body class="bg-third">
+<body class="bg-primary">
+
+        <!-- Navbar -->
+        <nav class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between">
+            <div class="mx-12 hidden md:block">
+                <a class="text-white" href="#">NOMBRE</a>
+            </div>
+    
+            <div class="md:mx-12">
+                <div>
+                    <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/">Empleados</a>
+                    <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/">Almacen</a>
+                    <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/">Reportes</a>
+                    <button
+                        class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                        onclick="window.location.href='../../php/logout.php'"
+                    >
+                        Cerrar sesión
+                    </button>
+                </div>
+            </div>
+        </nav>
+
   <section class=" w-full md:bg-cover md:bg-center">
     <div class="w-full md:flex-row justify-between">
 
       <section class="py-1 bg-blueGray-50 w-full sm:p-10 ">
         <div class="flex justify-center item-center mb-10">
-            <h2 class=" font-bold text-4xl">Reportes de la plataforma</h2>
+            <h2 class="text-white font-bold text-4xl">Reportes de la plataforma</h2>
         </div>
 
         <!-- tabla de costos -->
