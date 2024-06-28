@@ -76,7 +76,7 @@ if ($success) {
         $id_jornada = $row_jornada['id_jornada'];
         
         // Insertar en nota_reporte
-        $query_insert_nota = "INSERT INTO nota_reporte (id_jornada, id_trabajo, id_usuario) VALUES ($id_jornada, $id_trabajo, $id_usuario)";
+        $query_insert_nota = "INSERT INTO nota_reporte (id_jornada, id_trabajo, id_usuario,reposicion) VALUES ($id_jornada, $id_trabajo, $id_usuario,'no repuesto')";
         mysqli_query($conexion, $query_insert_nota);
     }
 

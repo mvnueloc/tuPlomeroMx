@@ -15,6 +15,9 @@ error_reporting(E_ALL);
 
 include(dirname(__DIR__).'../../php/conexion_bd.php');
 
+// Establecer la zona horaria a America/Mexico_City
+date_default_timezone_set('America/Mexico_City');
+
 // Obtener la fecha y la hora actual
 $fecha_actual = date('Y-m-d');
 $hora_actual = date('H:i:s');

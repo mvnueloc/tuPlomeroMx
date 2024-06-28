@@ -15,7 +15,10 @@ error_reporting(E_ALL);
 
 include(dirname(__DIR__).'../../php/conexion_bd.php');
 
-// Obtener la hora actual
+// Establecer la zona horaria a America/Mexico_City
+date_default_timezone_set('America/Mexico_City');
+
+// Obtener la fecha y la hora actual
 $hora_actual = date('H:i:s');
 
 // Actualizar el registro en la tabla jornada

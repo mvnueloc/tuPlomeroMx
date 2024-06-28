@@ -66,5 +66,10 @@ for ($i = 0; $i < count($materiales); $i++) {
 }
 
 mysqli_close($conexion);
-header('Location: almacen.php');
+echo '
+        <script>
+            alert("Reposicion excitosa");
+            window.location.href = "./"; // Use JavaScript for redirection
+        </script>
+    ';
 ?>

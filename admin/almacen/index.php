@@ -141,11 +141,11 @@ mysqli_close($conexion);
                                                     <path d="M237.927,0C106.555,0,0.035,106.52,0.035,237.893c0,131.373,106.52,237.893,237.893,237.893 c50.518,0,97.368-15.757,135.879-42.597l0.028-0.028l176.432,176.433c3.274,3.274,8.48,3.358,11.839,0l47.551-47.551 c3.274-3.274,3.106-8.703-0.028-11.838L433.223,373.8c26.84-38.539,42.597-85.39,42.597-135.907C475.82,106.52,369.3,0,237.927,0z M237.927,419.811c-100.475,0-181.918-81.443-181.918-181.918S137.453,55.975,237.927,55.975s181.918,81.443,181.918,181.918 S338.402,419.811,237.927,419.811z"/>
                                                 </svg>
                                             </span>
-                                            <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
+                                            <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl" oninput="fetchResults(this.value, 1)"/>
                                         </div>
                                     </div>
                                     <!-- Botones de filtro y orden -->
-                                    <div class="mt-4 sm:mt-0 flex items-center justify-end relative rounded-2xl border-2 p-2">
+                                    <!-- <div class="mt-4 sm:mt-0 flex items-center justify-end relative rounded-2xl border-2 p-2">
                                       <p class="mr-2 text-gray-400" >Orden: </p>
                                       <select class=" text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900">
                                         <option selected value="filtrar">Por Defecto</option>
@@ -154,7 +154,7 @@ mysqli_close($conexion);
                                         <option value="opcion3">más stock</option>
                                         <option value="opcion3">menos stock</option>
                                       </select>
-                                    </div>
+                                    </div> -->
                                     <!-- Botones de filtro y orden -->
                                     <button id="add_Product" class="mt-4 sm:mt-0 flex items-center justify-end relative">
                                         <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
@@ -304,21 +304,24 @@ mysqli_close($conexion);
     </div>
 </div>
 
+
 <!-- Modal Asignar Recursos -->
 <div id="modalRemove" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-2xl mb-4">Reponer materiales del Tecnico</h2>
-        <form id="removeStockForm" class="grid grid-cols-4 gap-4" method="POST" action="asignar_recursos.php">
-            <div class="col-span-4 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="material">Material</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" id="material_remove" name="material" type="text" required list="material-remove-list">
-                <datalist id="material-remove-list"></datalist>
+        <h2 class="text-2xl mb-4">Reponer materiales del Técnico</h2>
+        <form id="removeStockForm" class="grid grid-cols-4 gap-4" method="POST" action="actualizarNota.php">
+            <div class="col-span-4 mb-4 relative">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="tecnico">Empleado (Técnico)</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tecnico" name="tecnico" type="text" required list="tecnico-list" oninput="fetchTecnicos()">
+                <ul id="tecnico-list" class="absolute bg-white border border-gray-300 w-full max-h-48 overflow-y-auto hidden"></ul>
             </div>
-            <div class="col-span-4 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="cantidad">Cantidad</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cantidad_remove" name="cantidad" type="number" required>
+            <div id="service-materials" class="col-span-4">
+                <!-- Aquí se insertarán los materiales por servicio -->
             </div>
             <div class="col-span-4 flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button" onclick="fetchTrabajos()">
+                    Consultar
+                </button>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
                     Asignar
                 </button>
@@ -544,6 +547,61 @@ mysqli_close($conexion);
             });
         });
     });
+</script>
+<script>
+    document.getElementById('tecnico').addEventListener('keyup', function() {
+        fetchTecnicos();
+    });
+
+    function fetchTecnicos() {
+        const search = document.getElementById('tecnico').value;
+        if (search.length < 1) {
+            document.getElementById('tecnico-list').classList.add('hidden');
+            return;
+        }
+        fetch(`buscar_tecnico.php?query=${encodeURIComponent(search)}`)
+            .then(response => response.json())
+            .then(tecnicos => {
+                let html = '';
+                tecnicos.forEach(tecnico => {
+                    html += `<li class="cursor-pointer p-2 hover:bg-gray-200" onclick="selectTecnico('${tecnico.nombre_completo}')">${tecnico.nombre_completo}</li>`;
+                });
+                const tecnicoList = document.getElementById('tecnico-list');
+                if (tecnicos.length > 0) {
+                    tecnicoList.innerHTML = html;
+                    tecnicoList.classList.remove('hidden');
+                } else {
+                    tecnicoList.classList.add('hidden');
+                }
+            })
+            .catch(error => console.error('Error fetching technicians:', error));
+    }
+
+    function selectTecnico(nombreCompleto) {
+        document.getElementById('tecnico').value = nombreCompleto;
+        document.getElementById('tecnico-list').classList.add('hidden');
+    }
+
+    function fetchTrabajos() {
+    const tecnico = document.getElementById('tecnico').value;
+    fetch(`buscar_trabajos.php?tecnico=${encodeURIComponent(tecnico)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('service-materials').innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error fetching trabajos:', error);
+            alert('Error fetching trabajos: ' + error.message); // Mostrar el error al usuario
+        });
+}
+    function asignarRecursos() {
+        // Aquí puedes implementar la lógica para asignar los recursos
+    }
 </script>
 </body>
 </html>

@@ -26,6 +26,22 @@ if ($result_jornada && mysqli_num_rows($result_jornada) > 0) {
     ';
     exit();
 } else {
+        // Obtener la última jornada del técnico
+      $sql_jornada = "SELECT MAX(id_jornada) as ultima_jornada FROM jornadas_trabajo WHERE id_usuario = $id_usuario";
+      $result_jornada = mysqli_query($conexion, $sql_jornada);
+
+      if (!$result_jornada) {
+          response_error("Error en la consulta SQL: " . mysqli_error($conexion));
+      }
+
+      $row_jornada = mysqli_fetch_assoc($result_jornada);
+      $ultima_jornada = $row_jornada['ultima_jornada'];
+
+      // echo($row_jornada['ultima_jornada']);
+
+      if (!$ultima_jornada) {
+          response_error("No se encontró la última jornada para el técnico con ID: $id_usuario");
+      }
     // Obtener los servicios realizados y los materiales utilizados
     $query_servicios = "
         SELECT 
@@ -40,8 +56,12 @@ if ($result_jornada && mysqli_num_rows($result_jornada) > 0) {
             solicitudes sol ON t.id_solicitud = sol.id_solicitud
         JOIN
             servicios s ON sol.id_servicio = s.id_servicio
+        JOIN
+            nota_reporte nr ON t.id_trabajo = nr.id_trabajo
         WHERE 
-            t.id_trabajador = $id_usuario AND t.status = 1";
+            t.id_trabajador = $id_usuario 
+            AND t.status = 1
+            AND nr.id_jornada = $ultima_jornada";
     $result_servicios = mysqli_query($conexion, $query_servicios);
 
     $servicios = [];
