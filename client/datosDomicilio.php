@@ -60,6 +60,15 @@
         },
       };
     </script>
+    <?php
+    // Establecer la zona horaria a America/Mexico_City
+    date_default_timezone_set('America/Mexico_City');
+    
+    // Obtener la fecha actual en el formato YYYY-MM-DD
+    $fecha_actual = date('Y-m-d');
+    // Obtener la fecha y hora actual en el formato YYYY-MM-DDTHH:MM
+    $fecha_hora_actual = date('Y-m-d\TH:i');
+  ?>
   </head>
 
   <body class="bg-gray-100">
@@ -234,7 +243,7 @@
                 <input
                   type="date"
                   name="fecha"
-                  min="2024-06-25"
+                  min="<?php echo $fecha_actual; ?>"
                   max="2030-12-31"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   required=""
@@ -248,7 +257,7 @@
                 <input
                   type="time"
                   name="hora"
-                  min="7:00"
+                  min="<?php echo $fecha_hora_actual; ?>"
                   max="19:00"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   required=""

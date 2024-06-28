@@ -44,8 +44,11 @@
      // Obtener la zona a partir del código postal
      $zona = obtenerZona((int)$codigo_postal);
      if ($zona === null) {
-         echo 'El código postal no se encuentra en ninguna zona definida en CDMX.';
-         exit; // Salir si no se encuentra la zona
+        echo '<script>
+                alert("El código postal no se encuentra en ninguna zona definida en CDMX.");
+                window.location = "../datosDomicilio.php";
+              </script>';
+        exit;
      }
 
     $query = "INSERT INTO solicitudes (id_solicitud, id_cliente, codigo_postal, direccion, 

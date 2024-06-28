@@ -232,84 +232,92 @@
             <hr class="px-10 border-solid border-1 border-gray-400 w-full" />
           </div>
           <!-- datos de pago -->
-          <form 
-            class="flex flex-col gap-4 w-4/5"
-            action="./pagoExitoso.php"
-          >
-            <div class="">
-              <label
-                htmlFor="nombreTitular"
-                class="flex mb-2 text-sm text-start text-gray-900"
-                >Nombre del titular</label
-              >
-              <input
-                required=""
-                id="nombreTitular"
-                type="text"
-                name="nombreTitular"
-                placeholder="Nombre"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              />
-            </div>
-            <div class="">
-              <label
-                htmlFor="numTarjeta"
-                class="flex mb-2 text-sm text-start text-gray-900"
-                >Numero de tarjeta</label
-              >
-              <input
-                required=""
-                id="numTarjeta"
-                type="text"
-                name="numTarjeta"
-                placeholder="Numero de tarjeta"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              />
-            </div>
-            <div class="flex flex-row justify-between gap-1 w-full">
-              <div class="w-auto">
-                <label
-                  htmlFor="fecha_vencimiento"
-                  class="flex mb-2 text-sm text-start text-gray-900"
-                  >Fecha</label
-                >
-                <input
-                  required
-                  id="fecha_vencimiento"
-                  type="text"
-                  name="fecha_vencimiento"
-                  min="2024-10-06"
-                  max="2030-12-31"
-                  placeholder="Fecha vencimiento"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                />
+          <form class="flex flex-col gap-4 w-4/5" action="./pagoExitoso.php" method="POST" onsubmit="return validateForm()">
+              <div class="">
+                  <label for="nombreTitular" class="flex mb-2 text-sm text-start text-gray-900">Nombre del titular</label>
+                  <input 
+                      required 
+                      id="nombreTitular" 
+                      type="text" 
+                      name="nombreTitular" 
+                      placeholder="Nombre" 
+                      class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
+                      pattern="[A-Za-z\s]+" 
+                      title="El nombre del titular solo debe contener letras y espacios."
+                  />
               </div>
-              <div class="w-auto">
-                <label
-                  htmlFor="contrasena"
-                  class="flex mb-2 text-sm text-start text-gray-900"
-                  >CVV</label
-                >
-                <input
-                  type="text"
-                  name="cvv"
-                  required=""
-                  placeholder="CVV"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                />
+              <div class="">
+                  <label for="numTarjeta" class="flex mb-2 text-sm text-start text-gray-900">Numero de tarjeta</label>
+                  <input 
+                      required 
+                      id="numTarjeta" 
+                      type="text" 
+                      name="numTarjeta" 
+                      placeholder="Numero de tarjeta" 
+                      class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
+                      pattern="\d{16}" 
+                      title="El número de tarjeta debe contener 16 dígitos."
+                  />
               </div>
-            </div>
-            <div class="py-[1rem] flex justify-center">
-              <button
-                href="./pagoExitoso.php"
-                class="text-center px-2.5 py-2.5 w-full max-md:mr-5 self-end text-white font-bold bg-secundary hover:bg-gray-100 hover:text-secundary rounded-xl text-md transition-colors duration-300"
-              >
-                Pagar
-              </button>
-            </div>
+              <div class="flex flex-row justify-between gap-1 w-full">
+                  <div class="w-auto">
+                      <label for="fecha_vencimiento" class="flex mb-2 text-sm text-start text-gray-900">Fecha</label>
+                      <input 
+                          required 
+                          id="fecha_vencimiento" 
+                          type="text" 
+                          name="fecha_vencimiento" 
+                          placeholder="MM/YY" 
+                          class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
+                          pattern="(0[1-9]|1[0-2])\/\d{2}" 
+                          title="La fecha de vencimiento debe estar en formato MM/YY."
+                      />
+                  </div>
+                  <div class="w-auto">
+                      <label for="cvv" class="flex mb-2 text-sm text-start text-gray-900">CVV</label>
+                      <input 
+                          type="text" 
+                          name="cvv" 
+                          required 
+                          placeholder="CVV" 
+                          class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
+                          pattern="\d{3}" 
+                          title="El CVV debe contener 3 dígitos."
+                      />
+                  </div>
+              </div>
+              <div class="py-[1rem] flex justify-center">
+                  <button 
+                      class="text-center px-2.5 py-2.5 w-full max-md:mr-5 self-end text-white font-bold bg-secundary hover:bg-gray-100 hover:text-secundary rounded-xl text-md transition-colors duration-300">
+                      Pagar
+                  </button>
+              </div>
           </form>
+
         </div>
       </div>
     </div>
   </body>
+  <script>
+        function validateForm() {
+            const cardNumber = document.getElementById('numTarjeta').value;
+            const cvv = document.getElementById('cvv').value;
+            const expiryDate = document.getElementById('fecha_vencimiento').value;
+
+            // Basic validation checks
+            if (!/^\d{16}$/.test(cardNumber)) {
+                alert("Número de tarjeta inválido. Debe contener 16 dígitos.");
+                return false;
+            }
+            if (!/^\d{3}$/.test(cvv)) {
+                alert("CVV inválido. Debe contener 3 dígitos.");
+                return false;
+            }
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
+                alert("Fecha de vencimiento inválida. Debe estar en formato MM/YY.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </html>

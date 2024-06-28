@@ -107,11 +107,12 @@
     <?php
       if ($porPagar) {
         ?>
+        <div class="flex justify-center items-center">
         <div
-      class="flex justify-center items-center h-screen-minus-64 md:h-screen-minus-68"
+      class="relative h-screen-minus-64 md:h-screen-minus-68 mt-20"
     >
       <div
-        class="w-5/6 h-auto bg-gray-100 p-6 rounded-xl shadow-lg shadow-gray-300 border-solid border-2 border-gray-300"
+        class=" h-auto bg-gray-100 p-6 rounded-xl shadow-lg shadow-gray-300 border-solid border-2"
       >
         <h2 class="text-xl md:text-3xl font-semibold">Servicio Terminado</h2>
         <p class="font-light mt-6">
@@ -119,12 +120,9 @@
           realizado con exito el dia <?php echo $dia; ?>, por el tecnico "<?php echo $nombre_tecnico ?>",
           realiza el pago por la cantidad de <?php echo $costo; ?>.
         </p>
-        <div class="flex justify-center lg:justify-start">
-          <img
-            class="w-5/6 lg:w-1/2 h-auto mt-6 rounded-xl"
-            src="../assets/img/servicio1.jpeg"
-            alt=""
-          />
+        <div class="mt-10 flex lg:justify-center justify-start">
+          <!-- imagen del servicio -->
+            <img src=<?php echo $img; ?> alt='Evidencia' class="rounded-xl shadow-lg shadow-gray-300 border-solid border-2 p-10" />
         </div>
 
         <div class="flex justify-end mt-6">
@@ -137,6 +135,7 @@
         </div>
       </div>
     </div>
+        </div>
     
     <?php
       }
