@@ -35,6 +35,8 @@ $query = "SELECT trabajo.*, solicitudes.*, servicios.*
 $result = mysqli_query($conexion, $query);
 $detalle = mysqli_fetch_array($result);
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +51,12 @@ $detalle = mysqli_fetch_array($result);
         .content-auto {
           content-visibility: auto;
         }
+      }
+      
+      .min-h-screen-minus-3-5 {
+        min-height: calc(
+          100vh - 3.5rem
+        ); /* Ajusta 3.5rem al valor que necesitas restar */
       }
     </style>
   <script>
@@ -72,9 +80,9 @@ $detalle = mysqli_fetch_array($result);
 <body class="bg-gray-100">
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -90,7 +98,7 @@ $detalle = mysqli_fetch_array($result);
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
             <a href="./reportes.php">Reportes</a>
           </li>
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
+          <li class="text-gray-600 hover:text-secundary">
             <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white" onclick="window.location.href = '../php/logout.php'">
               Cerrar Sesión
             </button>
@@ -99,7 +107,7 @@ $detalle = mysqli_fetch_array($result);
       </div>
     </div>
   </nav>
-  <main class="h-screen-minus-64 md:h-screen-minus-68 w-full max-md:mt-8">
+  <main class="min-h-screen-minus-3-5 md:h-screen-minus-68 w-full max-md:mt-8">
     <div class="md:h-full w-full flex flex-col md:flex-row items-center md:justify-center md:gap-14 lg:gap-[14%]">
       <!-- Orden de servicio -->
       <section class="flex items-center pb-[12%]">
@@ -114,14 +122,39 @@ $detalle = mysqli_fetch_array($result);
           <div>
             <h3 class="mb-4 text-xl font-medium">Domicilio.</h3>
             <p class="max-w-md break-words">
-              <?php echo $detalle['direccion'] . ", Código Postal: " . $detalle['codigo_postal'] ?>
+              <?php echo $detalle['direccion']  ?>
+            </p>
+            <p>
+              Código Postal: 
+              <?php 
+                echo   $detalle['codigo_postal'];
+              ?>
             </p>
           </div>
           <div>
             <h3 class="mb-4 text-xl font-medium">Materiales.</h3>
             <ul>
-              <li class="">Material 1</li>
-              <li class="">Material 2</li>
+              <?php
+              if($detalle['id_servicio'] == 1){
+              ?>
+                <li class="mb-2">Filtro de tinaco</li>
+                <li class="mb-2">Litro de solución sanitizante antibacterial</li>
+                <li class="mb-2">Cepillo con extensor</li>
+              <?php
+              }else if($detalle['id_servicio'] == 2){
+              ?>
+                <li class="mb-2">Metros de tubo de cobre de 1/2 pulgada</li>
+                <li class="mb-2">Codos de 1/2 pulgada</li>
+                <li class="mb-2">Metros de soldadura</li>
+                <li class="mb-2">Tubo de gas butano</li>
+              <?php
+              }else{
+              ?>
+                <li class="mb-2">Kit de mangueras de agua caliente</li>
+                <li class="mb-2">Rollo de cintra teflón</li>
+                <li class="mb-2">Valvulas de presión inversa de 1/2 pulgada</li>
+              <?php
+              }?>
             </ul>
           </div>
         </article>
@@ -161,7 +194,7 @@ $detalle = mysqli_fetch_array($result);
       <div class="lg:flex lg:items-end lg:justify-between">
         <div>
           <div class="flex justify-center text-teal-600 lg:justify-start">
-            <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
+            <p class="font-bold text-2xl">tuPlomeroMx</p>
           </div>
           <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
             Soluciones eficientes y confiables para todas tus necesidades de

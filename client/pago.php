@@ -5,8 +5,9 @@ if (!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'user') {
   exit();
 }
 
-include 'actions/informacionServicios.php';
+// include 'actions/informacionServicios.php';
 include 'actions/pagosPendientes.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,9 +47,9 @@ include 'actions/pagosPendientes.php';
   <!-- Navbar -->
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -59,17 +60,17 @@ include 'actions/pagosPendientes.php';
       <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
         <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
-            <a href="./index.php">Home</a>
+            <a href="./index.php">Inicio</a>
           </li>
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
             <a href="./solicitud.php">Solicitud</a>
           </li>
-          <li class="text-secundary md:mr-12 hover:text-secundary">
+          <li class="text-secundary md:mr-10 hover:text-secundary">
             <a href="./notificacion.php">Notificaciones</a>
           </li>
-          <li class="text- md:mr-12 hover:text-secundary">
-            <button class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white">
-              Logout
+          <li class="text-  hover:text-secundary">
+            <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white">
+              Cerrar Sesión
             </button>
           </li>
         </ul>
@@ -181,7 +182,7 @@ include 'actions/pagosPendientes.php';
             </div>
           </div>
           <div class="py-[1rem] flex justify-center">
-            <a href="./pagoExitoso.php" class="text-center px-2.5 py-2.5 w-full max-md:mr-5 self-end text-white font-bold bg-secundary hover:bg-gray-100 hover:text-secundary rounded-xl text-md transition-colors duration-300">
+            <a href="./pagoExitoso.php" class="text-center px-2.5 py-2.5 w-full max-md:mr-5 self-end text-white font-bold bg-secundary hover:bg-gray-200 hover:text-secundary rounded-xl text-md transition-colors duration-300">
               Pagar
             </a>
           </div>

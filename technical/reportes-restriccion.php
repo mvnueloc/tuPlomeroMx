@@ -43,13 +43,13 @@
   <body class="bg-gray-100">
   <nav class="shadow bg-gray-100">
       <div
-        class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
+        class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center"
       >
         <a
           href="#"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
-          Nombre
+          tuPlomeroMx
         </a>
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
@@ -86,7 +86,7 @@
             <li class="text-secundary md:mr-12 hover:text-secundary">
               <a href="">Reportes</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text-gray-600 hover:text-secundary">
               <button
                 class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
                 onclick="window.location.href = '../php/logout.php'"
@@ -99,12 +99,12 @@
       </div>
     </nav>
 
-    <main class="h-screen-minus-64 md:h-screen-minus-68 w-full">
+    <main class="h-screen-minus-68 md:h-screen-minus-68 w-full">
       <div
         class="w-full h-full flex flex-col items-center justify-center gap-20"
       >
-        <div class="text-xl md:text-4xl px-6 font-light text-center">
-          <p>
+        <div class=" px-6  text-center">
+          <p class="text-2xl font-light md:text-4xl">
             No puedes revisar tus reportes si estás realizando un servicio,
             intentalo más tarde
           </p>
@@ -122,11 +122,7 @@
         <div class="lg:flex lg:items-end lg:justify-between">
           <div>
             <div class="flex justify-center text-teal-600 lg:justify-start">
-              <img
-                src="../assets/img/footer-logo.svg"
-                alt="Logo de tuPlomeroMx"
-                class="h-8"
-              />
+              <p class="font-bold text-2xl">tuPlomeroMx</p>
             </div>
             <p
               class="mx-auto mt-6 max-w-md text-center leading-relaxed lg:text-left"

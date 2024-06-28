@@ -42,13 +42,13 @@
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
       <div
-        class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
+        class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center"
       >
         <a
           href="#"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
-          Nombre
+          tuPlomeroMx
         </a>
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
@@ -80,20 +80,20 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./index.php">Home</a>
+              <a href="./index.php">Inicio</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
               <a href="./solicitud.php">Solicitud</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text-gray-600 md:mr-10 hover:text-secundary">
               <a href="./notificacion.php">Notificaciones</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text-gray-600  hover:text-secundary">
               <button
                 onclick="window.location.href='../php/logout.php'"
-                class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
               >
-                Cerrar sesión
+                Cerrar Sesión
               </button>
             </li>
           </ul>
@@ -202,7 +202,7 @@
           <!-- submit -->
           <div class="flex justify-center my-12">
             <button
-              class="bg-secundary text-gray-100 px-4 py-2 rounded-md hover:bg-gray-100 hover:text-secundary transition-all duration-300 ease-in-out"
+              class="py-2.5 px-14 bg-primary text-white hover:bg-gray-700 hover:text-white transition-colors rounded-lg text-base font-medium"
             >
               Continuar
             </button>

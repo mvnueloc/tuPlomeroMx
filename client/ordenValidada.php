@@ -42,13 +42,13 @@
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
       <div
-        class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
+        class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center"
       >
         <a
           href="#"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
-          Nombre
+          tuPlomeroMX
         </a>
         <input type="checkbox" class="peer hidden" id="navbar-open" />
         <label
@@ -80,19 +80,19 @@
             class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0"
           >
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./landing.html">Home</a>
+              <a href="./">Inicio</a>
             </li>
             <li class="text-secundary md:mr-12 hover:text-secundary">
-              <a href="./solicitud.html">Solicitud</a>
+              <a href="">Solicitud</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
-              <a href="./notificacion.html">Notificaciones</a>
+            <li class="text-gray-600 md:mr-10 hover:text-secundary">
+              <a href="./notificacion.php">Notificaciones</a>
             </li>
-            <li class="text-gray-600 md:mr-12 hover:text-secundary">
+            <li class="text-gray-600  hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
               >
-                Logout
+                Cerrar Sesión
               </button>
             </li>
           </ul>

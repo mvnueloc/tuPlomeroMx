@@ -1,4 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include(dirname(__DIR__) . '/php/conexion_bd.php');
+
 session_start();
 if (!isset($_SESSION['usuario'])) {
   session_destroy();
@@ -9,12 +15,33 @@ if (!isset($_SESSION['usuario'])) {
   exit();
 }
 
-if (isset($_SESSION['jornada'])) {
+if(isset($_SESSION['jornada'])){
   header('Location: ./jornada.php');
   exit();
 }
 
-setlocale(LC_TIME, 'es_ES.UTF-8');
+if(!isset($_SESSION['jornada'])){
+  $query_on_jornada = "SELECT * FROM jornada WHERE id_tecnico = " . $_SESSION['id'] . " AND status = 0";
+  $result = mysqli_query($conexion, $query_on_jornada);
+  if(mysqli_num_rows($result) > 0){
+    $result = mysqli_fetch_assoc($result);
+    $_SESSION['jornada'] = "iniciada";
+    $_SESSION['zona'] = $result['zona'];
+    $_SESSION['id_jornada'] = $result['id_jornada'];
+    $query_on_service = "SELECT * FROM trabajo WHERE id_trabajador = " . $_SESSION['id'] . " AND status = 0";
+    $result = mysqli_query($conexion, $query_on_service);
+
+    if (mysqli_num_rows($result) > 0) {
+      $result = mysqli_fetch_assoc($result);
+      $_SESSION['servicio'] = "onService";
+    }else{
+      $_SESSION['servicio'] = "none";
+    }
+    header('Location: ./jornada.php');
+    exit();
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,9 +79,9 @@ setlocale(LC_TIME, 'es_ES.UTF-8');
 <body class="bg-gray-100">
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -64,7 +91,7 @@ setlocale(LC_TIME, 'es_ES.UTF-8');
       </label>
       <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
         <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
+          <li class="text-gray-600  hover:text-secundary">
             <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white" onclick="window.location.href = '../php/logout.php'">
               Cerrar Sesión
             </button>
@@ -78,7 +105,7 @@ setlocale(LC_TIME, 'es_ES.UTF-8');
       <h2 class="mb-16 md:text-7xl text-5xl font-serif font-bold">
         Bienvenido
       </h2>
-      <div class="text-xl md:text-4xl font-light text-center max-md:px-5">
+      <div class="text-xl md:text-4xl font-light text-center px-[10%] max-md:px-5">
         <p>
           Hola
           <?php
@@ -86,7 +113,22 @@ setlocale(LC_TIME, 'es_ES.UTF-8');
           ?>,
           hoy es
           <?php
-          echo strftime("%d de %B de %Y");
+          function fechaEspanol($fecha)
+          {
+           $format = 'Y-m-d H:i:s';
+           $d = DateTime::createFromFormat($format, $fecha);
+           $anio = $d->format('Y');
+           $mes = $d->format('n');
+           $dia = $d->format('d');
+           $diasemana = $d->format('w');
+          
+           $diassemanaN = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+           $mesesN = array(1 => "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+           return "{$diassemanaN[$diasemana]}, $dia de {$mesesN[$mes]} de $anio";
+          }  
+
+          echo fechaEspanol(date('Y-m-d H:i:s'));
+          
           ?>
           , ¿Estás listo para empezar tu jornada?
         </p>
@@ -114,7 +156,7 @@ setlocale(LC_TIME, 'es_ES.UTF-8');
       <div class="lg:flex lg:items-end lg:justify-between">
         <div>
           <div class="flex justify-center text-teal-600 lg:justify-start">
-            <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
+            <p class="font-bold text-2xl">tuPlomeroMx</p>
           </div>
           <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
             Soluciones eficientes y confiables para todas tus necesidades de

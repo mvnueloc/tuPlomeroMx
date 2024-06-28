@@ -65,9 +65,9 @@ if ($_SESSION['servicio'] == "onService") {
 <body class="bg-gray-100">
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -83,7 +83,7 @@ if ($_SESSION['servicio'] == "onService") {
           <li class="text-secundary md:mr-12 hover:text-secundary">
             <a href="./reportes.php">Reportes</a>
           </li>
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
+          <li class="text-gray-600 hover:text-secundary">
             <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white" onclick="window.location.href = '../php/logout.php'">
               Cerrar Sesión
             </button>
@@ -96,35 +96,51 @@ if ($_SESSION['servicio'] == "onService") {
     <div class="w-full py-10 flex flex-col items-center justify-center gap-10">
       <div class="flex flex-row gap-3 w-full md:w-2/3">
         <h2 class="max-md:px-6 text-2xl font-bold">
-          Día: <?php // Establecer la zona horaria, si es necesario
-                date_default_timezone_set('America/Mexico_City');
+          Día: <?php
+          function fechaEspanol($fecha)
+          {
+           $format = 'Y-m-d H:i:s';
+           $d = DateTime::createFromFormat($format, $fecha);
+           $anio = $d->format('Y');
+           $mes = $d->format('n');
+           $dia = $d->format('d');
+           $diasemana = $d->format('w');
+          
+           $diassemanaN = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+           $mesesN = array(1 => "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+           return "{$diassemanaN[$diasemana]}, $dia de {$mesesN[$mes]} de $anio";
+          }  
 
-                // Establecer el locale a español
-                setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
-
-                // Imprimir el día actual en español
-                echo date('d-m-y');  ?></h2>
+          echo fechaEspanol(date('Y-m-d H:i:s'));
+          
+          ?>
+        </h2>
       </div>
       <div class="w-full flex flex-col md:flex-row md:justify-center gap-14 lg:gap-[10%]">
         <div class="flex flex-col max-lg:px-4 gap-6 justify-center">
           <!-- <h3 class="text-2xl font-semibold">Servicios Realizados</h3> -->
-          <div class="shadow-lg shadow-gray-300 border-solid border-2 border-gray-300 rounded-xl">
-            <table class="md:max-w-96 table-fixed md:table-auto text-left shadow-lg">
+          <div class="shadow-lg shadow-gray-300 bg-white p-4 rounded-xl">
+            <table class="md:max-w-[25rem] table-auto text-left w-full">
               <?php if (!empty($serviciosRealizados)) { ?>
-                <caption>Servicios Realizados</caption>
+                <caption class="font-bold text-lg">Servicios Realizados</caption>
                 <thead>
                   <tr>
-                    <th>id</th>
+                    <th class="px-3">No.</th>
                     <th>Nombre</th>
-                    <th>costo</th>
+                    <th class="px-2">costo</th>
                   </tr>
                 </thead>
-                <?php foreach ($serviciosRealizados as $contenido) { ?>
+                <?php 
+                $numero = 1;
+                foreach ($serviciosRealizados as $contenido) { 
+                  ?>
                   <tbody>
                     <tr>
-                      <td><?php echo $contenido['id_servicio']; ?></td>
-                      <td><?php echo $contenido['nombre_servicio']; ?></td>
-                      <td><?php echo $contenido['costo_base']; ?></td>
+                      <td class="text-center px-3"><?php echo 
+                        $numero++;
+                      ?></td>
+                      <td class="" style="word-wrap: break-word;"><?php echo $contenido['nombre_servicio']; ?></td>
+                      <td class="text-center px-2" style="white-space: nowrap;">$<?php echo $contenido['costo_base']; ?>.00 mxn</td>
                     </tr>
                   </tbody>
                 <?php } ?>
@@ -135,27 +151,31 @@ if ($_SESSION['servicio'] == "onService") {
           </div>
         </div>
         <div class="flex flex-col max-lg:px-4 gap-6 justify-center">
-          <div class="shadow-lg shadow-gray-300 border-solid border-2 border-gray-300 rounded-xl">
-            <table class="md:max-w-96 table-fixed md:table-auto text-left shadow-lg">
+          <div class="shadow-lg bg-white p-4 rounded-xl">
+            <table class="md:max-w-96 table-auto text-left w-full">
               <?php if (!empty($serviciosRealizados)) { ?>
-                <caption>Materiales utilizdos</caption>
+                <caption class="font-bold text-lg">Materiales utilizados</caption>
                 <thead>
                   <tr>
                     <th>Material</th>
-                    <th>Cantidad</th>
+                    <th class="text-center md:px-2">Cantidad</th>
                   </tr>
                 </thead>
-                <?php foreach ($materiales as $clave => $valor) { ?>
-                  <tbody>
-                    <tr>
+                <tbody>
+                <?php 
+                foreach ($materiales as $clave => $valor) { 
+                  if($valor != 0){
+                  ?>
+                  
+                  <tr>
                       <td><?php echo $clave; ?></td>
-                      <td><?php echo $valor; ?></td>
-                      <!-- <td><?php echo $contenido['id_servicio']; ?></td>
-                      <td><?php echo $contenido['nombre_servicio']; ?></td>
-                      <td><?php echo $contenido['costo_base']; ?></td> -->
-                    </tr>
-                  </tbody>
-                <?php } ?>
+                      <td class="text-center"><?php echo $valor; ?></td>
+                  </tr> 
+                  
+                <?php 
+                  }
+                } ?>
+                </tbody>
               <?php } else { ?>
                 <p>No hay informacion de materiales.</p>
               <?php } ?>
@@ -175,7 +195,7 @@ if ($_SESSION['servicio'] == "onService") {
       <div class="lg:flex lg:items-end lg:justify-between">
         <div>
           <div class="flex justify-center text-teal-600 lg:justify-start">
-            <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
+            <p class="font-bold text-2xl">tuPlomeroMx</p>
           </div>
           <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
             Soluciones eficientes y confiables para todas tus necesidades de

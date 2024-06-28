@@ -64,9 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="bg-gray-100">
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -77,17 +77,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
         <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
-            <a href="./index.php">Home</a>
+            <a href="./index.php">Inicio</a>
           </li>
           <li class="text-secundary md:mr-12 hover:text-secundary">
-            <a href="./solicitud.php">Solicitud</a>
+            <a href="">Solicitud</a>
           </li>
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
+          <li class="text-gray-600 md:mr-10 hover:text-secundary">
             <a href="./notificacion.php">Notificaciones</a>
           </li>
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
-            <button onclick="window.location.href='../php/logout.php'" class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white">
-              Cerrar sesión
+          <li class="text-gray-600  hover:text-secundary">
+            <button onclick="window.location.href='../php/logout.php'" class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
+            >
+              Cerrar Sesión
             </button>
           </li>
         </ul>
@@ -216,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <input type="hidden" name="costoTotal" value="<?php echo $costoTotal; ?>" />
 
           <div class="flex justify-center">
-            <button class="bg-secundary w-4/6 text-center text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-gray-100 hover:text-secundary transition-colors duration-300 ease-in-out mt-6">
+            <button class="py-2.5 px-14 bg-primary text-white hover:bg-gray-600 hover:text-white transition-colors rounded-lg text-base font-medium">
               Solicitar servicio
             </button>
           </div>

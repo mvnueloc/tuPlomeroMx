@@ -12,7 +12,7 @@ include '../../php/conexion_bd.php';
 $id_tecnico = $_SESSION['id'];
 $_SESSION['zona'] = $_POST['zona'];
 
-$query = "INSERT INTO jornada (status, id_tecnico) VALUES (0, $id_tecnico)";
+$query = "INSERT INTO jornada (status, id_tecnico, fecha_hora_inicio, zona) VALUES (0, $id_tecnico, NOW(), '" . $_SESSION['zona'] . "')";
 
 $ejecutar = mysqli_query($conexion, $query);
 

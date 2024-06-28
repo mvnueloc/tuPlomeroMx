@@ -44,9 +44,9 @@ include 'actions/pagosPendientes.php';
 <body class="bg-gray-100">
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -57,17 +57,19 @@ include 'actions/pagosPendientes.php';
       <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
         <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
-            <a href="./index.php">Home</a>
+            <a href="./index.php">Inicio</a>
           </li>
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
             <a href="./solicitud.php">Solicitud</a>
           </li>
-          <li class="text-secundary md:mr-12 hover:text-secundary">
+          <li class="text-secundary md:mr-10 hover:text-secundary">
             <a href="./notificacion.php">Notificaciones</a>
           </li>
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
-            <button class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white">
-              Logout
+          <li class="text-gray-600  hover:text-secundary">
+            <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
+            onclick="window.location.href='../php/logout.php'"
+            >
+              Cerrar Sesión
             </button>
           </li>
         </ul>
@@ -85,14 +87,14 @@ include 'actions/pagosPendientes.php';
         <p class="font-light mt-6">
           Tu servicio de <?php echo $servicio; ?> ubicado en <?php echo $direccion; ?> ha sido
           realizado con exito el dia <?php echo $dia; ?>,
-          realiza el pago por la cantidad de <?php echo $costo; ?>.
+          realiza el pago por la cantidad de $<?php echo $costo; ?>.00 mxn.
         </p>
         <div class="flex justify-center lg:justify-start">
           <img class="w-5/6 lg:w-1/2 h-auto mt-6 rounded-xl" src="<?php echo $src; ?>" alt="Imagen del trabajo" />
         </div>
 
         <div class="flex justify-end mt-6">
-          <a href="./pago.php" class="bg-secundary text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-secundary transition-colors duration-300">
+          <a href="./pago.php" class="py-2.5 px-14 bg-primary text-white hover:bg-gray-600 hover:text-white transition-colors rounded-lg text-base font-medium">
             Pagar
           </a>
         </div>

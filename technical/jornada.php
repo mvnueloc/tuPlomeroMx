@@ -20,10 +20,6 @@ if (!isset($_SESSION['usuario'])) {
 
 if (!isset($_SESSION['jornada'])) {
 
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
-
   $_SESSION['jornada'] = "iniciada";
 
   $query_on_service = "SELECT * FROM trabajo WHERE id_trabajador = " . $_SESSION['id'] . " AND status = 0";
@@ -81,9 +77,9 @@ if ($_SESSION['servicio'] != "none") {
 <body class="bg-gray-100">
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
-        Nombre
+        tuPlomeroMx
       </a>
       <input type="checkbox" class="peer hidden" id="navbar-open" />
       <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
@@ -99,7 +95,7 @@ if ($_SESSION['servicio'] != "none") {
           <li class="text-gray-600 md:mr-12 hover:text-secundary">
             <a href="./reportes.php">Reportes</a>
           </li>
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
+          <li class="text-gray-600  hover:text-secundary">
             <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white" onclick="window.location.href = '../php/logout.php'">
               Cerrar Sesión
             </button>
@@ -108,7 +104,7 @@ if ($_SESSION['servicio'] != "none") {
       </div>
     </div>
   </nav>
-  <main class="h-screen-minus-64 md:h-screen-minus-68 w-full">
+  <main class="h-screen-minus-68 md:h-screen-minus-68 w-full">
     <div class="w-full py-10 flex flex-col items-center justify-center gap-10">
       <div class="flex flex-row gap-3 px-4 md:px-0 w-full md:w-2/3">
         <svg class="w-6 h-6 md:w-8 md:h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -211,7 +207,7 @@ if ($_SESSION['servicio'] != "none") {
             echo '</tbody>';
           } else if ($_SESSION['jornada'] == "iniciada") {
             echo '
-                  <div class="bg-gray-100 text-gray-700 text-center py-10 rounded-lg">
+                  <div class="bg-gray-100 text-gray-700 text-center font-semibold text-base py-10 rounded-lg">
                     No hay solicitudes disponibles
                   </div>
                 ';
@@ -223,168 +219,9 @@ if ($_SESSION['servicio'] != "none") {
                 ';
           }
           ?>
-          <!-- <thead class="bg-gray-900 text-white rounded-t-lg">
-              <tr>
-                <th
-                  class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal rounded-tl-lg"
-                >
-                  Servicio
-                </th>
-                <th
-                  class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal"
-                >
-                  Domicilio
-                </th>
-                <th
-                  class="py-2 md:py-3 px-3 md:px-6 text-left border-r border-gray-300 text-base md:text-xl font-normal"
-                >
-                  Costo
-                </th>
-                <th
-                  class="py-2 md:py-3 px-3 md:px-6 text-left border-gray-300 text-base md:text-xl font-normal rounded-tr-lg"
-                >
-                  Acción
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white">
-              <tr>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    $600.00 mxn
-                  </p>
-                </td>
-                <td class="p-4">
-                  <div class="flex flex-row items-center justify-center gap-3">
-                    <a
-                      href=""
-                      class="bg-green-600 text-white max-md:text-sm px-3 md:px-6 py-2 rounded-lg"
-                    >
-                      Aceptar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    $600.00 mxn
-                  </p>
-                </td>
-                <td class="p-4">
-                  <div class="flex flex-row items-center justify-center gap-3">
-                    <a
-                      href=""
-                      class="bg-green-600 text-white max-md:text-sm px-3 md:px-6 py-2 rounded-lg"
-                    >
-                      Aceptar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    $600.00 mxn
-                  </p>
-                </td>
-                <td class="p-4">
-                  <div class="flex flex-row items-center justify-center gap-3">
-                    <a
-                      href=""
-                      class="bg-green-600 text-white max-md:text-sm px-3 md:px-6 py-2 rounded-lg"
-                    >
-                      Aceptar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="p-4 border-r rounded-bl-lg border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    Lorem ipsum dolor sit.
-                  </p>
-                </td>
-                <td class="p-4 border-r border-gray-700">
-                  <p
-                    class="block text-xs md:text-sm leading-normal font-semibold"
-                  >
-                    $600.00 mxn
-                  </p>
-                </td>
-                <td class="p-4 rounded-br-lg">
-                  <div class="flex flex-row items-center justify-center gap-3">
-                    <a
-                      href=""
-                      class="bg-green-600 text-white max-md:text-sm px-3 md:px-6 py-2 rounded-lg"
-                    >
-                      Aceptar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            </tbody> -->
         </table>
       </div>
       <?php
-      // echo $_SESSION['id_jornada'];
 
       if ($_SESSION['jornada'] == "iniciada") {
         echo '
@@ -412,7 +249,7 @@ if ($_SESSION['servicio'] != "none") {
       <div class="lg:flex lg:items-end lg:justify-between">
         <div>
           <div class="flex justify-center text-teal-600 lg:justify-start">
-            <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
+          <p class="font-bold text-2xl">tuPlomeroMx</p>
           </div>
           <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
             Soluciones eficientes y confiables para todas tus necesidades de

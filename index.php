@@ -53,7 +53,7 @@ include 'php/testimonios.php';
 <body>
   <!-- Navbar -->
   <nav class="shadow bg-gray-100">
-    <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+    <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
       <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
         tuPlomeroMx
       </a>
@@ -65,8 +65,8 @@ include 'php/testimonios.php';
       </label>
       <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
         <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
-          <li class="text-gray-600 md:mr-12 hover:text-secundary">
-            <button class="rounded-md border-2 border-secundary px-6 py-1 font-medium text-secundary transition-colors hover:bg-secundary hover:text-white" onclick="window.location.href='./account'">
+          <li class="text-gray-600  hover:text-secundary">
+            <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white" onclick="window.location.href='./account'">
               Iniciar sesión
             </button>
           </li>
@@ -107,7 +107,7 @@ include 'php/testimonios.php';
         <h3 class="text-xl md:text-2xl font-black mb-4 text-center">
           ¿Por que con nosotros?
         </h3>
-        <p class="font-light text-center">
+        <p class="font-semibold text-gray-500 text-center">
           En tuPlomeroMx, combinamos experiencia, rapidez y calidad para
           garantizar soluciones efectivas y duraderas a tus problemas de
           plomería, con la confianza de contar con técnicos certificados.
@@ -122,7 +122,7 @@ include 'php/testimonios.php';
 
   <!-- roadmap -->
   <div class="mt-20">
-    <h3 class="text-xl md:text-2xl font-black mb-4 text-center">Road Map</h3>
+    <h3 class="text-xl md:text-2xl font-black mb-4 text-center">Fácil de usar</h3>
     <div class="flex justify-center">
       <div class="w-5/6 lg:w-1/2">
         <ol class="items-center sm:flex">
@@ -230,7 +230,7 @@ include 'php/testimonios.php';
             }
             ?>
             <div class="flex justify-center">
-              <img src="<?php echo $src ?>" class="w-1/2" alt="" />
+              <img src="<?php echo $src ?>" class="w-1/2 rounded-md" alt="" />
             </div>
           </div>
         </div>
@@ -244,7 +244,7 @@ include 'php/testimonios.php';
       <div class="lg:flex lg:items-end lg:justify-between">
         <div>
           <div class="flex justify-center text-teal-600 lg:justify-start">
-            <img src="./assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
+            <p class="font-bold text-2xl">tuPlomeroMx</p>
           </div>
           <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
             Soluciones eficientes y confiables para todas tus necesidades de

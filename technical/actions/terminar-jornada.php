@@ -30,7 +30,7 @@ $_SESSION['jornada'] = "terminada";
 
 $id_jornada = $_SESSION['id_jornada'];
 
-$query = "UPDATE jornada SET status = 1 WHERE id_jornada = $id_jornada ";
+$query = "UPDATE jornada SET status = 1, fecha_hora_fin = NOW() WHERE id_jornada = $id_jornada";
 
 $ejecutar = mysqli_query($conexion, $query);
 
