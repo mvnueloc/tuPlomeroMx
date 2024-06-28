@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 include '../../php/conexion_bd.php';
 
 $usuario = mysqli_real_escape_string($conexion, $_POST['usuario']);
@@ -31,4 +31,4 @@ if (mysqli_query($conexion, $asignar_sql)) {
 }
 
 mysqli_close($conexion);
-?>
+?> -->

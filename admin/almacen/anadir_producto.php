@@ -9,9 +9,19 @@ $unidad_de_medida = mysqli_real_escape_string($conexion, $_POST['unidad_de_medid
 $sql = "INSERT INTO materiales (nombre, descripcion, dimensiones, unidad_de_medida) VALUES ('$nombre', '$descripcion', '$dimensiones', '$unidad_de_medida')";
 
 if (mysqli_query($conexion, $sql)) {
-    echo "Producto añadido exitosamente";
+    echo '
+        <script>
+            alert("Producto añadido exitosamente");
+            window.location.href = "./"; // Use JavaScript for redirection
+        </script>
+    ';
 } else {
-    echo "Error al añadir el producto: " . mysqli_error($conexion);
+    echo '
+        <script>
+            alert("Error al añadir el producto: ' . mysqli_error($conexion) . '");
+            window.history.back(); // Redirect to the previous page if there is an error
+        </script>
+    ';
 }
 
 mysqli_close($conexion);
