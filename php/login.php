@@ -1,4 +1,5 @@
 <?php
+
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -25,27 +26,28 @@
     }
 
     $usuario = mysqli_fetch_assoc($ejecutar);
-
-    // Verifica la contraseña
-    if (!password_verify($contrasena, $usuario['contrasena'])) {
+    
+    if(!password_verify($contrasena, $usuario['contrasena'])) {
         echo '
             <script>
                 alert("Contraseña incorrecta");
                 window.location = "../account/";
             </script>
-        ';
-        exit;
+        ';    
+    } else {
+        $_SESSION['usuario'] = $usuario['nombre']; 
+        $_SESSION['id'] = $usuario['id_usuario'];
+        $_SESSION['nombre'] = $usuario['nombre'];
+        $_SESSION['apellido'] = $usuario['apellido'];
+        $_SESSION['correo'] = $usuario['correo'];
+        $_SESSION['telefono'] = $usuario['telefono'];
+        $_SESSION['tipo_cuenta'] = $usuario['tipo_cuenta'];
+
+        header("location: ../");
+        exit;   
     }
-
-    // Si la contraseña es correcta, inicia sesión
-    $_SESSION['usuario'] = $usuario['nombre']; 
-    $_SESSION['id'] = $usuario['id_usuario'];
-    $_SESSION['nombre'] = $usuario['nombre'];
-    $_SESSION['apellido'] = $usuario['apellido'];
-    $_SESSION['correo'] = $usuario['correo'];
-    $_SESSION['telefono'] = $usuario['telefono'];
-    $_SESSION['tipo_cuenta'] = $usuario['tipo_cuenta'];
-
-    header("location: ../");
-    exit;   
+    
+    
+    
+    
 ?>
