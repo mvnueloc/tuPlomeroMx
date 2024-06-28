@@ -13,13 +13,11 @@ $sql = "SELECT
             u.apellido, 
             u.correo, 
             u.telefono,  
-            u.zona, 
             u.fecha_alta,
             CASE 
-                WHEN EXISTS (SELECT 1 FROM jornadas_trabajo j 
-                             WHERE j.id_usuario = u.id_usuario 
-                             AND j.fecha = CURDATE() 
-                             AND j.hora_fin IS NULL) THEN 'activo'
+                WHEN EXISTS (SELECT 1 FROM jornada j 
+                             WHERE j.id_tecnico = u.id_usuario 
+                             AND j.fecha_hora_fin IS NULL) THEN 'activo'
                 ELSE 'inactivo'
             END AS estado_jornada
         FROM 
@@ -72,7 +70,6 @@ mysqli_close($conexion);
             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Apellidos</th>
             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Correo Electrónico</th>
             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Teléfono</th>
-            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Zona</th>
             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Fecha de Alta</th>
             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Estado Jornada</th>
             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Editar</th>
@@ -87,7 +84,6 @@ mysqli_close($conexion);
                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['apellido']); ?></td>
                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['correo']); ?></td>
                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['telefono']); ?></td>
-                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['zona']); ?></td>
                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['fecha_alta']); ?></td>
                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
                     <span class='inline-flex items-center gap-1 rounded-full
