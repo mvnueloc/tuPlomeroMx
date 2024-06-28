@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correo = filter_var(sanitizeInput($_POST['correo']), FILTER_SANITIZE_EMAIL);
     $password = sanitizeInput($_POST['password']);
     $confpassword = sanitizeInput($_POST['confpassword']);
-    $cp = sanitizeInput($_POST['cp']);
     $telefono = sanitizeInput($_POST['telefono']);
     $estado = 'alta';
 
@@ -29,11 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if (!preg_match("/^[0-9]{5}$/", $cp)) {
-        echo 'Código postal no válido.';
-        exit;
-    }
-
     if (!preg_match("/^[0-9]{10}$/", $telefono)) {
         echo 'Número de teléfono no válido.';
         exit;
@@ -41,17 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $contrasena = password_hash($password, PASSWORD_BCRYPT);
 
-    // Obtener la zona a partir del código postal
-    $zona = obtenerZona((int)$cp);
-    if ($zona === null) {
-        echo 'El código postal no se encuentra en ninguna zona definida en CDMX.';
-        exit; // Salir si no se encuentra la zona
-    }
-
     // Preparar la consulta SQL
-    $sql = "INSERT INTO usuarios (nombre, apellido, correo, contrasena, telefono, zona, tipo_cuenta, estado) VALUES (?, ?, ?, ?, ?, ?, 'work', ?)";
+    $sql = "INSERT INTO usuarios (nombre, apellido, correo, contrasena, telefono, tipo_cuenta, estado, fecha_alta) VALUES (?, ?, ?, ?, ?, 'work', ?, ?)";
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("sssssss", $nombre, $apellido, $correo, $contrasena, $telefono, $zona, $estado);
+    $stmt->bind_param("sssssss", $nombre, $apellido, $correo, $contrasena, $telefono, $estado, date('Y-m-d'));
 
     if ($stmt->execute()) {
         echo '<script>

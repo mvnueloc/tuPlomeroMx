@@ -1,3 +1,15 @@
+<?php 
+session_start();
+if (!isset($_SESSION['usuario'])) {
+  session_destroy();
+  header('Location: ../');
+  exit();
+} else if ($_SESSION['tipo_cuenta'] != 'admin') {
+  header('Location: ../');
+  exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,11 +43,11 @@
     </script>
 </head>
 
-<body class="bg-primary">
+<body class="bg-gray-100">
 
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
-        <div class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center">
+        <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
             <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
                 tuPlomeroMX
             </a>
@@ -51,14 +63,14 @@
                         <a href="../gestion_plomeros/">Empleados</a>
                     </li>
                     <li class="text-gray-600 md:mr-12 hover:text-secundary">
-                        <a href="../almacen/">Almacen</a>
+                        <a href="../almacen/">Almacén</a>
                     </li>
                     <li class="text-secundary md:mr-12 hover:text-secundary">
                         <a href="#">Reportes</a>
                     </li>
-                    <li class="text-gray-600 md:mr-12 hover:text-secundary">
-                        <button onclick="window.location.href='../../php/logout.php'" class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white">
-                            Cerrar sesión
+                    <li class="text-gray-600  hover:text-secundary">
+                        <button onclick="window.location.href='../../php/logout.php'" class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white">
+                            Cerrar Sesión
                         </button>
                     </li>
                 </ul>
@@ -71,7 +83,7 @@
 
             <section class="py-1 bg-blueGray-50 w-full sm:p-10 ">
                 <div class="flex justify-center item-center mb-10">
-                    <h2 class="text-white font-bold text-4xl">Reportes de la plataforma</h2>
+                    <h2 class="text-black font-bold text-4xl">Reportes de la plataforma</h2>
                 </div>
 
 
@@ -93,7 +105,7 @@
                                         <table class="min-w-full divide-y divide-gray-300">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">id_pago</th>
+                                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">No. id</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Fecha pago</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Hora Pago</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Monto</th>
@@ -106,7 +118,7 @@
 
                                             include '../../php/conexion_bd.php';
 
-                                            $query = "SELECT * FROM pagos WHERE status = 1";
+                                            $query = "SELECT * FROM pagos WHERE status = 1 ORDER BY fecha_pago DESC";
 
                                             $result = mysqli_query($conexion, $query);
 
@@ -128,43 +140,7 @@
                                             }
                                             ?>
 
-                                            <!-- <tbody id="actividad-tbody" class="divide-y divide-gray-200">
-                                                <tr>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">Juan Pérez</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 horas">0</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">Reparación de fuga</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-inicio">08:00</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-fin">12:00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">María López</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 horas">0</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">Instalación de lavabo</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-inicio">07:00</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-fin">13:00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">Carlos Ruiz</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 horas">0</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">Desatasco de tuberías</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-inicio">11:00</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-fin">14:00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">Laura Gómez</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 horas">0</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">Mantenimiento de calentador</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-inicio">11:00</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-fin">17:00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">Pedro Jiménez</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 horas">0</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">Cambio de grifería</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-inicio">12:00</td>
-                                                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500 hora-fin">16:00</td>
-                                                </tr>
-                                            </tbody> -->
+                                            
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="4" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0 text-right">Total $ <?php echo $total ?></td>
@@ -195,7 +171,7 @@
                                         <table class="min-w-full divide-y divide-gray-300">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">id_pago</th>
+                                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">No. id</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Fecha pago</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Hora Pago</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Monto</th>
@@ -220,7 +196,10 @@
                                         JOIN 
                                             usuarios u ON s.id_cliente = u.id_usuario
                                         WHERE 
-                                            p.status = 0";;
+                                            p.status = 0 
+                                        ORDER BY
+                                            p.fecha_pago DESC    
+                                        " ;
 
                                             $result = mysqli_query($conexion, $query);
 
@@ -275,7 +254,7 @@
                                         <table class="min-w-full divide-y divide-gray-300">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">#id</th>
+                                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">No. id</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Tecnico</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Servicio</th>
                                                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Status</th>
@@ -298,7 +277,7 @@
                                             JOIN 
                                                 usuarios u ON t.id_trabajador = u.id_usuario
                                             ORDER BY 
-                                                t.id_trabajo;
+                                                t.id_trabajo DESC;
                                             ";
 
                                             $result = mysqli_query($conexion, $query);
@@ -394,7 +373,7 @@
             <div class="lg:flex lg:items-end lg:justify-between">
                 <div>
                     <div class="flex justify-center text-teal-600 lg:justify-start">
-                        <img src="../assets/img/footer-logo.svg" alt="Logo de tuPlomeroMx" class="h-8" />
+                        <p class="font-bold text-2xl">tuPlomeroMx</p>
                     </div>
                     <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
                         Soluciones eficientes y confiables para todas tus necesidades de plomería.

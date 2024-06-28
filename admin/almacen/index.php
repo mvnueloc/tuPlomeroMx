@@ -1,5 +1,20 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include '../../php/conexion_bd.php';
+
+
+session_start();
+if (!isset($_SESSION['usuario'])) {
+  session_destroy();
+  header('Location: ../');
+  exit();
+} else if ($_SESSION['tipo_cuenta'] != 'admin') {
+  header('Location: ../');
+  exit();
+}
 
 // if(!isset($_SESSION['usuario']) || $_SESSION['tipo_cuenta'] != 'admin'){
 //     session_destroy();
@@ -96,23 +111,36 @@ mysqli_close($conexion);
     };
   </script>
 </head>
-<body class="bg-primary">
+<body class="bg-gray-100">
     <!-- Navbar -->
-    <nav class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between">
-        <div class="mx-12 hidden md:block">
-            <a class="text-white" href="#">NOMBRE</a>
-        </div>
-        <div class="md:mx-12">
-            <div>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/">Empleados</a>
-                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/">Almacen</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/">Reportes</a>
-                <button
-                class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
-                onclick="window.location.href='../../php/logout.php'"
-              >
-                Cerrar sesión
-              </button>
+    <nav class="shadow bg-gray-100">
+        <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
+            <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
+                tuPlomeroMX
+            </a>
+            <input type="checkbox" class="peer hidden" id="navbar-open" />
+            <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+                </svg>
+            </label>
+            <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
+                <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
+                    <li class="text-gray-600 md:mr-12 hover:text-secundary">
+                        <a href="../gestion_plomeros/">Empleados</a>
+                    </li>
+                    <li class="text-secundary md:mr-12 hover:text-secundary">
+                        <a href="">Almacén</a>
+                    </li>
+                    <li class=" md:mr-12 hover:text-secundary">
+                        <a href="../reportes">Reportes</a>
+                    </li>
+                    <li class="text-gray-600">
+                        <button onclick="window.location.href='../../php/logout.php'" class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white">
+                            Cerrar Sesión
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -122,7 +150,7 @@ mysqli_close($conexion);
         <div class="w-full md:flex-row justify-between">
             <section class="py-1 bg-blueGray-50 w-full sm:p-10">
                 <div class="flex justify-center item-center mb-7">
-                    <h2 class="font-bold text-4xl text-white">Almacen</h2>
+                    <h2 class="font-bold text-4xl text-primary">Almacén</h2>
                 </div>
                 <div class="w-full pb-6 pt-2 bg-white xl:mb-0 sm:px-4 mx-auto rounded-lg">
                     <div class="relative flex flex-col min-w-0 break-words w-full">
@@ -144,17 +172,7 @@ mysqli_close($conexion);
                                             <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
                                         </div>
                                     </div>
-                                    <!-- Botones de filtro y orden -->
-                                    <div class="mt-4 sm:mt-0 flex items-center justify-end relative rounded-2xl border-2 p-2">
-                                      <p class="mr-2 text-gray-400" >Orden: </p>
-                                      <select class=" text-sm font-medium outline-none focus:bg-gray-100 placeholder:text-gray-700 bg-white text-gray-900">
-                                        <option selected value="filtrar">Por Defecto</option>
-                                        <option value="opcion1">ID</option>
-                                        <option value="opcion2">Marcas</option>
-                                        <option value="opcion3">más stock</option>
-                                        <option value="opcion3">menos stock</option>
-                                      </select>
-                                    </div>
+                                    
                                     <!-- Botones de filtro y orden -->
                                     <button id="add_Product" class="mt-4 sm:mt-0 flex items-center justify-end relative">
                                         <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">

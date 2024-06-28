@@ -17,27 +17,33 @@ $limit = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit; // Calcula el offset basado en la página actual
 
-// Consulta para obtener los registros con paginación
 $sql = "SELECT 
-            u.id_usuario, 
-            u.nombre, 
-            u.apellido, 
-            u.correo, 
-            u.telefono,  
-            u.zona, 
-            u.fecha_alta,
-            IF(j.id_jornada IS NULL, 'inactivo', 'activo') AS estado_jornada
-        FROM 
-            usuarios u
-        LEFT JOIN 
-            jornadas_trabajo j 
-        ON 
-            u.id_usuario = j.id_usuario 
-        AND 
-            j.fecha = CURDATE()
-        WHERE 
-            u.tipo_cuenta = 'work' AND u.estado = 'alta'
-        LIMIT $limit OFFSET $offset";
+    u.id_usuario, 
+    u.nombre, 
+    u.apellido, 
+    u.correo, 
+    u.telefono,  
+    u.fecha_alta,
+    CASE 
+        WHEN j.id_jornada IS NULL THEN 'inactivo'
+        WHEN j.fecha_hora_fin IS NULL THEN 'activo'
+        ELSE 'inactivo'
+    END AS estado_jornada
+    FROM 
+        usuarios u
+    LEFT JOIN 
+        (SELECT 
+            id_tecnico, 
+            MAX(fecha_hora_inicio) AS ultima_fecha_inicio, 
+            fecha_hora_fin,
+            id_jornada
+        FROM jornada
+        GROUP BY id_tecnico) j 
+    ON 
+        u.id_usuario = j.id_tecnico 
+    WHERE 
+        u.tipo_cuenta = 'work' AND u.estado = 'alta'
+    LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($conexion, $sql);
 
@@ -92,22 +98,37 @@ mysqli_close($conexion);
     </script>
 </head>
 
-<body class="bg-primary">
+<body class="bg-gray-100">
 
     <!-- Navbar -->
-    <nav class="bg-primary border-b-2 border-white/[.3] h-14 flex items-center justify-center md:justify-between">
-        <div class="mx-12 hidden md:block">
-            <a class="text-white" href="#">NOMBRE</a>
-        </div>
-
-        <div class="md:mx-12">
-            <div>
-                <a class="text-secundary hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../gestion_plomeros/">Empleados</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../almacen/">Almacen</a>
-                <a class="text-white hover:text-secundary text-sm px-3 py-2 mx-2 transition-colors duration-300" href="../reportes/">Reportes</a>
-                <button class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white" onclick="window.location.href='../../php/logout.php'">
-                    Cerrar sesión
-                </button>
+    <nav class="shadow bg-gray-100">
+        <div class="relative flex flex-col px-6 py-4 md:mx-auto md:flex-row md:items-center">
+            <a href="#" class="flex items-center whitespace-nowrap text-2xl font-black">
+                tuPlomeroMX
+            </a>
+            <input type="checkbox" class="peer hidden" id="navbar-open" />
+            <label class="absolute top-5 right-7 cursor-pointer md:hidden" for="navbar-open">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+                </svg>
+            </label>
+            <div aria-label="Header Navigation" class="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
+                <ul class="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
+                    <li class="text-secundary md:mr-12 hover:text-secundary">    
+                        <a href="">Empleados</a>
+                    </li>
+                    <li class="text-gray-600 md:mr-12 hover:text-secundary">
+                        <a href="../almacen/">Almacén</a>
+                    </li>
+                    <li class=" md:mr-12 hover:text-secundary">
+                        <a href="../reportes">Reportes</a>
+                    </li>
+                    <li class="text-gray-600">
+                        <button onclick="window.location.href='../../php/logout.php'" class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white">
+                            Cerrar Sesión
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -117,7 +138,7 @@ mysqli_close($conexion);
         <div class="w-full md:flex-row justify-between">
             <section class="py-1 bg-blueGray-50 w-full sm:p-10">
                 <div class="flex justify-center item-center mb-7">
-                    <h2 class="font-bold text-4xl text-white">Empleados</h2>
+                    <h2 class="font-bold text-4xl text-primary">Empleados</h2>
                 </div>
                 <div class="w-full pb-6 pt-2 bg-white xl:mb-0 sm:px-4 mx-auto rounded-lg">
                     <div class="relative flex flex-col min-w-0 break-words w-full">
@@ -159,7 +180,7 @@ mysqli_close($conexion);
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Apellidos</th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Correo Electrónico</th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Teléfono</th>
-                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Zona</th>
+                                            
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Fecha de Alta</th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Estado Jornada</th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Editar</th>
@@ -174,7 +195,7 @@ mysqli_close($conexion);
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['apellido']); ?></td>
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['correo']); ?></td>
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['telefono']); ?></td>
-                                                <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['zona']); ?></td>
+                                                
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'><?php echo htmlspecialchars($plomero['fecha_alta']); ?></td>
                                                 <td class='border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4'>
                                                     <span class='inline-flex items-center gap-1 rounded-full
@@ -247,11 +268,7 @@ mysqli_close($conexion);
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="confpassword">Confirmar Contraseña</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confpassword" name="confpassword" type="password" placeholder="******" required minlength="6">
                 </div>
-                <div class="col-start-1 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">Código Postal</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" name="cp" type="number" placeholder="00000" required minlength="5" maxlength="5">
-                </div>
-                <div class="col-start-3 col-span-2 mb-4">
+                <div class="col-start-1 col-span-4 mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">Teléfono</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" name="telefono" type="number" placeholder="##########" required minlength="10" maxlength="10">
                 </div>
@@ -286,23 +303,9 @@ mysqli_close($conexion);
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_correo">Correo</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_correo" name="correo" type="email" required>
                 </div>
-                <div class="col-start-1 col-span-2 mb-4">
+                <div class="col-start-1 col-span-4 mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_telefono">Teléfono</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_telefono" name="telefono" type="number" required minlength="10" maxlength="10">
-                </div>
-                <div class="col-start-3 col-span-2 mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_zona">Zona</label>
-                    <input disabled class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_zona" name="zona" type="text">
-                </div>
-                <div class="col-start-1 col-span-4 mb-4">
-                    <div class="flex">
-                        <input type="checkbox" id="edit_zone_checkbox" class="mr-3" name="modificar_zona" value="si" />
-                        <p>¿Quieres modificar la zona?</p>
-                    </div>
-                </div>
-                <div id="edit_cp_container" class="col-start-1 col-span-4 mb-4 hidden">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="edit_cp">Código Postal</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit_cp" name="cp" type="number" placeholder="00000" minlength="5" maxlength="5">
                 </div>
                 <div class="col-span-4 flex items-center justify-between">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
@@ -341,7 +344,7 @@ mysqli_close($conexion);
         const modal = document.getElementById('modal');
         const closeModalButton = document.getElementById('closeModalButton');
         const addEmployeeForm = document.getElementById('addEmployeeForm');
-
+    
         const editModal = document.getElementById('editModal');
         const closeEditModalButton = document.getElementById('closeEditModalButton');
         const editEmployeeForm = document.getElementById('editEmployeeForm');
@@ -370,14 +373,7 @@ mysqli_close($conexion);
             document.body.classList.remove('overflow-hidden');
         });
 
-        document.getElementById('edit_zone_checkbox').addEventListener('change', function() {
-            const cpContainer = document.getElementById('edit_cp_container');
-            if (this.checked) {
-                cpContainer.classList.remove('hidden');
-            } else {
-                cpContainer.classList.add('hidden');
-            }
-        });
+        
 
         addEmployeeForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -452,19 +448,17 @@ mysqli_close($conexion);
         });
 
         function openEditModal(id) {
-            fetch(`get_plomero.php?id=${id}`)
+            fetch(`./get_plomero.php?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('edit_id_usuario').value = data.id_usuario;
                     document.getElementById('edit_nombre').value = data.nombre;
                     document.getElementById('edit_apellidos').value = data.apellido;
                     document.getElementById('edit_correo').value = data.correo;
-                    document.getElementById('edit_zona').value = data.zona;
                     document.getElementById('edit_telefono').value = data.telefono;
 
                     // Resetear el estado del checkbox y el div del código postal
-                    document.getElementById('edit_zone_checkbox').checked = false;
-                    document.getElementById('edit_cp_container').classList.add('hidden');
+                    
 
                     editModal.classList.remove('hidden');
                     document.body.classList.add('overflow-hidden');
