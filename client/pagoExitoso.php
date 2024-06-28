@@ -1,11 +1,14 @@
 <?php
-  include 'actions/realizarPago.php';
-
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header('Location: ../');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tuPlomeroMx</title>
@@ -34,31 +37,25 @@
         },
       };
     </script>
-
     <style>
       .rating {
         direction: rtl; /* Invierte el orden para que funcione correctamente el selector ~ */
       }
-
       .rating > input {
         display: none; /* Oculta los inputs */
       }
-
       .rating > label {
         color: #ccc; /* Color de estrella no seleccionada */
         font-size: 24px;
         cursor: pointer;
       }
-
       .rating > input:checked ~ label,
       .rating > input:checked + label {
         color: #fcba03; /* Color de estrella seleccionada */
       }
     </style>
-
-  </head>
-
-  <body class="bg-gray-100">
+</head>
+<body class="bg-gray-100">
     <!-- Navbar -->
     <nav class="shadow bg-gray-100">
       <div
