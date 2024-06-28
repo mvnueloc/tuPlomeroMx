@@ -116,7 +116,7 @@
         <h2 class="text-xl md:text-3xl font-semibold">Servicio Terminado</h2>
         <p class="font-light mt-6">
           Tu servicio de <?php echo $servicio; ?> ubicado en <?php echo $direccion;?> ha sido
-          realizado con exito el dia <?php echo $dia; ?>, por el tecnico “Nombre del tecnico”,
+          realizado con exito el dia <?php echo $dia; ?>, por el tecnico "<?php echo $nombre_tecnico ?>",
           realiza el pago por la cantidad de <?php echo $costo; ?>.
         </p>
         <div class="flex justify-center lg:justify-start">

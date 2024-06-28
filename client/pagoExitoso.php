@@ -164,37 +164,28 @@
           ¿Que te parecio el servicio?
         </h3>
 
-        <form 
-          action="./index.php"
-          class=""
-        >
-
-        <div class="flex justify-center items-center ">
-          <div class="rating">
-            <input required type="radio" id="star4" name="calificacion" value="4"><label for="star4">★</label>
-            <input required type="radio" id="star3" name="calificacion" value="3"><label for="star3">★</label>
-            <input required type="radio" id="star2" name="calificacion" value="2"><label for="star2">★</label>
-            <input required type="radio" id="star5" name="calificacion" value="5"><label for="star5">★</label>
-            <input required type="radio" id="star1" name="calificacion" value="1"><label for="star1">★</label>
+        <form action="./actions/guardarComentario.php" method="POST">
+          <div class="flex justify-center items-center ">
+              <div class="rating">
+                  <input required type="radio" id="star4" name="calificacion" value="4"><label for="star4">★</label>
+                  <input required type="radio" id="star3" name="calificacion" value="3"><label for="star3">★</label>
+                  <input required type="radio" id="star2" name="calificacion" value="2"><label for="star2">★</label>
+                  <input required type="radio" id="star5" name="calificacion" value="5"><label for="star5">★</label>
+                  <input required type="radio" id="star1" name="calificacion" value="1"><label for="star1">★</label>
+              </div>
           </div>
-        </div>
           <div class="">
-            <label for="comentario" class="block">Comentario</label>
-            <textarea
-              required=""
-              name="comentario"
-              id="comentario"
-              class="w-full h-24 bg-gray-200 rounded-md p-2"
-            ></textarea>
+              <label for="comentario" class="block">Comentario</label>
+              <textarea required name="comentario" id="comentario" class="w-full h-24 bg-gray-200 rounded-md p-2"></textarea>
           </div>
+          <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['id']; ?>">
           <div class="flex justify-center mt-6">
-            <button
-              class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-green-600 hover:border-1 border-gray-900 transition-colors duration-300 ease-in-out"
-            >
-              Continuar
-            </button>
+              <button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-gray-100 hover:text-green-600 hover:border-1 border-gray-900 transition-colors duration-300 ease-in-out">
+                  Continuar
+              </button>
           </div>
         </form>
+
       </div>
     </div>
   </body>

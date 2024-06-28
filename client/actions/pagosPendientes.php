@@ -7,33 +7,45 @@
 
     $id_client = $_SESSION['id'];
 
-    $query_check = "SELECT * FROM solicitudes WHERE id_cliente = $id_client AND status = 1";
-    // 0 - solicitud no tomada
-    // 1 - solicitud echa pero sin pago
-    // 2 - solicitud ya pagada
+    // Consulta para verificar que hay una solicitud con status 1 y un trabajo asociado con status 1
+    $query_check = "
+        SELECT s.*, t.id_trabajador 
+        FROM solicitudes s
+        JOIN trabajo t ON s.id_solicitud = t.id_solicitud
+        WHERE s.id_cliente = $id_client AND s.status = 1 AND t.status = 1
+    ";
 
     $result_check = mysqli_query($conexion, $query_check);
 
     $porPagar = false;
 
-    if(mysqli_num_rows($result_check) > 0){
+    if (mysqli_num_rows($result_check) > 0) {
         $porPagar = true;
         $servicioPorPagar = mysqli_fetch_assoc($result_check);
+        $id_solicitud = $servicioPorPagar['id_solicitud'];
         $id_servicio = $servicioPorPagar['id_servicio'];
-        // echo $id_servicio . '<br>';
+        $id_trabajador = $servicioPorPagar['id_trabajador'];
 
         $query_info = "SELECT * FROM servicios WHERE id_servicio = '$id_servicio'";
         $result_info = mysqli_query($conexion, $query_info);
         $infoServicio = mysqli_fetch_assoc($result_info);
 
         $direccion = $servicioPorPagar['direccion'];
-        // echo $direccion . '<br>';
         $dia = $servicioPorPagar['fecha_solicitud'];
-        // echo $dia . '<br>';
         $costo = $servicioPorPagar['costo_total'];
-        // echo $costo . '<br>';
         $servicio = $infoServicio['nombre_servicio'];
-        // echo $servicio . '<br>';
-    }
 
+        // Obtener el nombre del técnico desde la tabla usuarios
+        $query_tecnico = "SELECT nombre, apellido FROM usuarios WHERE id_usuario = '$id_trabajador'";
+        $result_tecnico = mysqli_query($conexion, $query_tecnico);
+        $tecnico = mysqli_fetch_assoc($result_tecnico);
+        $nombre_tecnico = $tecnico['nombre'] . ' ' . $tecnico['apellido'];
+
+        // Mostrar los datos
+        // echo "Servicio: " . $servicio . "<br>";
+        // echo "Dirección: " . $direccion . "<br>";
+        // echo "Fecha de Solicitud: " . $dia . "<br>";
+        // echo "Costo Total: " . $costo . "<br>";
+        // echo "Técnico: " . $nombre_tecnico . "<br>";
+    }
 ?>

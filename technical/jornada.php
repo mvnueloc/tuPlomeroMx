@@ -15,7 +15,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include(dirname(__DIR__) . '../php/conexion_bd.php');
-
+include './actions/solicitud_activa.php';
 // Obtener la zona del usuario logueado
 $usuario_id = $_SESSION['id'];
 $query_usuario_zona = "SELECT zona FROM usuarios WHERE id_usuario = $usuario_id";
@@ -81,7 +81,7 @@ include '../php/conexion_bd.php';
         class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
       >
         <a
-          href="#"
+          href="./"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
           Nombre

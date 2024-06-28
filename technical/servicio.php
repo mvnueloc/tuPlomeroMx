@@ -86,7 +86,7 @@
         class="relative flex flex-col px-4 py-4 md:mx-auto md:flex-row md:items-center"
       >
         <a
-          href="#"
+          href="./jornada"
           class="flex items-center whitespace-nowrap text-2xl font-black"
         >
           Nombre

@@ -82,7 +82,13 @@ if ($success) {
 
     $_SESSION['servicio'] = "none";
 
-    $query_insert_pago = "INSERT INTO pagos (fecha_pago, hora_pago, monto, id_trabajo, status) VALUES (CURDATE(), CURTIME(), $monto, $id_trabajo, 0)";
+    // Obtener id_cliente desde la tabla solicitudes
+    $query_cliente = "SELECT s.id_cliente FROM solicitudes s JOIN trabajo t ON s.id_solicitud = t.id_solicitud WHERE t.id_trabajo = $id_trabajo";
+    $result_cliente = mysqli_query($conexion, $query_cliente);
+    $cliente = mysqli_fetch_assoc($result_cliente);
+    $id_cliente = $cliente['id_cliente'];
+
+    $query_insert_pago = "INSERT INTO pagos (fecha_pago, hora_pago, monto, id_trabajo, status,id_usuario) VALUES (CURDATE(), CURTIME(), $monto, $id_trabajo, 0,$id_cliente)";
     mysqli_query($conexion, $query_insert_pago);
 
     header('Location: ../');
