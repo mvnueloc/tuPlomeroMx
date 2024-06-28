@@ -34,18 +34,20 @@
                 window.location = "../account/";
             </script>
         ';    
+    } else {
+        $_SESSION['usuario'] = $usuario['nombre']; 
+        $_SESSION['id'] = $usuario['id_usuario'];
+        $_SESSION['nombre'] = $usuario['nombre'];
+        $_SESSION['apellido'] = $usuario['apellido'];
+        $_SESSION['correo'] = $usuario['correo'];
+        $_SESSION['telefono'] = $usuario['telefono'];
+        $_SESSION['tipo_cuenta'] = $usuario['tipo_cuenta'];
+
+        header("location: ../");
+        exit;   
     }
     
     
-    $_SESSION['usuario'] = $usuario['nombre']; 
-    $_SESSION['id'] = $usuario['id_usuario'];
-    $_SESSION['nombre'] = $usuario['nombre'];
-    $_SESSION['apellido'] = $usuario['apellido'];
-    $_SESSION['correo'] = $usuario['correo'];
-    $_SESSION['telefono'] = $usuario['telefono'];
-    $_SESSION['tipo_cuenta'] = $usuario['tipo_cuenta'];
-
-    header("location: ../");
-    exit;   
+    
     
 ?>
