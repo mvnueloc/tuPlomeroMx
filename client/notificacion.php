@@ -92,9 +92,10 @@
             </li>
             <li class="text-gray-600 md:mr-12 hover:text-secundary">
               <button
-                class="rounded-md border-2 border-red-500 px-6 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                class="rounded-md border-2 border-red-500 px-3 py-1 font-medium text-red-500 transition-colors hover:bg-red-500 hover:text-white"
+                onclick="window.location.href='../php/logout.php'"
               >
-                Logout
+                Cerrar sesión
               </button>
             </li>
           </ul>

@@ -18,7 +18,7 @@
     $hora = date('H:i:s');
     // echo  $hora . '<br>';
 
-    $query_info = "SELECT * FROM solicitudes WHERE id_cliente = $id_cliente AND terminado = 0";
+    $query_info = "SELECT * FROM solicitudes s WHERE s.id_cliente = $id_cliente AND s.status = 1";
 
     $result_info = mysqli_query($conexion, $query_info);
     $servicioPorPagar = mysqli_fetch_assoc($result_info);
@@ -26,14 +26,22 @@
     $costoTotal = $servicioPorPagar['costo_total'];
     // echo  $costoTotal . '<br>' ;
 
-    $query_pago = "INSERT INTO pagos (fecha, hora, monto, id_cliente)
-        VALUES ( '$fecha' , '$hora', '$costoTotal' , '$id_cliente' )";
+    // Obtener el id_trabajo asociado a la solicitud
+    $id_solicitud = $servicioPorPagar['id_solicitud'];
+    $query_trabajo = "SELECT id_trabajo FROM trabajo WHERE id_solicitud = $id_solicitud";
+    $result_trabajo = mysqli_query($conexion, $query_trabajo);
+    $trabajo = mysqli_fetch_assoc($result_trabajo);
+    $id_trabajo = $trabajo['id_trabajo'];
+
+
+    $query_pago = "INSERT INTO pagos (fecha_pago, hora_pago, monto, id_usuario,status,id_trabajo)
+        VALUES ( '$fecha' , '$hora', '$costoTotal' , '$id_cliente',1, $id_trabajo)";
 
     $ejecutar = mysqli_query($conexion, $query_pago);
 
     // cambiar el status de pagado
 
-    $query_update = "UPDATE solicitudes SET terminado = 1 WHERE id_cliente = $id_cliente AND terminado = 0";
+    $query_update = "UPDATE solicitudes SET status = 2 WHERE id_cliente = $id_cliente AND status = 1";
 
     $ejecutar = mysqli_query($conexion, $query_update);
 ?>

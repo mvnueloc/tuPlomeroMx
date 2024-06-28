@@ -8,6 +8,9 @@
     $id_client = $_SESSION['id'];
 
     $query_check = "SELECT * FROM solicitudes WHERE id_cliente = $id_client AND status = 1";
+    // 0 - solicitud no tomada
+    // 1 - solicitud echa pero sin pago
+    // 2 - solicitud ya pagada
 
     $result_check = mysqli_query($conexion, $query_check);
 

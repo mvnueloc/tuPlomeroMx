@@ -115,16 +115,20 @@
             ?>,
             hoy es
             <?php
+            // Establecer la zona horaria a America/Mexico_City
+              date_default_timezone_set('America/Mexico_City');
+
               // Configuración de la fecha actual en español
               $formatter = new IntlDateFormatter(
                   'es_ES',
                   IntlDateFormatter::LONG,
                   IntlDateFormatter::NONE,
-                  'Europe/Madrid',
+                  'America/Mexico_City',
                   IntlDateFormatter::GREGORIAN
               );
 
               echo $formatter->format(time());
+
             ?>
             , ¿Estás listo para empezar tu jornada?
           </p>

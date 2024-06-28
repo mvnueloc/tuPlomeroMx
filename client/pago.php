@@ -5,7 +5,7 @@
     exit();
   }
 
-  include 'actions/informacionServicios.php';
+  // include 'actions/informacionServicios.php';
   include 'actions/pagosPendientes.php';
 ?>
 <!DOCTYPE html>
@@ -234,7 +234,7 @@
           <!-- datos de pago -->
           <form 
             class="flex flex-col gap-4 w-4/5"
-            action="./actions/pagoExitoso.php"
+            action="./pagoExitoso.php"
           >
             <div class="">
               <label
@@ -274,7 +274,7 @@
                   >Fecha</label
                 >
                 <input
-                  required="
+                  required
                   id="fecha_vencimiento"
                   type="text"
                   name="fecha_vencimiento"

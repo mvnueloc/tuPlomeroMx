@@ -157,16 +157,20 @@ if ($result_jornada && mysqli_num_rows($result_jornada) > 0) {
         <div class="flex flex-row gap-3 w-full md:w-2/3">
           <h2 class="max-md:px-6 text-2xl font-bold">Día:
           <?php
+            // Establecer la zona horaria a America/Mexico_City
+              date_default_timezone_set('America/Mexico_City');
+
               // Configuración de la fecha actual en español
               $formatter = new IntlDateFormatter(
                   'es_ES',
                   IntlDateFormatter::LONG,
                   IntlDateFormatter::NONE,
-                  'Europe/Madrid',
+                  'America/Mexico_City',
                   IntlDateFormatter::GREGORIAN
               );
 
               echo $formatter->format(time());
+
             ?>
             </h2>
         </div>

@@ -307,7 +307,7 @@ mysqli_close($conexion);
 <!-- Modal Asignar Recursos -->
 <div id="modalRemove" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-2xl mb-4">Asignar Recursos</h2>
+        <h2 class="text-2xl mb-4">Reponer materiales del Tecnico</h2>
         <form id="removeStockForm" class="grid grid-cols-4 gap-4" method="POST" action="asignar_recursos.php">
             <div class="col-span-4 mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="material">Material</label>
