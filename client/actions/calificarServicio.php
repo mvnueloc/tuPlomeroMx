@@ -34,7 +34,7 @@ $query_info = "SELECT
     s.hora_solicitud,
     srv.nombre_servicio
     FROM 
-        Usuarios u
+        usuarios u
     JOIN 
         solicitudes s ON u.id_usuario = s.id_cliente
     JOIN 

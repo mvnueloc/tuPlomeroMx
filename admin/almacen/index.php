@@ -86,6 +86,7 @@ mysqli_close($conexion);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tuPlomeroMx</title>
+  <link rel="icon" href="../../assets/img/icon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
   <style type="text/tailwindcss">
     @layer utilities {
@@ -169,7 +170,8 @@ mysqli_close($conexion);
                                                     <path d="M237.927,0C106.555,0,0.035,106.52,0.035,237.893c0,131.373,106.52,237.893,237.893,237.893 c50.518,0,97.368-15.757,135.879-42.597l0.028-0.028l176.432,176.433c3.274,3.274,8.48,3.358,11.839,0l47.551-47.551 c3.274-3.274,3.106-8.703-0.028-11.838L433.223,373.8c26.84-38.539,42.597-85.39,42.597-135.907C475.82,106.52,369.3,0,237.927,0z M237.927,419.811c-100.475,0-181.918-81.443-181.918-181.918S137.453,55.975,237.927,55.975s181.918,81.443,181.918,181.918 S338.402,419.811,237.927,419.811z"/>
                                                 </svg>
                                             </span>
-                                            <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"/>
+                                            <input required id="search" type="text" name="search" placeholder="Buscar" class="pl-10 border-2 w-full sm:w-96 p-2 text-sm font-medium outline-none focus:bg-gray-100 placeholder-text-gray-700 bg-white text-gray-900 rounded-2xl"
+                                            oninput="fetchResults(this.value,1)"/>
                                         </div>
                                     </div>
                                     
@@ -184,11 +186,7 @@ mysqli_close($conexion);
                                             + Reponer Stock
                                         </p>
                                     </button>
-                                    <button id="remove_stock" class="mt-4 sm:mt-0 flex items-center justify-end relative">
-                                        <p class="border-2 p-2 text-sm font-medium outline-none hover:bg-secundary bg-primary text-white rounded-2xl">
-                                            - Asignar Recursos
-                                        </p>
-                                    </button>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -281,12 +279,7 @@ mysqli_close($conexion);
 <!-- Modal Reponer Stock -->
 <div id="modalAdd" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white p-8 rounded-lg shadow-lg w-1/2 max-h-screen overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl">Reponer Stock</h2>
-          <button id="add_Proveedor" class="text-white bg-primary p-2 rounded-xl">
-              Añadir Proveedor
-          </button>
-        </div>
+        
         <form id="addStockForm" class="grid grid-cols-4 gap-4" method="POST" action="reponer_stock.php">
             <div class="col-span-4 mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="material">Material</label>
@@ -301,16 +294,10 @@ mysqli_close($conexion);
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="costo_unitario">Costo Unitario</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="costo_unitario" name="costo_unitario[]" type="number" step="0.01" min="0" max="1000" required>
             </div>
-            <div class="col-span-2 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="proveedor">Proveedor</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" id="proveedor" name="proveedor[]" type="text" required list="proveedor-list">
-                <datalist class="w-full bg-white text-gray-500" id="proveedor-list"></datalist>
-            </div>
+            
             <div id="additionalProductsContainer" class="col-span-4"></div>
             <div class="col-span-4 flex items-center justify-between">
-                <button type="button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" onclick="addProductFields()">
-                    Añadir Otro Producto
-                </button>
+                
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
                     Reponer
                 </button>
@@ -348,43 +335,11 @@ mysqli_close($conexion);
     </div>
 </div>
 
-<!-- Modal Añadir Proveedor -->
-<div id="modalProveedor" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-2xl mb-4">Añadir Proveedor</h2>
-        <form id="addProveedorForm" class="grid grid-cols-4 gap-4" method="POST" action="anadir_proveedor.php">
-            <div class="col-span-4 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nombreProveedor" name="nombre" type="text" required>
-            </div>
-            <div class="col-span-4 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="correo" name="correo" type="email" required>
-            </div>
-            <div class="col-span-4 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">Teléfono</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telefono" name="telefono" type="text" pattern="[0-9]{10}" title="Debe ser un número de teléfono válido de 10 dígitos" required>
-            </div>
-            <div class="col-span-4 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="direccion" name="direccion" type="text" required>
-            </div>
-            <div class="col-span-4 flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="submit">
-                    Añadir
-                </button>
-                <button id="closeProveedorModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline" type="button">
-                    Cancelar
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <script>
     const addProductButton = document.getElementById('add_Product');
     const addStockButton = document.getElementById('add_Stock');
-    const addProveedorButton = document.getElementById('add_Proveedor');
+    
     const removeStockButton = document.getElementById('remove_stock');
     const modalProduct = document.getElementById('modalProduct');
     const modalAdd = document.getElementById('modalAdd');
@@ -419,25 +374,6 @@ mysqli_close($conexion);
         resetAddStockForm();
     });
 
-    addProveedorButton.addEventListener('click', () => {
-        modalProveedor.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
-    });
-
-    closeProveedorModalButton.addEventListener('click', () => {
-        modalProveedor.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-    });
-
-    removeStockButton.addEventListener('click', () => {
-        modalRemove.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
-    });
-
-    closeRemoveModalButton.addEventListener('click', () => {
-        modalRemove.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-    });
 
     function addProductFields() {
     const container = document.getElementById('additionalProductsContainer');
@@ -472,10 +408,7 @@ mysqli_close($conexion);
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="costo_unitario">Costo Unitario</label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="costo_unitario[]" type="number" required>
             </div>
-            <div class="col-span-2 mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="proveedor">Proveedor</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline autocomplete" name="proveedor[]" type="text" required list="proveedor-list">
-            </div>
+            
         </div>
     `;
 
@@ -487,7 +420,7 @@ mysqli_close($conexion);
     });
 
     const materialInputs = productFields.querySelectorAll('.autocomplete[name="material[]"]');
-    const proveedorInputs = productFields.querySelectorAll('.autocomplete[name="proveedor[]"]');
+    
     
     materialInputs.forEach(input => {
         input.addEventListener('input', function() {
@@ -495,11 +428,7 @@ mysqli_close($conexion);
         });
     });
 
-    proveedorInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            fetchAutocompleteResults('buscar_proveedor.php', this);
-        });
-    });
+    
 }
 
 
@@ -548,7 +477,7 @@ mysqli_close($conexion);
 
     document.addEventListener('DOMContentLoaded', function() {
         const materialInputs = document.querySelectorAll('.autocomplete[name="material[]"]');
-        const proveedorInputs = document.querySelectorAll('.autocomplete[name="proveedor[]"]');
+
 
         materialInputs.forEach(input => {
             input.addEventListener('input', function() {
@@ -556,11 +485,7 @@ mysqli_close($conexion);
             });
         });
 
-        proveedorInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                fetchAutocompleteResults('buscar_proveedor.php', this);
-            });
-        });
+        
     });
 </script>
 </body>

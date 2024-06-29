@@ -15,4 +15,5 @@ if (mysqli_query($conexion, $sql)) {
 }
 
 mysqli_close($conexion);
+header("Location: ./");
 ?>

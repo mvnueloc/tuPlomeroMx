@@ -10,7 +10,7 @@
     $id_client = $_SESSION['id'];
 
     $query_check = "SELECT p.id_pago, p.fecha_pago, p.hora_pago, p.monto, p.status
-                    FROM Usuarios u
+                    FROM usuarios u
                     JOIN solicitudes s ON u.id_usuario = s.id_cliente
                     JOIN trabajo t ON s.id_solicitud = t.id_solicitud
                     JOIN pagos p ON t.id_trabajo = p.id_trabajo

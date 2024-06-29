@@ -50,6 +50,7 @@ if(!isset($_SESSION['jornada'])){
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tuPlomeroMx</title>
+  <link rel="icon" href="../assets/img/icon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
   <style type="text/tailwindcss">
     @layer utilities {

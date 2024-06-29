@@ -54,3 +54,4 @@ echo '
         alert("Hubo un error");
         window.location = "../solicitud.php";
     </script>';
+?>
