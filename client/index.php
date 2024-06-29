@@ -66,9 +66,7 @@ include '../php/testimonios.php';
             <a href="./notificacion.php">Notificaciones</a>
           </li>
           <li class="text-gray-600  hover:text-secundary">
-            <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white"
-            onclick="window.location.href='../php/logout.php'"
-            >
+            <button class="rounded-md border-2 border-primary px-6 py-1 font-medium text-primary transition-colors hover:bg-primary hover:text-white" onclick="window.location.href='../php/logout.php'">
               Cerrar Sesión
             </button>
           </li>
@@ -252,7 +250,7 @@ include '../php/testimonios.php';
             </a>
           </li>
           <li>
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#">
+            <a class="text-gray-700 transition hover:text-gray-700/75" href="./terminosCondiciones.html">
               Políticas de Privacidad
             </a>
           </li>

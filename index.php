@@ -84,7 +84,6 @@ include 'php/testimonios.php';
           Servicios de plomería a domicilio en la Ciudad de México
         </h1>
         <button class="rounded-md text-secundary bg-gray-100 px-6 py-2 font-medium text-secundary transition-colors hover:bg-secundary hover:text-white mt-6" onclick=<?php
-
                                                                                                                                                                       if (isset($_SESSION['usuario'])) {
                                                                                                                                                                         echo "window.location.href='./client/solicitud.php'";
                                                                                                                                                                       } else {
