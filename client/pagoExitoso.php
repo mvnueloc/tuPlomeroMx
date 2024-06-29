@@ -125,10 +125,10 @@ include 'actions/realizarPago.php';
 
         <div class="flex justify-center items-center ">
           <div class="rating">
+            <input required type="radio" id="star5" name="calificacion" value="5"><label for="star5">★</label>
             <input required type="radio" id="star4" name="calificacion" value="4"><label for="star4">★</label>
             <input required type="radio" id="star3" name="calificacion" value="3"><label for="star3">★</label>
             <input required type="radio" id="star2" name="calificacion" value="2"><label for="star2">★</label>
-            <input required type="radio" id="star5" name="calificacion" value="5"><label for="star5">★</label>
             <input required type="radio" id="star1" name="calificacion" value="1"><label for="star1">★</label>
           </div>
         </div>

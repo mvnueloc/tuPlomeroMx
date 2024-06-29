@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Términos y Condiciones - Tu Plomero MX</title>
+    <!-- Incluir Tailwind CSS -->
+    <!-- <link rel="stylesheet" href="./css/style.css" /> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#13212A",
+              secundary: "#0077C2",
+            },
+            height: {
+              "screen-minus-68": "calc(100vh - 67px)",
+              "screen-minus-64": "calc(100vh - 64px)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body
+    class="bg-gray-100 md:h-screen w-screen flex justify-center items-center"
+  >
+    <div class="container px-4 py-8">
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-semibold mb-4">
+          Términos y Condiciones de Uso de Datos
+        </h1>
+        <p class="mb-4 text-gray-700">
+          En tuPlomeroMX valoramos tu privacidad y seguridad. A continuación,
+          detallamos cómo utilizamos y protegemos los datos personales que nos
+          proporcionas:
+        </p>
+        <p class="mb-4 text-gray-700">
+          - Los datos que recabamos (nombre, apellido, teléfono, correo,
+          domicilio) son utilizados únicamente para la gestión de servicios de
+          plomería a domicilio y no son compartidos con terceros sin tu
+          consentimiento.
+        </p>
+        <p class="mb-4 text-gray-700">
+          - Los datos de pago introducidos en nuestra sección de pago con
+          tarjeta no son almacenados ni procesados por nosotros. Utilizamos
+          plataformas seguras de terceros para gestionar estas transacciones.
+        </p>
+        <p class="mb-4 text-gray-700">
+          - Toda la información que nos proporcionas se maneja conforme a las
+          leyes de protección de datos vigentes en México.
+        </p>
+        <p class="mb-4 text-gray-700">
+          Al hacer uso de nuestros servicios y proporcionar tus datos
+          personales, aceptas los términos y condiciones aquí expuestos.
+        </p>
+        <p class="mb-4 text-gray-700">
+          Para cualquier duda o solicitud relacionada con el uso de tus datos,
+          por favor contáctanos a través de nuestros canales de atención al
+          cliente.
+        </p>
+
+        <div class="flex justify-center">
+          <a
+            href="./index.php"
+            class="rounded-md text-white bg-secundary px-6 py-2 font-medium text-secundary transition-colors mt-6 hover:bg-white hover:text-secundary border border-secundary"
+            >Regresar
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

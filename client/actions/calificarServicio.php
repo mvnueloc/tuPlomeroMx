@@ -16,6 +16,7 @@ $id_client = $_SESSION['id'];
 date_default_timezone_set('America/Mexico_City');
 
 $fecha = date('Y-m-d');
+
 // echo  $fecha . '<br>';
 
 $hora = date('H:i:s');

@@ -1,12 +1,12 @@
-<?php 
+<?php
 session_start();
 if (!isset($_SESSION['usuario'])) {
-  session_destroy();
-  header('Location: ../');
-  exit();
+    session_destroy();
+    header('Location: ../');
+    exit();
 } else if ($_SESSION['tipo_cuenta'] != 'admin') {
-  header('Location: ../');
-  exit();
+    header('Location: ../');
+    exit();
 }
 
 ?>
@@ -18,13 +18,15 @@ if (!isset($_SESSION['usuario'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tuPlomeroMx</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style type="text/tailwindcss">
         @layer utilities {
       .content-auto {
         content-visibility: auto;
       }
     }
-  </style>
+    </style>
+
     <script>
         tailwind.config = {
             theme: {
@@ -83,7 +85,272 @@ if (!isset($_SESSION['usuario'])) {
 
             <section class="py-1 bg-blueGray-50 w-full sm:p-10 ">
                 <div class="flex justify-center item-center mb-10">
-                    <h2 class="text-black font-bold text-4xl">Reportes de la plataforma</h2>
+                    <h2 class="text-black font-bold text-4xl mx-8 my-8">Reportes de la plataforma</h2>
+                </div>
+                <?php
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
+
+                include '../../php/conexion_bd.php';
+
+                $query = "SELECT 
+                        p.fecha_pago,
+                        p.hora_pago,
+                        p.monto
+                    FROM 
+                        pagos p
+                    JOIN 
+                        trabajo t ON p.id_trabajo = t.id_trabajo
+                    JOIN 
+                        solicitudes s ON t.id_solicitud = s.id_solicitud
+                    JOIN 
+                        usuarios u ON s.id_cliente = u.id_usuario
+                    WHERE 
+                        p.status = 1 AND
+                        p.fecha_pago = CURDATE()
+                    ORDER BY
+                        p.fecha_pago ASC";
+
+                $result = mysqli_query($conexion, $query);
+
+                $gananciasDiarias = [];
+                $horas = [];
+                $total = 0;
+
+
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $monto = floatval($row['monto']);
+                        $total = end($gananciasDiarias);
+                        $gananciasDiarias[] = $monto + $total;
+                        $horas[] = $row['hora_pago'];
+                    }
+                }
+
+                $gananciasDiariasJson = json_encode($gananciasDiarias);
+                $horasJson = json_encode($horas);
+
+                $query = "SELECT 
+                    u.nombre ,
+                    t.id_trabajo,
+                    t.calificacion
+                FROM 
+                    pagos p
+                JOIN 
+                    trabajo t ON p.id_trabajo = t.id_trabajo
+                JOIN 
+                    solicitudes s ON t.id_solicitud = s.id_solicitud
+                JOIN 
+                    usuarios u ON t.id_trabajador = u.id_usuario
+                WHERE 
+                    p.status = 1
+                    AND DATE(p.fecha_pago) = CURDATE()
+                ORDER BY 
+                    p.hora_pago DESC
+                LIMIT 5";
+
+                $result = mysqli_query($conexion, $query);
+
+                $data = [];
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = [
+                        'x' => $row['nombre'],
+                        'y' => $row['calificacion'],
+                    ];
+                }
+
+                $dataJson = json_encode($data);
+
+                ?>
+                <!-- grafico linea -->
+                <script>
+                    var gananciasDiarias = <?php echo $gananciasDiariasJson; ?>;
+                    var horas = <?php echo $horasJson; ?>;
+
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        var options = {
+                            chart: {
+                                height: "100%",
+                                maxWidth: "100%",
+                                type: "area",
+                                fontFamily: "Inter, sans-serif",
+                                dropShadow: {
+                                    enabled: true,
+                                },
+                                toolbar: {
+                                    show: true,
+                                },
+                            },
+                            tooltip: {
+                                enabled: true,
+                                x: {
+                                    show: true,
+                                },
+                            },
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                    opacityFrom: 0.55,
+                                    opacityTo: 0,
+                                    shade: "#319795",
+                                    gradientToColors: ["#319795"],
+                                },
+                            },
+                            dataLabels: {
+                                enabled: true,
+                            },
+                            stroke: {
+                                width: 6,
+                            },
+                            grid: {
+                                show: false,
+                                strokeDashArray: 4,
+                                padding: {
+                                    left: 2,
+                                    right: 2,
+                                    top: 0
+                                },
+                            },
+                            series: [{
+                                name: "Pagos",
+                                data: gananciasDiarias,
+                                color: "#319795",
+                            }],
+                            xaxis: {
+                                categories: horas,
+                                labels: {
+                                    show: true,
+                                },
+                                axisBorder: {
+                                    show: true,
+                                },
+                                axisTicks: {
+                                    show: true,
+                                },
+                                title: {
+                                    text: "Hora del día",
+                                    style: {
+                                        color: "#333",
+                                        fontSize: "14px",
+                                        fontFamily: "Helvetica, Arial, sans-serif",
+                                        fontWeight: 600,
+                                    },
+                                },
+                            },
+                            yaxis: {
+                                show: true,
+                                title: {
+                                    text: "Dinero",
+                                    style: {
+                                        color: "#333",
+                                        fontSize: "14px",
+                                        fontFamily: "Helvetica, Arial, sans-serif",
+                                        fontWeight: 600,
+                                    },
+                                },
+                            },
+                        };
+
+                        var chart = new ApexCharts(document.querySelector("#area-chart"), options);
+                        chart.render();
+                    });
+                </script>
+
+                <!-- grafico barras -->
+                <script>
+                    var dataJson = <?php echo $dataJson; ?>;
+
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        var options = {
+                            chart: {
+                                height: "100%",
+                                maxWidth: "100%",
+                                type: "bar",
+                                fontFamily: "Inter, sans-serif",
+
+                                toolbar: {
+                                    show: true,
+                                },
+                            },
+                            tooltip: {
+                                enabled: true,
+                                x: {
+                                    show: true,
+                                },
+                            },
+                            dataLabels: {
+                                enabled: true,
+                            },
+                            stroke: {
+                                width: 6,
+                            },
+                            grid: {
+                                show: false,
+                                strokeDashArray: 4,
+                                padding: {
+                                    left: 2,
+                                    right: 2,
+                                    top: 0
+                                },
+                            },
+                            series: [{
+                                name: "Calificación",
+                                data: dataJson,
+                                color: "#057feb",
+                            }],
+                            xaxis: {
+                                labels: {
+                                    show: true,
+                                },
+                                axisBorder: {
+                                    show: true,
+                                },
+                                axisTicks: {
+                                    show: true,
+                                },
+                                title: {
+                                    text: "Tecnico/a",
+                                    style: {
+                                        color: "#333",
+                                        fontSize: "14px",
+                                        fontFamily: "Helvetica, Arial, sans-serif",
+                                        fontWeight: 600,
+                                    },
+                                },
+                            },
+                            yaxis: {
+                                axisBorder: {
+                                    show: false,
+                                },
+                                axisTicks: {
+                                    show: false,
+                                },
+                                min: 0, // Asegura que el eje y comience en 0
+                                max: 5, // Ajusta el valor máximo manualmente si sabes cuál es el valor máximo esperado
+                                forceNiceScale: false, // Desactiva el ajuste automático para forzar el uso de los valores min y max definidos
+                                labels: {
+                                    show: false,
+                                }
+                            }
+
+                        };
+
+                        var chart = new ApexCharts(document.querySelector("#bar-chart"), options);
+                        chart.render();
+                    });
+                </script>
+
+                <div class="w-full bg-white rounded-2xl p-7 shadow-sm  border border-transparent mb-10 md:flex md:space-x-16 md:space-y-0 space-y-16">
+                    <div class="w-full md:w-1/2 h-80">
+                        <h3 class="text-lg font-bold">Flujo de dinero diario.</h3>
+                        <div id="area-chart"></div>
+                    </div>
+                    <div class="w-full md:w-1/2 h-80 ">
+                        <h3 class="text-lg font-bold">Calificación trabajos recientes.</h3>
+                        <div id="bar-chart"></div>
+                    </div>
                 </div>
 
 
@@ -112,13 +379,9 @@ if (!isset($_SESSION['usuario'])) {
                                                 </tr>
                                             </thead>
                                             <?php
-                                            ini_set('display_errors', 1);
-                                            ini_set('display_startup_errors', 1);
-                                            error_reporting(E_ALL);
 
-                                            include '../../php/conexion_bd.php';
 
-                                            $query = "SELECT * FROM pagos WHERE status = 1 ORDER BY fecha_pago DESC";
+                                            $query = "SELECT * FROM pagos WHERE status = 1 ORDER BY hora_pago DESC";
 
                                             $result = mysqli_query($conexion, $query);
 
@@ -140,7 +403,7 @@ if (!isset($_SESSION['usuario'])) {
                                             }
                                             ?>
 
-                                            
+
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="4" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0 text-right">Total $ <?php echo $total ?></td>
@@ -187,19 +450,19 @@ if (!isset($_SESSION['usuario'])) {
                                             p.fecha_pago,
                                             p.hora_pago,
                                             p.monto
-                                        FROM 
-                                            pagos p
-                                        JOIN 
-                                            trabajo t ON p.id_trabajo = t.id_trabajo
-                                        JOIN 
-                                            solicitudes s ON t.id_solicitud = s.id_solicitud
-                                        JOIN 
-                                            usuarios u ON s.id_cliente = u.id_usuario
-                                        WHERE 
-                                            p.status = 0 
-                                        ORDER BY
-                                            p.fecha_pago DESC    
-                                        " ;
+                                            FROM 
+                                                pagos p
+                                            JOIN 
+                                                trabajo t ON p.id_trabajo = t.id_trabajo
+                                            JOIN 
+                                                solicitudes s ON t.id_solicitud = s.id_solicitud
+                                            JOIN 
+                                                usuarios u ON s.id_cliente = u.id_usuario
+                                            WHERE 
+                                                p.status = 0 
+                                            ORDER BY
+                                                p.fecha_pago DESC    
+                                        ";
 
                                             $result = mysqli_query($conexion, $query);
 
